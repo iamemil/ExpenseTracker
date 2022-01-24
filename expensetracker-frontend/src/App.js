@@ -1,20 +1,22 @@
 import React from 'react';
-import {
-  ChakraProvider,
-
-  theme,
-} from '@chakra-ui/react';
-
-import { Logo } from './Logo';
-import {Redirect, Route} from 'react-router-dom';
 import Navbar from './pages/navbar/Navbar';
 import Home from "./pages/home/Home";
-
+import SignUp from "./pages/signup/SignUp";
+import Login from "./pages/login/Login";
+import {
+  ChakraProvider,
+} from '@chakra-ui/react';
+import customTheme from "./utils/theme";
+import { Route, Routes } from 'react-router-dom';
 function App() {
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={customTheme}>
       <Navbar/>
-      <Home/>
+      <Routes>
+        <Route exact path="/home" element={<Home/>} />
+        <Route exact path="/signup" element={<SignUp/>} />
+        <Route exact path="/login" element={<Login/>} />
+      </Routes>
     </ChakraProvider>
   );
 }

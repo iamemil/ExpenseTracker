@@ -1,71 +1,111 @@
-import { React } from 'react';
-import {
-    Box,
-    Flex,
-    Avatar,
-    Button,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    MenuDivider,
-    useColorModeValue,
-    Stack,
-    Center,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from '../../ColorModeSwitcher';
-export default function Navbar() {
-    return (
-        <>
-            <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
-                <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-                    <Box>Expense Tracker</Box>
+import React from "react";
+import { Link, Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
+const Navbar = (props) => {
+  const [isOpen, setIsOpen] = React.useState(false);
 
-                    <Flex alignItems={'center'}>
-                        <ColorModeSwitcher mr='2' justifySelf="flex-end" />
-                        <Button mr='2' colorScheme='teal' size='md'>
-                            Sign Up
-                        </Button>
-                        <Button mr='2' colorScheme='teal' variant='outline'>
-                            Login
-                        </Button>
-                        <Stack direction={'row'} spacing={7}>
+  const toggle = () => setIsOpen(!isOpen);
 
-                            <Menu>
-                                <MenuButton
-                                    as={Button}
-                                    rounded={'full'}
-                                    variant={'link'}
-                                    cursor={'pointer'}
-                                    minW={0}>
-                                    <Avatar
-                                        size={'sm'}
-                                        src={'https://avatars.dicebear.com/api/male/username.svg'}
-                                    />
-                                </MenuButton>
-                                <MenuList alignItems={'center'}>
-                                    <br />
-                                    <Center>
-                                        <Avatar
-                                            size={'2xl'}
-                                            src={'https://avatars.dicebear.com/api/male/username.svg'}
-                                        />
-                                    </Center>
-                                    <br />
-                                    <Center>
-                                        <p>Username</p>
-                                    </Center>
-                                    <br />
-                                    <MenuDivider />
-                                    <MenuItem>Your Servers</MenuItem>
-                                    <MenuItem>Account Settings</MenuItem>
-                                    <MenuItem>Logout</MenuItem>
-                                </MenuList>
-                            </Menu>
-                        </Stack>
-                    </Flex>
-                </Flex>
-            </Box>
-        </>
-    );
-}
+  return (
+    <NavBarContainer {...props}>
+      <Box
+        color={["white", "white", "primary.500", "primary.500"]}>Expense Tracker</Box>
+      <MenuToggle toggle={toggle} isOpen={isOpen} />
+      <MenuLinks isOpen={isOpen} />
+    </NavBarContainer>
+  );
+};
+
+const CloseIcon = () => (
+  <svg width="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+    <title>Close</title>
+    <path
+      fill="white"
+      d="M9.00023 7.58599L13.9502 2.63599L15.3642 4.04999L10.4142 8.99999L15.3642 13.95L13.9502 15.364L9.00023 10.414L4.05023 15.364L2.63623 13.95L7.58623 8.99999L2.63623 4.04999L4.05023 2.63599L9.00023 7.58599Z"
+    />
+  </svg>
+);
+
+const MenuIcon = () => (
+  <svg
+    width="24px"
+    viewBox="0 0 20 20"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="white"
+  >
+    <title>Menu</title>
+    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+  </svg>
+);
+
+const MenuToggle = ({ toggle, isOpen }) => {
+  return (
+    <Box display={{ base: "block", md: "none" }} onClick={toggle}>
+      {isOpen ? <CloseIcon /> : <MenuIcon />}
+    </Box>
+  );
+};
+
+const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
+  return (
+    <Link href={to} style={{textDecoration : 'none'}}>
+      <Text display="block" {...rest}>
+        {children}
+      </Text>
+    </Link>
+
+  );
+};
+
+const MenuLinks = ({ isOpen }) => {
+  return (
+    <Box
+      display={{ base: isOpen ? "block" : "none", md: "block" }}
+      flexBasis={{ base: "100%", md: "auto" }}
+    >
+      <Stack
+        spacing={8}
+        align="center"
+        justify={["center", "space-between", "flex-end", "flex-end"]}
+        direction={["column", "row", "row", "row"]}
+        pt={[4, 4, 0, 0]}
+      >
+        <MenuItem to="/home">Home</MenuItem>
+        <MenuItem to="/signup">Sign Up </MenuItem>
+        <MenuItem to="/login" isLast>
+          <Button
+            size="sm"
+            rounded="md"
+            color={["primary.500", "primary.500", "white", "white"]}
+            bg={["white", "white", "primary.500", "primary.500"]}
+            _hover={{
+              bg: ["primary.100", "primary.100", "primary.600", "primary.600"]
+            }}
+          >
+            Login
+          </Button>
+        </MenuItem>
+      </Stack>
+    </Box>
+  );
+};
+
+const NavBarContainer = ({ children, ...props }) => {
+  return (
+    <Flex
+      as="nav"
+      align="center"
+      justify="space-between"
+      wrap="wrap"
+      w="100%"
+      mb={8}
+      p={8}
+      bg={["primary.500", "primary.500", "transparent", "transparent"]}
+      color={["white", "white", "primary.700", "primary.700"]}
+      {...props}
+    >
+      {children}
+    </Flex>
+  );
+};
+
+export default Navbar;
