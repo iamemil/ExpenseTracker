@@ -8,13 +8,13 @@ import {
     FormLabel,
     Input,
     HStack,
+    Center,
 } from '@chakra-ui/react';
 
 export default function SignUp() {
     return (
-        <Box textAlign="center" fontSize="xl">
-
-            <Grid px={10}>
+            <Center textAlign="center" fontSize="xl" >
+            <Grid mx={5} px={5} width={{ sm: '100%', md:'75%', lg:'65%', xl: '50%' }} border='1px' borderColor='gray.100' borderRadius='25px'>
                 <Box>
                     <Text fontSize='5xl'> Sign Up</Text>
                 </Box>
@@ -43,11 +43,11 @@ export default function SignUp() {
                     </FormControl>
                 </Box>
                 <Box>
-                    <Button mt={4} colorScheme='teal' type='submit'>
+                    <Button my={4} colorScheme='teal' type='submit'>
                         Register
                     </Button>
                 </Box>
             </Grid>
-        </Box>
+            </Center>
     );
 }

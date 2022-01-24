@@ -7,14 +7,14 @@ import {
     FormControl,
     FormLabel,
     Input,
-    HStack,
+    Center
 } from '@chakra-ui/react';
 
 export default function Login() {
     return (
-        <Box textAlign="center" fontSize="xl">
+        <Center textAlign="center" fontSize="xl">
 
-            <Grid px={10}>
+            <Grid  mx={5} px={5} width={{ sm: '100%', md:'75%', lg:'65%', xl: '50%' }} border='1px' borderColor='gray.100' borderRadius='25px'>
                 <Box>
                     <Text fontSize='5xl'>Login</Text>
                 </Box>
@@ -36,6 +36,6 @@ export default function Login() {
                     </Button>
                 </Box>
             </Grid>
-        </Box>
+        </Center>
     );
 }
