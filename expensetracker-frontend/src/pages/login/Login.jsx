@@ -14,7 +14,7 @@ export default function Login() {
     return (
         <Center textAlign="center" fontSize="xl">
 
-            <Grid mx={5} px={5} width={{ sm: '100%', md:'75%', lg:'65%', xl: '50%' }} border='1px' borderColor='gray.100' borderRadius='25px'>
+            <Grid mx={5} px={5} boxShadow='lg' width={{ sm: '100%', md: '75%', lg: '65%', xl: '50%' }} border='1px' borderColor='gray.100' borderRadius='25px'>
                 <Box>
                     <Text fontSize='5xl'>Login</Text>
                 </Box>
