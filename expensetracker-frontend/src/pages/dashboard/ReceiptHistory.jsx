@@ -13,11 +13,12 @@ import {
     Th,
     Td,
     TableCaption,
-    chakra
+    chakra,
+    HStack
   } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { useTable, useSortBy } from 'react-table'
-
+import NewReceipt from './NewReceipt'
 
 export default function ReceiptHistory() {
   
@@ -70,7 +71,14 @@ export default function ReceiptHistory() {
     <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
 
     <Table {...getTableProps()} colorScheme={'gray'}>
-  <TableCaption placement={'top'} fontSize={'2xl'} textAlign={'left'}>Receipt History</TableCaption>
+      <TableCaption placement={'top'} fontSize={'2xl'}>
+        <HStack justifyContent={'space-between'}>
+          <Text>Receipt History</Text>
+         <NewReceipt/>
+        </HStack>
+        
+        </TableCaption>
+
       <Thead>
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
