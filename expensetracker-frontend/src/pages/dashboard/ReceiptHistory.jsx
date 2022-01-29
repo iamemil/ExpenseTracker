@@ -17,22 +17,25 @@ import {
   } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { useTable, useSortBy } from 'react-table'
+
+
 export default function ReceiptHistory() {
+  
   const data = React.useMemo(
     () => [
       {
-        merchantName: 'inches',
-        categoryName: 'millimetres (mm)',
+        merchantName: 'Starbucks',
+        categoryName: 'Food&Drink',
         spentAmount: 25.4,
       },
       {
-        merchantName: 'feet',
-        categoryName: 'centimetres (cm)',
+        merchantName: 'Bravo Supermarket',
+        categoryName: 'Shopping',
         spentAmount: 30.48,
       },
       {
-        merchantName: 'yards',
-        categoryName: 'metres (m)',
+        merchantName: 'Wolt',
+        categoryName: 'Food&Drink',
         spentAmount: 0.91444,
       },
     ],
@@ -48,23 +51,25 @@ export default function ReceiptHistory() {
       {
         Header: 'Category',
         accessor: 'categoryName',
+        Cell: ({ cell: { value } }) => <Tag colorScheme='teal'>{value}</Tag>,
       },
       {
         Header: 'Spent',
         accessor: 'spentAmount',
         isNumeric: true,
+        Cell: ({ cell: { value } }) => <Text>{value} ₼</Text>,
       },
     ],
     [],
   )
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy)
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow,visibleColumn } =
+    useTable({ columns, data }, useSortBy )
 
   return (
-    <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='10px' width={'full'}>
+    <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
 
-    <Table {...getTableProps()} colorScheme={'gray'} boxShadow={'lg'}>
+    <Table {...getTableProps()} colorScheme={'gray'}>
   <TableCaption placement={'top'} fontSize={'2xl'} textAlign={'left'}>Receipt History</TableCaption>
       <Thead>
         {headerGroups.map((headerGroup) => (
@@ -94,6 +99,7 @@ export default function ReceiptHistory() {
           prepareRow(row)
           return (
             <Tr {...row.getRowProps()}>
+              
               {row.cells.map((cell) => (
                 <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
                   {cell.render('Cell')}
