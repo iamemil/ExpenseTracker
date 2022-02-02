@@ -10,23 +10,13 @@ import {
   useDisclosure,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons'
 import { React, useState, useCallback } from 'react'
 import QrScanner from './QrScanner';
 export default function NewReceipt() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [receipt, setReceiptData] = useState({ Id: "", storeName: "", storeAddress: "", companyName: "", companyTaxNumber: "", storeTaxNumber: "" });
-
-  const receiptCallback = useCallback((receipt) => {
-    setReceiptData(receipt);
-    console.log(receipt.storeName);
-  }, []);
-
-  const receiptReset = {
+  const receiptInitialState = {
     Id: "", 
     storeName: "", 
     storeAddress: "", 
@@ -34,33 +24,48 @@ export default function NewReceipt() {
     companyTaxNumber: "", 
     storeTaxNumber: "" 
   }
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [receipt, setReceiptData] = useState(receiptInitialState);
+
+  const receiptCallback = useCallback((receipt) => {
+    setReceiptData(receipt);
+  }, []);
+
   function closeModal(){
-    setReceiptData(receiptReset);
+    setReceiptData(receiptInitialState);
     onClose();
   }
   return (
     <>
       <Button onClick={onOpen} colorScheme={'teal'} variant={'outline'} leftIcon={<AddIcon />}>New Receipt</Button>
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>New Receipt</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={closeModal}/>
           <ModalBody>
-            <QrScanner receiptCallback={receiptCallback} />
-            <FormControl>
-              <FormLabel htmlFor='storeName'>Store Name</FormLabel>
-              <Input id='storeName' size='sm' value={receipt.storeName} disabled={true}/>
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor='storeName'>Store Address</FormLabel>
-              <Input id='storeName' size='sm' value={receipt.storeAddress} disabled={true}/>
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor='storeName'>Store Tax Number</FormLabel>
-              <Input id='storeName' size='sm' value={receipt.storeTaxNumber} disabled={true}/>
-            </FormControl>
+            {(() => {
+              if(receipt.Id === ""){
+                return (<QrScanner receiptCallback={receiptCallback} />)
+              }else{
+                return (
+                  <div>
+                  <FormControl>
+                  <FormLabel htmlFor='storeName'>Store Name</FormLabel>
+                  <Input id='storeName' size='sm' value={receipt.storeName} disabled={true}/>
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor='storeName'>Store Address</FormLabel>
+                  <Input id='storeName' size='sm' value={receipt.storeAddress} disabled={true}/>
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor='storeName'>Store Tax Number</FormLabel>
+                  <Input id='storeName' size='sm' value={receipt.storeTaxNumber} disabled={true}/>
+                </FormControl>
+                </div>
+                )
+              }
+            })()}
           </ModalBody>
 
           <ModalFooter>

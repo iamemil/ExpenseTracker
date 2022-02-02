@@ -11,7 +11,6 @@ export default function QrScanner({receiptCallback}) {
         if (data && data.includes(receiptBaseUrl)) {
             axios.get(receiptApiUrl + data.split(receiptBaseUrl)[1])
                 .then(function (response) {
-                    console.log(response.data.cheque);
                     setReceiptData({Id:response.data.cheque.shortDocumentId,storeName:response.data.cheque.storeName,storeAddress:response.data.cheque.storeAddress,companyName:response.data.cheque.companyName,companyTaxNumber:response.data.cheque.companyTaxNumber,storeTaxNumber:response.data.cheque.storeTaxNumber});
                     receiptCallback({Id:response.data.cheque.shortDocumentId,storeName:response.data.cheque.storeName,storeAddress:response.data.cheque.storeAddress,companyName:response.data.cheque.companyName,companyTaxNumber:response.data.cheque.companyTaxNumber,storeTaxNumber:response.data.cheque.storeTaxNumber});
                 })
