@@ -4,15 +4,25 @@ import { useState } from "react";
 const receiptApiUrl = "https://monitoring.e-kassa.gov.az/pks-portal/1.0.0/documents/";
 const receiptBaseUrl = "https://monitoring.e-kassa.gov.az/#/index?doc=";
 
-export default function QrScanner({receiptCallback}) {
-    const [receipt, setReceiptData] = useState({Id:"",storeName:"",storeAddress:"",companyName:"",companyTaxNumber:"",storeTaxNumber:""});
+export default function QrScanner({receiptCallback,receiptInitialState}) {
+    const [receipt, setReceiptData] = useState(receiptInitialState);
 
     function handleScan(data) {
         if (data && data.includes(receiptBaseUrl)) {
             axios.get(receiptApiUrl + data.split(receiptBaseUrl)[1])
                 .then(function (response) {
-                    setReceiptData({Id:response.data.cheque.shortDocumentId,storeName:response.data.cheque.storeName,storeAddress:response.data.cheque.storeAddress,companyName:response.data.cheque.companyName,companyTaxNumber:response.data.cheque.companyTaxNumber,storeTaxNumber:response.data.cheque.storeTaxNumber});
-                    receiptCallback({Id:response.data.cheque.shortDocumentId,storeName:response.data.cheque.storeName,storeAddress:response.data.cheque.storeAddress,companyName:response.data.cheque.companyName,companyTaxNumber:response.data.cheque.companyTaxNumber,storeTaxNumber:response.data.cheque.storeTaxNumber});
+                    //console.log(response.data.cheque.content.items);
+                    setReceiptData({
+                        Id:response.data.cheque.shortDocumentId,
+                        storeName:response.data.cheque.storeName,
+                        storeAddress:response.data.cheque.storeAddress,
+                        companyName:response.data.cheque.companyName,
+                        companyTaxNumber:response.data.cheque.companyTaxNumber,
+                        storeTaxNumber:response.data.cheque.storeTaxNumber,
+                        receiptTotalSum: response.data.cheque.content.sum,
+                        receiptItems : response.data.cheque.content.items
+                    });
+                    receiptCallback(receipt);
                 })
                 .catch(function (error) {
                     console.log(error);
