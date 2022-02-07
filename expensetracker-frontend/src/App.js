@@ -8,12 +8,13 @@ import {
   ChakraProvider,
 } from '@chakra-ui/react';
 import customTheme from "./utils/theme";
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 function App() {
   return (
     <ChakraProvider theme={customTheme}>
       <Navbar/>
       <Routes>
+      <Route path="" element={<Navigate to="/home" />} />
         <Route exact path="/home" element={<Home/>} />
         <Route exact path="/dashboard" element={<Dashboard/>} />
         <Route exact path="/signup" element={<SignUp/>} />
