@@ -29,12 +29,17 @@ export default function ReceiptHistory() {
       {
         merchantName: 'Bravo Supermarket',
         categoryName: 'Shopping',
-        spentAmount: 30.48,
+        spentAmount: 40.48,
       },
       {
         merchantName: 'Wolt',
         categoryName: 'Food&Drink',
-        spentAmount: 0.91444,
+        spentAmount: 9.14,
+      },
+      {
+        merchantName: 'Starbucks',
+        categoryName: 'Food&Drink',
+        spentAmount: 14.5,
       },
     ],
     [],
