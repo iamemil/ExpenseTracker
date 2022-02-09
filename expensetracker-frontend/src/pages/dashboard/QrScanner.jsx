@@ -11,7 +11,6 @@ export default function QrScanner({receiptCallback,receiptInitialState}) {
         if (data && data.includes(receiptBaseUrl)) {
             axios.get(receiptApiUrl + data.split(receiptBaseUrl)[1])
                 .then(function (response) {
-                    //console.log(response.data.cheque.content.items);
                     setReceiptData({
                         Id:response.data.cheque.shortDocumentId,
                         storeName:response.data.cheque.storeName,

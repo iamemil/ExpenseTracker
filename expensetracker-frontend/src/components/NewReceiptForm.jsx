@@ -25,6 +25,7 @@ import {
 } from '@chakra-ui/react';
 import { React, useState, useRef } from 'react'
 import { ArrowForwardIcon, DeleteIcon } from '@chakra-ui/icons'
+import axios from "axios"
 export default function NewReceiptForm({ receipt, receiptCallback }) {
     const [modifiedReceipt, setModifiedReceiptData] = useState(receipt);
     //const [isOpen, setIsOpen] = useState(false);
@@ -56,10 +57,13 @@ export default function NewReceiptForm({ receipt, receiptCallback }) {
         });
         receiptCallback(modifiedReceipt);
     }
-
+//https://en66yiq4aanyija.m.pipedream.net
     const handleFormSubmit = event => {
         event.preventDefault();
-        alert("Receipt saved!");
+        //console.log(modifiedReceipt);
+        axios.post('https://httpbin.org/post', modifiedReceipt)
+        .then(response => console.log(response.data.json));
+        
     }
     return (
         <form onSubmit={handleFormSubmit}>
@@ -112,6 +116,7 @@ export default function NewReceiptForm({ receipt, receiptCallback }) {
             </Table>
             <Text mt={4} align={'center'}>Total: {modifiedReceipt.receiptTotalSum}</Text>
             <Button colorScheme={'teal'} width={'100%'} mt={4} rightIcon={<ArrowForwardIcon />} type='submit'>Add Receipt</Button>
+
             <AlertDialog
                 isOpen={removeItemConfirm.isConfirmOpen}
                 leastDestructiveRef={cancelRef}

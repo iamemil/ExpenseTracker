@@ -1,5 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e5c9b3e3-f2fd-46f5-bcda-36cd02aa2a5f/deploy-status)](https://app.netlify.com/sites/emil-expensetracker/deploys)
 ## Available Scripts
 
 In the project directory, you can run:

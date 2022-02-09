@@ -61,7 +61,7 @@ export default function ReceiptHistory() {
     [],
   )
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow,visibleColumn } =
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data }, useSortBy )
 
   return (
