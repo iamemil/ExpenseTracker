@@ -36,10 +36,6 @@ export default function NewReceipt() {
     onClose();
   }
 
-  const handleFormSubmit = event =>{
-    event.preventDefault();
-    alert("Receipt saved!");
-  }
   return (
     <>
       <Button onClick={onOpen} colorScheme={'teal'} variant={'outline'} leftIcon={<AddIcon />}>New Receipt</Button>

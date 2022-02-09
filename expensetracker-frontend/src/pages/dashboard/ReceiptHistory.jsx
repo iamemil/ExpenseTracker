@@ -2,9 +2,6 @@ import React from "react";
 import {
     Box,
     Text,
-    Link,
-    VStack,
-    Grid,
     Table,
     Thead,
     Tbody,

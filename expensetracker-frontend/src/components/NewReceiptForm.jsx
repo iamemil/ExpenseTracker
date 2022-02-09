@@ -35,7 +35,9 @@ export default function NewReceiptForm({ receipt, receiptCallback }) {
     function removeItemFromList() {
         let updatedReceiptItems = modifiedReceipt.receiptItems; // copying the old datas array
         updatedReceiptItems.splice(removeItemConfirm.itemIndex, 1); // remove the item from the array
+        //setModifiedReceiptData()
         setModifiedReceiptData({
+            ...receipt,
             receiptTotalSum: updatedReceiptItems.reduce((a, b) => parseFloat(a) + parseFloat(b.itemSum), 0).toFixed(2),
             receiptItems: updatedReceiptItems
         });
@@ -48,6 +50,7 @@ export default function NewReceiptForm({ receipt, receiptCallback }) {
         updatedReceiptItems[index].itemQuantity = parseFloat(e || 0); // replace e.target.value with whatever you want to change it to
         updatedReceiptItems[index].itemSum = parseFloat(updatedReceiptItems[index].itemQuantity * modifiedReceipt.receiptItems[index].itemPrice).toFixed(2);
         setModifiedReceiptData({
+            ...receipt,
             receiptTotalSum: updatedReceiptItems.reduce((a, b) => parseFloat(a) + parseFloat(b.itemSum), 0).toFixed(2),
             receiptItems: updatedReceiptItems
         });
