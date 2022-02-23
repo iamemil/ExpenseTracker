@@ -24,10 +24,11 @@ import {
     AlertDialogOverlay,
     Select,
     Flex,
-    Spacer
+    Spacer,
+    Tag
 } from '@chakra-ui/react';
 import { React, useState, useRef } from 'react'
-import { ArrowForwardIcon, DeleteIcon } from '@chakra-ui/icons'
+import { ArrowForwardIcon, DeleteIcon, CalendarIcon } from '@chakra-ui/icons'
 import axios from "axios"
 export default function ReceiptForm({ receipt, receiptCallback }) {
     const [modifiedReceipt, setModifiedReceiptData] = useState(receipt);
@@ -93,7 +94,7 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                 </FormControl>
             </Flex>
             <Divider my={4} />
-            <Table size='sm'>
+            <Table size='xs'>
                 <Thead>
                     <Tr>
                         <Th>Product Name</Th>
@@ -103,7 +104,7 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                         <Th></Th>
                     </Tr>
                 </Thead>
-                <Tbody>
+                <Tbody fontSize={'sm'}>
                     {modifiedReceipt.receiptItems.map((element, index) =>
                         <Tr key={index}>
                             <Td>{element.itemName}</Td>
@@ -127,11 +128,10 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                     )}
                 </Tbody>
             </Table>
-            <Flex fontSize={'sm'}>
-            <Text mt={4} align={'center'}>Total: {modifiedReceipt.receiptTotalSum} ₼</Text>
-            <Spacer />
-            <Text mt={4} align={'center'}>Date & Time: {modifiedReceipt.receiptTimestamp}</Text>
-
+            <Flex fontSize={'sm'} mt={4}>
+                <Tag colorScheme='teal'>Total: {modifiedReceipt.receiptTotalSum} ₼</Tag>
+                <Spacer />
+                <Tag colorScheme='teal'><CalendarIcon color={'black.600'} mr={2} />{modifiedReceipt.receiptTimestamp}</Tag>
             </Flex>
             <Button colorScheme={'teal'} width={'100%'} mt={4} rightIcon={<ArrowForwardIcon />} type='submit'>Add Receipt</Button>
 

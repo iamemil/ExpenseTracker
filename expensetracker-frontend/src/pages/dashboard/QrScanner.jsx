@@ -22,7 +22,6 @@ export default function QrScanner({receiptCallback,receiptInitialState}) {
                         receiptTimestamp : new Date(response.data.cheque.content.createdAtUtc * 1000).toLocaleDateString('az-AZ',{day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit',second:'2-digit'}),
                         receiptItems : response.data.cheque.content.items
                     });
-                    console.log(receipt);
                     receiptCallback(receipt);
                 })
                 .catch(function (error) {

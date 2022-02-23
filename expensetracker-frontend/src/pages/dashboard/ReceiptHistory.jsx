@@ -80,7 +80,7 @@ export default function ReceiptHistory() {
   return (
     <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
 
-    <Table {...getTableProps()} colorScheme={'gray'}>
+    <Table {...getTableProps()} colorScheme={'gray'} fontSize={'sm'}>
       <TableCaption placement={'top'} fontSize={'2xl'}>
         <HStack justifyContent={'space-between'}>
           <Text>Receipt History</Text>
