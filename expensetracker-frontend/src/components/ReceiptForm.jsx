@@ -14,7 +14,6 @@ import {
     NumberInputStepper,
     NumberIncrementStepper,
     NumberDecrementStepper,
-    Text,
     Button,
     AlertDialog,
     AlertDialogBody,
@@ -139,7 +138,7 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                 isOpen={removeItemConfirm.isConfirmOpen}
                 leastDestructiveRef={cancelRef}
                 onClose={onRemoveItemDialogClose}
-            >
+                isCentered>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
