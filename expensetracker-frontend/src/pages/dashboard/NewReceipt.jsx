@@ -12,7 +12,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons'
 import { React, useState, useCallback } from 'react'
 import QrScanner from './QrScanner';
-import NewReceiptForm from '../../components/NewReceiptForm';
+import ReceiptForm from '../../components/ReceiptForm';
 export default function NewReceipt() {
   const receiptInitialState = {
     Id: "",
@@ -22,6 +22,7 @@ export default function NewReceipt() {
     companyTaxNumber: "",
     storeTaxNumber: "",
     receiptTotalSum: 0.00,
+    receiptTimestamp : "",
     receiptItems: []
   }
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -39,7 +40,7 @@ export default function NewReceipt() {
   return (
     <>
       <Button onClick={onOpen} colorScheme={'teal'} variant={'outline'} leftIcon={<AddIcon />}>New Receipt</Button>
-      <Modal isOpen={isOpen} onClose={onClose} size={'lg'}>
+      <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>New Receipt</ModalHeader>
@@ -50,7 +51,7 @@ export default function NewReceipt() {
                 return (<QrScanner receiptCallback={receiptCallback} receiptInitialState={receiptInitialState} />)
               } else {
                 return (
-                    <NewReceiptForm receipt={receipt} receiptCallback={receiptCallback} />
+                    <ReceiptForm receipt={receipt} receiptCallback={receiptCallback} />
                 )
               }
             })()}

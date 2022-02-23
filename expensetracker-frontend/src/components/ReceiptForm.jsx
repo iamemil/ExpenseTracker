@@ -21,12 +21,15 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogContent,
-    AlertDialogOverlay
+    AlertDialogOverlay,
+    Select,
+    Flex,
+    Spacer
 } from '@chakra-ui/react';
 import { React, useState, useRef } from 'react'
 import { ArrowForwardIcon, DeleteIcon } from '@chakra-ui/icons'
 import axios from "axios"
-export default function NewReceiptForm({ receipt, receiptCallback }) {
+export default function ReceiptForm({ receipt, receiptCallback }) {
     const [modifiedReceipt, setModifiedReceiptData] = useState(receipt);
     //const [isOpen, setIsOpen] = useState(false);
     const [removeItemConfirm, setRemoveItemConfirm] = useState({ isConfirmOpen: false, itemIndex: null });
@@ -39,7 +42,7 @@ export default function NewReceiptForm({ receipt, receiptCallback }) {
         //setModifiedReceiptData()
         setModifiedReceiptData({
             ...receipt,
-            receiptTotalSum: updatedReceiptItems.reduce((a, b) => parseFloat(a) + parseFloat(b.itemSum), 0).toFixed(2),
+            receiptTotalSum: parseFloat(updatedReceiptItems.reduce((a, b) => parseFloat(a) + parseFloat(b.itemSum), 0)).toFixed(2),
             receiptItems: updatedReceiptItems
         });
         receiptCallback(modifiedReceipt);
@@ -52,41 +55,51 @@ export default function NewReceiptForm({ receipt, receiptCallback }) {
         updatedReceiptItems[index].itemSum = parseFloat(updatedReceiptItems[index].itemQuantity * modifiedReceipt.receiptItems[index].itemPrice).toFixed(2);
         setModifiedReceiptData({
             ...receipt,
-            receiptTotalSum: updatedReceiptItems.reduce((a, b) => parseFloat(a) + parseFloat(b.itemSum), 0).toFixed(2),
+            receiptTotalSum: parseFloat(updatedReceiptItems.reduce((a, b) => parseFloat(a) + parseFloat(b.itemSum), 0)).toFixed(2),
             receiptItems: updatedReceiptItems
         });
         receiptCallback(modifiedReceipt);
     }
-//https://en66yiq4aanyija.m.pipedream.net
+    //https://en66yiq4aanyija.m.pipedream.net
     const handleFormSubmit = event => {
         event.preventDefault();
         //console.log(modifiedReceipt);
         axios.post('https://httpbin.org/post', modifiedReceipt)
-        .then(response => console.log(response.data.json));
-        
+            .then(response => console.log(response.data.json));
+
     }
     return (
         <form onSubmit={handleFormSubmit}>
             <FormControl>
-                <FormLabel htmlFor='storeName'>Store Name</FormLabel>
-                <Input id='storeName' size='sm' value={modifiedReceipt.storeName} disabled={true} />
+                <FormLabel htmlFor='merchantName'>Merchant Name</FormLabel>
+                <Input id='merchantName' size='sm' value={modifiedReceipt.storeName} disabled={true} />
             </FormControl>
             <FormControl>
-                <FormLabel htmlFor='storeName'>Store Address</FormLabel>
-                <Input id='storeName' size='sm' value={modifiedReceipt.storeAddress} disabled={true} />
+                <FormLabel htmlFor='merchantAddress'>Merchant Address</FormLabel>
+                <Input id='merchantAddress' size='sm' value={modifiedReceipt.storeAddress} disabled={true} />
             </FormControl>
-            <FormControl>
-                <FormLabel htmlFor='storeName'>Store Tax Number</FormLabel>
-                <Input id='storeName' size='sm' value={modifiedReceipt.storeTaxNumber} disabled={true} />
-            </FormControl>
+            <Flex>
+                <FormControl>
+                    <FormLabel htmlFor='merchantTaxNumber'>Merchant Tax Number</FormLabel>
+                    <Input id='merchantTaxNumber' size='sm' value={modifiedReceipt.storeTaxNumber} disabled={true} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel htmlFor='merchantCategory'>Merchant Category</FormLabel>
+                    <Select id='merchantCategory' placeholder='Choose Category' size='sm'>
+                        <option value='1'>Shopping</option>
+                        <option value='2'>Food&Drink</option>
+                        <option value='3'>Entertainment</option>
+                    </Select>
+                </FormControl>
+            </Flex>
             <Divider my={4} />
             <Table size='sm'>
                 <Thead>
                     <Tr>
                         <Th>Product Name</Th>
-                        <Th isNumeric>Quantity</Th>
-                        <Th isNumeric>Price</Th>
-                        <Th isNumeric>Total</Th>
+                        <Th>Quantity</Th>
+                        <Th>Price</Th>
+                        <Th>Total</Th>
                         <Th></Th>
                     </Tr>
                 </Thead>
@@ -94,7 +107,7 @@ export default function NewReceiptForm({ receipt, receiptCallback }) {
                     {modifiedReceipt.receiptItems.map((element, index) =>
                         <Tr key={index}>
                             <Td>{element.itemName}</Td>
-                            <Td isNumeric>
+                            <Td>
                                 <NumberInput id='itemQuantity' size={'xs'} maxW={20} precision={3} min={0.1} step={0.1} defaultValue={element.itemQuantity} onChange={updateFieldChanged(index)}>
                                     <NumberInputField />
                                     <NumberInputStepper>
@@ -103,8 +116,8 @@ export default function NewReceiptForm({ receipt, receiptCallback }) {
                                     </NumberInputStepper>
                                 </NumberInput>
                             </Td>
-                            <Td isNumeric>{element.itemPrice}</Td>
-                            <Td isNumeric>{element.itemSum}</Td>
+                            <Td>{element.itemPrice}</Td>
+                            <Td>{element.itemSum} ₼</Td>
                             <Td>
                                 <Button colorScheme='red' size={'sm'} variant='outline' onClick={() => setRemoveItemConfirm({ isConfirmOpen: true, itemIndex: index })}>
                                     <DeleteIcon />
@@ -114,7 +127,12 @@ export default function NewReceiptForm({ receipt, receiptCallback }) {
                     )}
                 </Tbody>
             </Table>
-            <Text mt={4} align={'center'}>Total: {modifiedReceipt.receiptTotalSum}</Text>
+            <Flex fontSize={'sm'}>
+            <Text mt={4} align={'center'}>Total: {modifiedReceipt.receiptTotalSum} ₼</Text>
+            <Spacer />
+            <Text mt={4} align={'center'}>Date & Time: {modifiedReceipt.receiptTimestamp}</Text>
+
+            </Flex>
             <Button colorScheme={'teal'} width={'100%'} mt={4} rightIcon={<ArrowForwardIcon />} type='submit'>Add Receipt</Button>
 
             <AlertDialog

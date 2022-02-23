@@ -24,21 +24,25 @@ export default function ReceiptHistory() {
       {
         merchantName: 'Starbucks',
         categoryName: 'Food&Drink',
+        timestamp: '10:45, 01.01.2022',
         spentAmount: 25.4,
       },
       {
         merchantName: 'Bravo Supermarket',
         categoryName: 'Shopping',
+        timestamp: '11:30, 02.01.2022',
         spentAmount: 40.48,
       },
       {
         merchantName: 'Wolt',
         categoryName: 'Food&Drink',
+        timestamp: '16:00, 03.01.2022',
         spentAmount: 9.14,
       },
       {
         merchantName: 'Starbucks',
         categoryName: 'Food&Drink',
+        timestamp: '09:00, 04.01.2022',
         spentAmount: 14.5,
       },
     ],
@@ -55,6 +59,10 @@ export default function ReceiptHistory() {
         Header: 'Category',
         accessor: 'categoryName',
         Cell: ({ cell: { value } }) => <Tag colorScheme='teal'>{value}</Tag>,
+      },
+      {
+        Header: 'Date&Time',
+        accessor: 'timestamp',
       },
       {
         Header: 'Spent',
