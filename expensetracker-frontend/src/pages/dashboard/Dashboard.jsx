@@ -31,7 +31,7 @@ export default function Dashboard() {
                     <StatHelpText>Total: 39.9 ₼</StatHelpText>
                 </Stat>
             </StatGroup>
-            <Center width={'full'} h='400px'>
+            <Center width={'full'}>
                 <ReceiptHistory />
             </Center>
             <Center width={'full'}>
