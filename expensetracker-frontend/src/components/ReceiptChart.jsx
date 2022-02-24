@@ -69,8 +69,8 @@ export default function ReceiptChart() {
         },
     ];
     return (
-        <Box border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} height={'400px'} p={6} mb={4}>
-            <Text fontSize={'2xl'} color={'gray.800'} mb={2}>Expenses Chart</Text>
+        <Box border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} height={'400px'} py={6} mb={4}>
+            <Text fontSize={'2xl'} color={'gray.800'} mb={2} pl={6}>Expenses Chart</Text>
             <ResponsiveContainer width="100%" height="90%">
                 <LineChart
                     width={500}
