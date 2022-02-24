@@ -54,6 +54,13 @@ export default function ReceiptHistory() {
       {
         Header: 'Merchant',
         accessor: 'merchantName',
+        Cell: (props) => {
+          return (
+            <Text fontWeight={"bold"}>
+              {props.cell.value} <br/> <Text fontSize={'xs'} fontWeight={"normal"}>{props.row.values.timestamp}</Text>
+            </Text>
+          );
+        },
       },
       {
         Header: 'Category',
@@ -73,9 +80,9 @@ export default function ReceiptHistory() {
     ],
     [],
   )
-
+  const initialState = { hiddenColumns: ['timestamp'] };
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy )
+    useTable({ columns, data, initialState}, useSortBy )
 
   return (
     <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
