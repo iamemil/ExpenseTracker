@@ -13,7 +13,7 @@ import ReceiptHistory from "./ReceiptHistory";
 import ReceiptChart from "../../components/ReceiptChart";
 export default function Dashboard() {
     return (
-        <Box px='8'>
+        <Box mx='6'>
             <StatGroup border='1px' borderColor='gray.100' borderRadius='15px' boxShadow={'xl'} p={6} my={6}>
                 <Stat>
                     <StatLabel>Total Spent</StatLabel>
