@@ -10,6 +10,7 @@ import {
     Box
 } from '@chakra-ui/react';
 import ReceiptHistory from "./ReceiptHistory";
+import ReceiptChart from "../../components/ReceiptChart";
 export default function Dashboard() {
     return (
         <Box px='4'>
@@ -32,6 +33,9 @@ export default function Dashboard() {
             </StatGroup>
             <Center width={'full'} h='400px'>
                 <ReceiptHistory />
+            </Center>
+            <Center width={'full'}>
+                <ReceiptChart />
             </Center>
         </Box>
     );
