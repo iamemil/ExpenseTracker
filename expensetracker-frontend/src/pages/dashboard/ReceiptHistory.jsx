@@ -56,9 +56,9 @@ export default function ReceiptHistory() {
         accessor: 'merchantName',
         Cell: (props) => {
           return (
-            <Text fontWeight={"bold"}>
+            <Box fontWeight={"bold"}>
               {props.cell.value} <br/> <Text fontSize={'xs'} fontWeight={"normal"}>{props.row.values.timestamp}</Text>
-            </Text>
+            </Box>
           );
         },
       },
