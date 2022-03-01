@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
     Box,
     Text,
@@ -11,35 +11,80 @@ import {
     Td,
     TableCaption,
     chakra,
-    HStack
+    HStack,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    Button,
+    useDisclosure
   } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { useTable, useSortBy } from 'react-table'
-import NewReceipt from './NewReceipt'
+import { useState, useCallback } from 'react'
+import NewReceipt from './NewReceipt';
+import ReceiptForm from '../../components/ReceiptForm';
 
 export default function ReceiptHistory() {
-  
+  const receiptInitialState = {
+    Id: "",
+    storeName: "",
+    storeAddress: "",
+    companyName: "",
+    companyTaxNumber: "",
+    storeTaxNumber: "",
+    receiptTotalSum: 0.00,
+    receiptTimestamp : "",
+    receiptItems: []
+  }
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [receipt, setReceiptData] = useState(receiptInitialState);
+  const [existingReceipt, setExistingReceipt] = useState({ isClicked: false, receiptId: null });
+  //const onExistingReceiptModalClose = () => setExistingReceipt({ isClicked: false, receiptId: null });
+
+  function onExistingReceiptModalOpen() {
+    setExistingReceipt({ isClicked: false, receiptId: null });
+    onOpen();
+  }
+  function onExistingReceiptModalClose() {
+    setExistingReceipt({ isClicked: false, receiptId: null });
+    onClose();
+  }
+  const receiptCallback = useCallback((receipt) => {
+    setReceiptData(receipt);
+  }, []);
+
+  function closeModal() {
+    onClose();
+  }
   const data = React.useMemo(
     () => [
       {
+        receiptId: "5QRDHY2EzxUQ",
         merchantName: 'Starbucks',
         categoryName: 'Food&Drink',
         timestamp: '10:45, 01.01.2022',
         spentAmount: 25.4,
       },
       {
+        receiptId: "HjJciKVPWj7H",
         merchantName: 'Bravo Supermarket',
         categoryName: 'Shopping',
         timestamp: '11:30, 02.01.2022',
         spentAmount: 40.48,
       },
       {
+        receiptId: "EVLF6RsgSByt",
         merchantName: 'Wolt',
         categoryName: 'Food&Drink',
         timestamp: '16:00, 03.01.2022',
         spentAmount: 9.14,
       },
       {
+        receiptId: "ACim9ATs25om",
         merchantName: 'Starbucks',
         categoryName: 'Food&Drink',
         timestamp: '09:00, 04.01.2022',
@@ -86,7 +131,9 @@ export default function ReceiptHistory() {
 
   return (
     <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
-    <Table {...getTableProps()} colorScheme={'gray'} fontSize={'sm'}>
+    <Table {...getTableProps()}
+     colorScheme={'gray'}
+      fontSize={'sm'}>
         <TableCaption placement={'top'} fontSize={'2xl'}>
         <HStack justifyContent={'space-between'}>
           <Text>Receipt History</Text>
@@ -121,7 +168,7 @@ export default function ReceiptHistory() {
         {rows.map((row) => {
           prepareRow(row)
           return (
-            <Tr {...row.getRowProps()}>
+            <Tr {...row.getRowProps()} onClick={onExistingReceiptModalOpen}>
               
               {row.cells.map((cell) => (
                 <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
@@ -133,6 +180,22 @@ export default function ReceiptHistory() {
         })}
       </Tbody>
     </Table>
+    <Modal isOpen={isOpen} size={'xl'} onClose={onExistingReceiptModalClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Receipt Details</ModalHeader>
+          <ModalCloseButton onClick={closeModal} />
+          <ModalBody>
+                    <ReceiptForm receipt={receipt} receiptCallback={receiptCallback} />
+          </ModalBody>
+
+          <ModalFooter>
+              <Button variant={'outline'} width={'100%'} onClick={closeModal}>
+                Close
+              </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   )
 }
