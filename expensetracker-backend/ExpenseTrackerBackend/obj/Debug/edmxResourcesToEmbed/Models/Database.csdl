@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="expensetrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TaxNumber" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Stores" Relationship="Self.Stores_fk0" FromRole="Companies" ToRole="Stores" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="StoreId" Type="Int32" Nullable="false" />
+    <Property Name="ItemStoreCode" Type="Int32" Nullable="false" />
+    <Property Name="creationDate" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="Store" Relationship="Self.Items_fk0" FromRole="Items" ToRole="Stores" />
+  </EntityType>
+  <EntityType Name="PaymentMethod">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Receipts" Relationship="Self.Receipts_fk2" FromRole="PaymentMethods" ToRole="Receipts" />
+  </EntityType>
+  <EntityType Name="ReceiptItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="ReceiptId" Type="Int32" Nullable="false" />
+    <Property Name="ItemId" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+    <Property Name="Sum" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+    <NavigationProperty Name="Receipt" Relationship="Self.ReceiptItems_fk0" FromRole="ReceiptItems" ToRole="Receipts" />
+  </EntityType>
+  <EntityType Name="Receipt">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="StoreId" Type="Int32" Nullable="false" />
+    <Property Name="originalReceiptId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PurchaseDate" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="PaymentMethod" Type="Int32" Nullable="false" />
+    <Property Name="TotalSum" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+    <Property Name="StoreTagId" Type="Int32" />
+    <NavigationProperty Name="PaymentMethod1" Relationship="Self.Receipts_fk2" FromRole="Receipts" ToRole="PaymentMethods" />
+    <NavigationProperty Name="ReceiptItems" Relationship="Self.ReceiptItems_fk0" FromRole="Receipts" ToRole="ReceiptItems" />
+    <NavigationProperty Name="User" Relationship="Self.Receipts_fk0" FromRole="Receipts" ToRole="Users" />
+    <NavigationProperty Name="Store" Relationship="Self.Receipts_fk1" FromRole="Receipts" ToRole="Stores" />
+    <NavigationProperty Name="StoreTag" Relationship="Self.Receipts_fk3" FromRole="Receipts" ToRole="StoreTags" />
+  </EntityType>
+  <EntityType Name="Store">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="CompanyId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TaxNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="Self.Stores_fk0" FromRole="Stores" ToRole="Companies" />
+    <NavigationProperty Name="Items" Relationship="Self.Items_fk0" FromRole="Stores" ToRole="Items" />
+    <NavigationProperty Name="Receipts" Relationship="Self.Receipts_fk1" FromRole="Stores" ToRole="Receipts" />
+  </EntityType>
+  <EntityType Name="StoreTag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="creationDate" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isPublic" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Receipts" Relationship="Self.Receipts_fk3" FromRole="StoreTags" ToRole="Receipts" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Receipts" Relationship="Self.Receipts_fk0" FromRole="Users" ToRole="Receipts" />
+  </EntityType>
+  <Association Name="Stores_fk0">
+    <End Role="Companies" Type="Self.Company" Multiplicity="1" />
+    <End Role="Stores" Type="Self.Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Stores">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Items_fk0">
+    <End Role="Stores" Type="Self.Store" Multiplicity="1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Stores">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="StoreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Receipts_fk2">
+    <End Role="PaymentMethods" Type="Self.PaymentMethod" Multiplicity="1" />
+    <End Role="Receipts" Type="Self.Receipt" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PaymentMethods">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Receipts">
+        <PropertyRef Name="PaymentMethod" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ReceiptItems_fk0">
+    <End Role="Receipts" Type="Self.Receipt" Multiplicity="1" />
+    <End Role="ReceiptItems" Type="Self.ReceiptItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Receipts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReceiptItems">
+        <PropertyRef Name="ReceiptId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Receipts_fk0">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Receipts" Type="Self.Receipt" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Receipts">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Receipts_fk1">
+    <End Role="Stores" Type="Self.Store" Multiplicity="1" />
+    <End Role="Receipts" Type="Self.Receipt" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Stores">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Receipts">
+        <PropertyRef Name="StoreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Receipts_fk3">
+    <End Role="StoreTags" Type="Self.StoreTag" Multiplicity="0..1" />
+    <End Role="Receipts" Type="Self.Receipt" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StoreTags">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Receipts">
+        <PropertyRef Name="StoreTagId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="expensetrackerEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Companies" EntityType="Self.Company" />
+    <EntitySet Name="Items" EntityType="Self.Item" />
+    <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethod" />
+    <EntitySet Name="ReceiptItems" EntityType="Self.ReceiptItem" />
+    <EntitySet Name="Receipts" EntityType="Self.Receipt" />
+    <EntitySet Name="Stores" EntityType="Self.Store" />
+    <EntitySet Name="StoreTags" EntityType="Self.StoreTag" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="Stores_fk0" Association="Self.Stores_fk0">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Stores" EntitySet="Stores" />
+    </AssociationSet>
+    <AssociationSet Name="Items_fk0" Association="Self.Items_fk0">
+      <End Role="Stores" EntitySet="Stores" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="Receipts_fk2" Association="Self.Receipts_fk2">
+      <End Role="PaymentMethods" EntitySet="PaymentMethods" />
+      <End Role="Receipts" EntitySet="Receipts" />
+    </AssociationSet>
+    <AssociationSet Name="ReceiptItems_fk0" Association="Self.ReceiptItems_fk0">
+      <End Role="Receipts" EntitySet="Receipts" />
+      <End Role="ReceiptItems" EntitySet="ReceiptItems" />
+    </AssociationSet>
+    <AssociationSet Name="Receipts_fk0" Association="Self.Receipts_fk0">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Receipts" EntitySet="Receipts" />
+    </AssociationSet>
+    <AssociationSet Name="Receipts_fk1" Association="Self.Receipts_fk1">
+      <End Role="Stores" EntitySet="Stores" />
+      <End Role="Receipts" EntitySet="Receipts" />
+    </AssociationSet>
+    <AssociationSet Name="Receipts_fk3" Association="Self.Receipts_fk3">
+      <End Role="StoreTags" EntitySet="StoreTags" />
+      <End Role="Receipts" EntitySet="Receipts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

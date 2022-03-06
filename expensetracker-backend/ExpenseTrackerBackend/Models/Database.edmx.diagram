@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cba1a3ba197c4779b0812e6bb09b31f3" Name="Diagram1">
+        <EntityTypeShape EntityType="expensetrackerModel.Company" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="expensetrackerModel.Item" Width="1.5" PointX="5.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="expensetrackerModel.PaymentMethod" Width="1.5" PointX="6" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="expensetrackerModel.ReceiptItem" Width="1.5" PointX="10.5" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="expensetrackerModel.Receipt" Width="1.5" PointX="8.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="expensetrackerModel.Store" Width="1.5" PointX="3" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="expensetrackerModel.StoreTag" Width="1.5" PointX="6" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="expensetrackerModel.User" Width="1.5" PointX="6" PointY="12" IsExpanded="true" />
+        <AssociationConnector Association="expensetrackerModel.Stores_fk0" ManuallyRouted="false" />
+        <AssociationConnector Association="expensetrackerModel.Items_fk0" ManuallyRouted="false" />
+        <AssociationConnector Association="expensetrackerModel.Receipts_fk2" ManuallyRouted="false" />
+        <AssociationConnector Association="expensetrackerModel.ReceiptItems_fk0" ManuallyRouted="false" />
+        <AssociationConnector Association="expensetrackerModel.Receipts_fk0" ManuallyRouted="false" />
+        <AssociationConnector Association="expensetrackerModel.Receipts_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="expensetrackerModel.Receipts_fk3" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
