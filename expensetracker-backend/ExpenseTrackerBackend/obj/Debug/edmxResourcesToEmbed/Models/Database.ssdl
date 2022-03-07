@@ -4,32 +4,33 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="TaxNumber" Type="int" Nullable="false" />
+    <Property Name="creationDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Items">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="StoreId" Type="int" Nullable="false" />
     <Property Name="ItemStoreCode" Type="int" Nullable="false" />
-    <Property Name="creationDate" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="creationDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="PaymentMethods">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="30" Nullable="false" />
   </EntityType>
   <EntityType Name="ReceiptItems">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ReceiptId" Type="int" Nullable="false" />
     <Property Name="ItemId" Type="int" Nullable="false" />
     <Property Name="Quantity" Type="decimal" Precision="9" Scale="0" Nullable="false" />
@@ -40,32 +41,34 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="StoreId" Type="int" Nullable="false" />
     <Property Name="originalReceiptId" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="PurchaseDate" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
     <Property Name="PaymentMethod" Type="int" Nullable="false" />
     <Property Name="TotalSum" Type="decimal" Precision="9" Scale="0" Nullable="false" />
     <Property Name="StoreTagId" Type="int" />
+    <Property Name="creationDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Stores">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CompanyId" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="Address" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="TaxNumber" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="creationDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="StoreTags">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="creationDate" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="creationDate" Type="datetime" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="isPublic" Type="bit" Nullable="false" />
   </EntityType>
@@ -73,15 +76,16 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Firstname" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Lastname" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="EmailAddress" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="PhoneNumber" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="150" Nullable="false" />
-    <Property Name="Token" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Token" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
     <Property Name="IsAdmin" Type="bit" Nullable="false" />
+    <Property Name="creationDate" Type="datetime" Nullable="false" />
   </EntityType>
   <Association Name="Items_fk0">
     <End Role="Stores" Type="Self.Stores" Multiplicity="1" />

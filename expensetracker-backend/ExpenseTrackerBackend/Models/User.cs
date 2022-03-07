@@ -29,6 +29,7 @@ namespace ExpenseTrackerBackend.Models
         public string Token { get; set; }
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
+        public System.DateTime creationDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receipt> Receipts { get; set; }

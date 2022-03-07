@@ -18,7 +18,7 @@ namespace ExpenseTrackerBackend.Models
         public string Name { get; set; }
         public int StoreId { get; set; }
         public int ItemStoreCode { get; set; }
-        public byte[] creationDate { get; set; }
+        public System.DateTime creationDate { get; set; }
     
         public virtual Store Store { get; set; }
     }
