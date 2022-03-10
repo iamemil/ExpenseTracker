@@ -11,8 +11,13 @@ using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 using Twilio;
 using ExpenseTrackerBackend.Helpers;
+using ExpenseTrackerBackend.Filters;
+
+
 namespace ExpenseTrackerBackend.Controllers
 {
+ 
+    [AllowCors]
     public class AccountController : Controller
     {
         private expensetrackerEntities db = new expensetrackerEntities();
@@ -226,8 +231,8 @@ namespace ExpenseTrackerBackend.Controllers
             });
         }
 
-        [HttpPost]
-        public JsonResult GetUserDetails()
+        [HttpGet]
+        public JsonResult GetAccountDetails()
         {
             string userEmail = Token.ValidateToken(HttpContext.Request.Headers.Get("Authorization"));
             if (userEmail != null)

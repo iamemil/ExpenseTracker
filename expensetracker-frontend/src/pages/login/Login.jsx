@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
     Box,
     Text,
@@ -9,8 +9,33 @@ import {
     Input,
     Center
 } from '@chakra-ui/react';
-
+import AuthService from "../../api/AuthService";
+import secureLs from "../../common/helper";
 export default function Login() {
+
+    const [credentialError, setcredentialError] = useState("");
+    const emailAddressRef = useRef();
+    const passwordRef = useRef();
+
+    const handleFormSubmit = event => {
+        event.preventDefault();
+
+        let authService = new AuthService();
+        const email = emailAddressRef.current.value;
+        const password = passwordRef.current.value;
+
+        authService
+            .signin({ email, password })
+            .then((response) => {
+                secureLs.set("Authorization", response.headers.authorization);
+                //history.replace("/dashboard");
+            })
+            .catch((error) => {
+                setcredentialError("Please, enter your credentials correctly.")
+            }
+            );
+
+    }
     return (
         <Center textAlign="center" fontSize="xl">
 
@@ -18,23 +43,25 @@ export default function Login() {
                 <Box>
                     <Text fontSize='5xl'>Login</Text>
                 </Box>
-                <Box>
-                    <FormControl isRequired>
-                        <FormLabel htmlFor='email'>Email address</FormLabel>
-                        <Input id='email' type='email' placeholder='Email address' />
-                    </FormControl>
-                </Box>
-                <Box>
-                    <FormControl isRequired>
-                        <FormLabel htmlFor='password'>Password</FormLabel>
-                        <Input id='password' type='password' placeholder='Password' />
-                    </FormControl>
-                </Box>
-                <Box>
-                    <Button my={4} colorScheme='teal' type='submit'>
-                        Login
-                    </Button>
-                </Box>
+                <form onSubmit={handleFormSubmit}>
+                    <Box>
+                        <FormControl isRequired>
+                            <FormLabel htmlFor='email'>Email address</FormLabel>
+                            <Input id='email' type='email' ref={emailAddressRef} placeholder='Email address' />
+                        </FormControl>
+                    </Box>
+                    <Box>
+                        <FormControl isRequired>
+                            <FormLabel htmlFor='password'>Password</FormLabel>
+                            <Input id='password' type='password' ref={passwordRef} placeholder='Password' />
+                        </FormControl>
+                    </Box>
+                    <Box>
+                        <Button my={4} colorScheme='teal' type='submit'>
+                            Login
+                        </Button>
+                    </Box>
+                </form>
             </Grid>
         </Center>
     );
