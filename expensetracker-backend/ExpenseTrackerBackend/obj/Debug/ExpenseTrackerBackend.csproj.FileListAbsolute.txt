@@ -76,7 +76,6 @@ C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrac
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Newtonsoft.Json.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Antlr3.Runtime.pdb
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\obj\Debug\ExpenseTrackerBackend.csprojAssemblyReference.cache
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\obj\Debug\ExpenseTrackerBackend.csproj.CoreCompileInputs.cache
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\obj\Debug\ExpenseTrackerBackend.csproj.CopyComplete
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\obj\Debug\ExpenseTrackerBackend.dll
@@ -100,3 +99,13 @@ C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrac
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Text.Encoding.CodePages.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Twilio.xml
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Microsoft.IdentityModel.Logging.xml
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Net.Http.Formatting.dll
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Web.Http.dll
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Web.Http.WebHost.dll
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Net.Http.Formatting.xml
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Web.Http.xml
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Web.Http.WebHost.xml
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\obj\Debug\ExpenseTrackerBackend.csprojAssemblyReference.cache
