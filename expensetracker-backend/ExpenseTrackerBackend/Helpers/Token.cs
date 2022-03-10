@@ -7,12 +7,14 @@ using ExpenseTrackerBackend.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+
 namespace ExpenseTrackerBackend.Helpers
 {
     public class Token
     {
-        private static string SECRET_KEY = "qwertyuioplkjhgfdsazxcvbnmqwertlkjfdslkjflksjfklsjfklsjdflskjflyuiop";
-
+        private static string SECRET_KEY = "4t7w!z%C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeShVmYp3s6v9y$B&E)H@McQfTjW";
+        private static HttpRequest request = HttpContext.Current.Request;
+        private static string WEBSITE_URL = request.Url.Scheme + "://" + request.Url.Authority;
         public static string GetToken(User user)
         {
             byte[] secretKey = Encoding.UTF8.GetBytes(SECRET_KEY);
@@ -22,12 +24,12 @@ namespace ExpenseTrackerBackend.Helpers
                 SecurityAlgorithms.HmacSha256Signature
             );
             ClaimsIdentity parameters = new ClaimsIdentity();
-            parameters.AddClaim(new Claim(ClaimTypes.Name, user.Firstname+" "+user.Lastname));
             parameters.AddClaim(new Claim(ClaimTypes.Email, user.EmailAddress));
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
                 Subject = parameters,
                 Expires = DateTime.UtcNow.AddMinutes(120),
+                Issuer = WEBSITE_URL,
                 SigningCredentials = signingCredentials
             };
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
@@ -50,7 +52,8 @@ namespace ExpenseTrackerBackend.Helpers
                 TokenValidationParameters parameters = new TokenValidationParameters
                 {
                     RequireExpirationTime = true,
-                    ValidateIssuer = false,
+                    ValidateIssuer = true,
+                    ValidIssuer = WEBSITE_URL,
                     ValidateAudience = false,
                     IssuerSigningKey = symmetricSecurityKey
                 };

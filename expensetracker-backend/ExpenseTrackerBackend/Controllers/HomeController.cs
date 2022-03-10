@@ -1,5 +1,4 @@
-﻿using ExpenseTrackerBackend.Filters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,7 +12,6 @@ namespace ExpenseTrackerBackend.Controllers
             return View();
         }
 
-        [UserAuth]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
