@@ -17,7 +17,6 @@ using ExpenseTrackerBackend.Filters;
 namespace ExpenseTrackerBackend.Controllers
 {
  
-    [AllowCors]
     public class AccountController : Controller
     {
         private expensetrackerEntities db = new expensetrackerEntities();

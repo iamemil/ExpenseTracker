@@ -21,12 +21,16 @@ export default function Login() {
         event.preventDefault();
 
         let authService = new AuthService();
-        const emailAddress = emailAddressRef.current.value;
-        const Password = passwordRef.current.value;
-
+        const email = emailAddressRef.current.value;
+        const password = passwordRef.current.value;
+        const params = {
+            emailAddress: email,
+            Password: password
+        };
         authService
-            .signin({ emailAddress, Password })
+            .signin(params)
             .then((response) => {
+                console.log(response);
                 secureLs.set("Authorization", response.token);
                 //history.replace("/dashboard");
             })
