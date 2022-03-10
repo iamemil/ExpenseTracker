@@ -10,9 +10,9 @@ namespace ExpenseTrackerBackend.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "https://emil-expensetracker.netlify.app/");
             filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Headers", "*");
-            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Methods", "*");
+            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 
             if (filterContext.HttpContext.Request.HttpMethod == "OPTIONS")
             {

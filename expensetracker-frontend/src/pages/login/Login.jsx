@@ -21,13 +21,13 @@ export default function Login() {
         event.preventDefault();
 
         let authService = new AuthService();
-        const email = emailAddressRef.current.value;
-        const password = passwordRef.current.value;
+        const emailAddress = emailAddressRef.current.value;
+        const Password = passwordRef.current.value;
 
         authService
-            .signin({ email, password })
+            .signin({ emailAddress, Password })
             .then((response) => {
-                secureLs.set("Authorization", response.headers.authorization);
+                secureLs.set("Authorization", response.token);
                 //history.replace("/dashboard");
             })
             .catch((error) => {
