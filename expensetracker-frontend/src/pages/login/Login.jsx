@@ -23,15 +23,16 @@ export default function Login() {
         let authService = new AuthService();
         const email = emailAddressRef.current.value;
         const password = passwordRef.current.value;
-        const params = {
-            emailAddress: email,
-            Password: password
-        };
+        const formData = new FormData();
+        formData.append("emailAddress", email);
+        formData.append("Password", password);
         authService
-            .signin(params)
+            .signin(formData)
             .then((response) => {
-                console.log(response);
-                secureLs.set("Authorization", response.token);
+                if(response.data.status==200){
+                    console.log(response.data.token);
+                    secureLs.set("Authorization", response.data.token);
+                }
                 //history.replace("/dashboard");
             })
             .catch((error) => {
