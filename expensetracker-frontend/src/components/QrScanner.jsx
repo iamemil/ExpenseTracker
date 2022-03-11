@@ -1,6 +1,6 @@
 import QrReader from 'react-qr-reader'
 import { useState } from "react";
-import ExternalReceiptService from '../../api/ReceiptService';
+import ExternalReceiptService from '../api/ReceiptService';
 const receiptBaseUrl = "https://monitoring.e-kassa.gov.az/#/index?doc=";
 
 export default function QrScanner({receiptCallback,receiptInitialState}) {

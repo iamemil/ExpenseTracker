@@ -12,7 +12,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons'
 import { React, useState, useCallback } from 'react'
 import QrScanner from './QrScanner';
-import ReceiptForm from '../../components/ReceiptForm';
+import ReceiptForm from './ReceiptForm';
 export default function NewReceipt() {
   const receiptInitialState = {
     Id: "",

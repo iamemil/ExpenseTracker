@@ -71,6 +71,7 @@ const MenuLinks = ({ isOpen }) => {
       >
         <MenuItem to="/home">Home</MenuItem>
         <MenuItem to="/dashboard">Dashboard</MenuItem>
+        <MenuItem to="/receipts">My Receipts</MenuItem>
         <MenuItem to="/signup">Sign Up</MenuItem>
         <MenuItem to="/login" isLast>
           <Button
