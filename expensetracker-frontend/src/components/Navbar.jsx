@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
+import { connect } from "react-redux";
 const Navbar = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -10,7 +11,7 @@ const Navbar = (props) => {
       <Box
         color={["white", "white", "primary.500", "primary.500"]}>Expense Tracker</Box>
       <MenuToggle toggle={toggle} isOpen={isOpen} />
-      <MenuLinks isOpen={isOpen} />
+      <MenuLinks isOpen={isOpen} props={props} />
     </NavBarContainer>
   );
 };
@@ -56,7 +57,7 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
   );
 };
 
-const MenuLinks = ({ isOpen }) => {
+const MenuLinks = ({ props,isOpen }) => {
   return (
     <Box
       display={{ base: isOpen ? "block" : "none", md: "block" }}
@@ -70,8 +71,10 @@ const MenuLinks = ({ isOpen }) => {
         pt={[4, 4, 0, 0]}
       >
         <MenuItem to="/home">Home</MenuItem>
-        <MenuItem to="/dashboard">Dashboard</MenuItem>
-        <MenuItem to="/receipts">My Receipts</MenuItem>
+        {props.store.isLoggedIn ? <MenuItem to="/dashboard">Dashboard</MenuItem> : null}
+        {props.store.isLoggedIn ? <MenuItem to="/receipts">My Receipts</MenuItem> : null}
+        <MenuItem to="/dashboard">Dashboard ?</MenuItem>
+        <MenuItem to="/receipts">My Receipts ?</MenuItem>
         <MenuItem to="/signup">Sign Up</MenuItem>
         <MenuItem to="/login" isLast>
           <Button
@@ -110,4 +113,10 @@ const NavBarContainer = ({ children, ...props }) => {
   );
 };
 
-export default Navbar;
+const mapStateToProps = (store) => {
+  return {
+    store,
+  };
+};
+
+export default connect(mapStateToProps)(Navbar);
