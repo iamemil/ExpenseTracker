@@ -27,7 +27,7 @@ import {
     Tag
 } from '@chakra-ui/react';
 import { React, useState, useRef } from 'react'
-import { ArrowForwardIcon, DeleteIcon, CalendarIcon } from '@chakra-ui/icons'
+import { RepeatIcon, DeleteIcon, CalendarIcon,AddIcon } from '@chakra-ui/icons'
 import axios from "axios"
 export default function ReceiptForm({ receipt, receiptCallback }) {
     const [modifiedReceipt, setModifiedReceiptData] = useState(receipt);
@@ -132,7 +132,17 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                 <Spacer />
                 <Tag colorScheme='teal'><CalendarIcon color={'black.600'} mr={2} />{modifiedReceipt.receiptTimestamp}</Tag>
             </Flex>
-            <Button colorScheme={'teal'} width={'100%'} mt={4} rightIcon={<ArrowForwardIcon />} type='submit'>Add Receipt</Button>
+            {(() => {
+                if(modifiedReceipt.existing){
+                    return (
+                    <Button colorScheme={'teal'} width={'100%'} mt={4} leftIcon={<RepeatIcon />} type='submit'>Update Receipt</Button>
+                    );
+                }else{
+                    return (
+                        <Button colorScheme={'teal'} width={'100%'} mt={4} leftIcon={<AddIcon />} type='submit'>Add Receipt</Button>
+                        );
+                }
+            })()}
 
             <AlertDialog
                 isOpen={removeItemConfirm.isConfirmOpen}
