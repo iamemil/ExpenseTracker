@@ -1,5 +1,4 @@
 import QrReader from 'react-qr-reader'
-import axios from "axios";
 import { useState } from "react";
 import ExternalReceiptService from '../../api/ReceiptService';
 const receiptBaseUrl = "https://monitoring.e-kassa.gov.az/#/index?doc=";
