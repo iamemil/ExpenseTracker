@@ -83,7 +83,7 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                     <FormLabel htmlFor='merchantTaxNumber'>Merchant Tax Number</FormLabel>
                     <Input id='merchantTaxNumber' size='sm' value={modifiedReceipt.storeTaxNumber} disabled={true} />
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                     <FormLabel htmlFor='merchantCategory'>Merchant Category</FormLabel>
                     <Select id='merchantCategory' placeholder='Choose Category' size='sm'>
                         <option value='1'>Shopping</option>
