@@ -1,7 +1,7 @@
 import QrReader from 'react-qr-reader'
 import axios from "axios";
 import { useState } from "react";
-const receiptApiUrl = "https://monitoring.e-kassa.gov.az/pks-portal/1.0.0/documents/";
+import ExternalReceiptService from '../../api/ReceiptService';
 const receiptBaseUrl = "https://monitoring.e-kassa.gov.az/#/index?doc=";
 
 export default function QrScanner({receiptCallback,receiptInitialState}) {
@@ -9,7 +9,9 @@ export default function QrScanner({receiptCallback,receiptInitialState}) {
 
     function handleScan(data) {
         if (data && data.includes(receiptBaseUrl)) {
-            axios.get(receiptApiUrl + data.split(receiptBaseUrl)[1])
+            let externalReceiptService = new ExternalReceiptService();
+
+            externalReceiptService.getFromExternalSource(data.split(receiptBaseUrl)[1])
                 .then(function (response) {
                     setReceiptData({
                         Id:response.data.cheque.documentId,
