@@ -28,7 +28,6 @@ import { useState, useCallback } from 'react'
 import NewReceipt from '../../components/NewReceipt';
 import ReceiptForm from '../../components/ReceiptForm';
 import ReceiptService from '../../api/ReceiptService';
-import Receipts from '../receipts/Receipts';
 import {useNavigate} from 'react-router-dom';
 export default function ReceiptHistory() {
   const receiptInitialState = {

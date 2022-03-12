@@ -1,4 +1,4 @@
-import * as AUTH_CONSTANTS from "../constants/constants";
+import * as AUTH_CONSTANTS from "../constants";
 
 export const loginSuccessfull = () => {
     return {

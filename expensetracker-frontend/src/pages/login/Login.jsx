@@ -10,9 +10,12 @@ import {
     Center
 } from '@chakra-ui/react';
 import AuthService from "../../api/AuthService";
+import { connect } from "react-redux";
+import {loginSuccessfull} from "../../redux/actions/authAction";
 import secureLs from "../../common/helper";
-export default function Login() {
-
+import {useNavigate} from 'react-router-dom';
+function Login(props) {
+    const navigate = useNavigate();
     const [credentialError, setcredentialError] = useState("");
     const emailAddressRef = useRef();
     const passwordRef = useRef();
@@ -29,14 +32,19 @@ export default function Login() {
         authService
             .signin(formData)
             .then((response) => {
-                if(response.data.status==200){
-                    console.log(response.data.token);
+                if (response.data.status === 200) {
+                    props.onLoginSuccess();
                     secureLs.set("Authorization", response.data.token);
+                    navigate('/dashboard');
                 }
-                //history.replace("/dashboard");
             })
             .catch((error) => {
-                setcredentialError("Please, enter your credentials correctly.")
+                setcredentialError("Please, enter your credentials correctly.");
+
+                // ONLY FOR TESTING
+                props.onLoginSuccess();
+                navigate('/dashboard');
+                // ONLY FOR TESTING
             }
             );
 
@@ -71,3 +79,11 @@ export default function Login() {
         </Center>
     );
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onLoginSuccess: () => dispatch(loginSuccessfull()),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Login);

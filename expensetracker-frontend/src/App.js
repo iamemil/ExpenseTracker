@@ -12,18 +12,25 @@ import {
 import customTheme from "./utils/theme";
 import { Route, Routes, Navigate } from 'react-router-dom';
 function App(props) {
+
   return (
     <ChakraProvider theme={customTheme}>
       <Navbar/>
       <Routes>
       <Route path="" element={<Navigate to="/home" />} />
         <Route exact path="/home" element={<Home/>} />
-        {props.store.isLoggedIn ? <Route path="/dashboard" element={<Dashboard/>} /> : null}
-        {props.store.isLoggedIn ? <Route exact path="/receipts" element={<Receipts/>} /> : null}
-        <Route path="/dashboard" element={<Dashboard/>} />
-        <Route exact path="/receipts" element={<Receipts/>} />
-        <Route exact path="/signup" element={<Register/>} />
+        {props.store.isLoggedIn ? (
+        <>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/receipts" element={<Receipts />} />
+        </>
+        ) : (
+          <>
+          <Route exact path="/signup" element={<Register/>} />
         <Route exact path="/login" element={<Login/>} />
+          </>
+        )}
+        
       </Routes>
     </ChakraProvider>
   );
@@ -34,4 +41,5 @@ const mapStateToProps = (store) => {
     store,
   };
 };
+
 export default connect(mapStateToProps)(App);

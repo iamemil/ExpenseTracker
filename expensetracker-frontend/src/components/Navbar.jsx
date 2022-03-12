@@ -1,7 +1,10 @@
 import React from "react";
 import { Link, Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
 import { connect } from "react-redux";
-const Navbar = (props) => {
+import secureLs from "../common/helper";
+import { logoutSuccessfull } from '../redux/actions/authAction';
+import { useNavigate } from 'react-router-dom';
+function Navbar(props) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -48,7 +51,7 @@ const MenuToggle = ({ toggle, isOpen }) => {
 
 const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
   return (
-    <Link href={to} style={{textDecoration : 'none'}}>
+    <Link href={to} style={{ textDecoration: 'none' }}>
       <Text display="block" {...rest}>
         {children}
       </Text>
@@ -57,7 +60,15 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
   );
 };
 
-const MenuLinks = ({ props,isOpen }) => {
+const MenuLinks = ({ props, isOpen }) => {
+
+  const navigate = useNavigate();
+  const logoutHandler = () => {
+    secureLs.set("Authorization", "");
+    props.onLogoutSuccess();
+    navigate('/home');
+  }
+
   return (
     <Box
       display={{ base: isOpen ? "block" : "none", md: "block" }}
@@ -71,14 +82,10 @@ const MenuLinks = ({ props,isOpen }) => {
         pt={[4, 4, 0, 0]}
       >
         <MenuItem to="/home">Home</MenuItem>
-        {props.store.isLoggedIn ? <MenuItem to="/dashboard">Dashboard</MenuItem> : null}
-        {props.store.isLoggedIn ? <MenuItem to="/receipts">My Receipts</MenuItem> : null}
-        <MenuItem to="/dashboard">Dashboard ?</MenuItem>
-        <MenuItem to="/receipts">My Receipts ?</MenuItem>
-        <MenuItem to="/signup">Sign Up</MenuItem>
-        <MenuItem to="/login" isLast>
-          <Button
-            size="sm"
+        {props.store.isLoggedIn ? (<>
+          <MenuItem to="/dashboard">Dashboard</MenuItem>
+          <MenuItem to="/receipts">My Receipts</MenuItem>
+          <Button onClick={logoutHandler} size="sm"
             rounded="md"
             color={["primary.500", "primary.500", "white", "white"]}
             bg={["white", "white", "primary.500", "primary.500"]}
@@ -86,9 +93,27 @@ const MenuLinks = ({ props,isOpen }) => {
               bg: ["primary.100", "primary.100", "primary.600", "primary.600"]
             }}
           >
-            Login
+            Logout
           </Button>
-        </MenuItem>
+        </>) : (
+          <>
+            <MenuItem to="/signup">Sign Up</MenuItem>
+            <MenuItem to="/login" isLast>
+              <Button
+                size="sm"
+                rounded="md"
+                color={["primary.500", "primary.500", "white", "white"]}
+                bg={["white", "white", "primary.500", "primary.500"]}
+                _hover={{
+                  bg: ["primary.100", "primary.100", "primary.600", "primary.600"]
+                }}
+              >
+                Login
+              </Button>
+            </MenuItem></>
+        )}
+
+
       </Stack>
     </Box>
   );
@@ -119,4 +144,9 @@ const mapStateToProps = (store) => {
   };
 };
 
-export default connect(mapStateToProps)(Navbar);
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogoutSuccess: () => dispatch(logoutSuccessfull())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
