@@ -19,7 +19,6 @@ namespace ExpenseTrackerBackend.Models
         public int ItemId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Price { get; set; }
-        public decimal Sum { get; set; }
     
         public virtual Receipt Receipt { get; set; }
     }

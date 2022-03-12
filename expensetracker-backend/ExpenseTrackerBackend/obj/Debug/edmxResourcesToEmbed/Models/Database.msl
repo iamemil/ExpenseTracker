@@ -38,7 +38,6 @@
           <ScalarProperty Name="ItemId" ColumnName="ItemId" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="Price" ColumnName="Price" />
-          <ScalarProperty Name="Sum" ColumnName="Sum" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

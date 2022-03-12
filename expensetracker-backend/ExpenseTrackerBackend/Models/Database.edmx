@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="expensetrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="expensetrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Companies">
           <Key>
             <PropertyRef Name="Id" />
@@ -40,7 +40,6 @@
           <Property Name="ItemId" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="decimal" Precision="9" Scale="0" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="9" Scale="0" Nullable="false" />
-          <Property Name="Sum" Type="decimal" Precision="9" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="Receipts">
           <Key>
@@ -49,7 +48,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="StoreId" Type="int" Nullable="false" />
-          <Property Name="originalReceiptId" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="originalReceiptId" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
           <Property Name="PaymentMethod" Type="int" Nullable="false" />
           <Property Name="TotalSum" Type="decimal" Precision="9" Scale="0" Nullable="false" />
@@ -214,8 +213,7 @@
             <End Role="Stores" EntitySet="Stores" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="expensetrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -257,7 +255,6 @@
           <Property Name="ItemId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
-          <Property Name="Sum" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
           <NavigationProperty Name="Receipt" Relationship="Self.ReceiptItems_fk0" FromRole="ReceiptItems" ToRole="Receipts" />
         </EntityType>
         <EntityType Name="Receipt">
@@ -267,7 +264,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="StoreId" Type="Int32" Nullable="false" />
-          <Property Name="originalReceiptId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="originalReceiptId" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PaymentMethod" Type="Int32" Nullable="false" />
           <Property Name="TotalSum" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
@@ -485,7 +482,6 @@
                 <ScalarProperty Name="ItemId" ColumnName="ItemId" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Sum" ColumnName="Sum" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

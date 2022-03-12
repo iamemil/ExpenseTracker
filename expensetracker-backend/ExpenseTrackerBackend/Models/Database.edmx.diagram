@@ -4,11 +4,11 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0405f5542df14f64b8167bebdccc8612" Name="Diagram1">
+      <Diagram DiagramId="ef3476a3bb5a4b09a5f9f00f0791aa55" Name="Diagram1">
         <EntityTypeShape EntityType="expensetrackerModel.Company" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
         <EntityTypeShape EntityType="expensetrackerModel.Item" Width="1.5" PointX="5.25" PointY="3.375" IsExpanded="true" />
         <EntityTypeShape EntityType="expensetrackerModel.PaymentMethod" Width="1.5" PointX="6" PointY="6.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="expensetrackerModel.ReceiptItem" Width="1.5" PointX="10.5" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="expensetrackerModel.ReceiptItem" Width="1.5" PointX="10.5" PointY="3.375" IsExpanded="true" />
         <EntityTypeShape EntityType="expensetrackerModel.Receipt" Width="1.5" PointX="8.25" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="expensetrackerModel.Store" Width="1.5" PointX="3" PointY="3.125" IsExpanded="true" />
         <EntityTypeShape EntityType="expensetrackerModel.StoreTag" Width="1.5" PointX="6" PointY="9.125" IsExpanded="true" />

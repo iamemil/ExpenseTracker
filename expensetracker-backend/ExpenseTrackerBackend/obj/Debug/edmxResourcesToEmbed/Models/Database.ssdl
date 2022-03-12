@@ -35,7 +35,6 @@
     <Property Name="ItemId" Type="int" Nullable="false" />
     <Property Name="Quantity" Type="decimal" Precision="9" Scale="0" Nullable="false" />
     <Property Name="Price" Type="decimal" Precision="9" Scale="0" Nullable="false" />
-    <Property Name="Sum" Type="decimal" Precision="9" Scale="0" Nullable="false" />
   </EntityType>
   <EntityType Name="Receipts">
     <Key>

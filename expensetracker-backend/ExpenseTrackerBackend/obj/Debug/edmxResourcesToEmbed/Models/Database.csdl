@@ -38,7 +38,6 @@
     <Property Name="ItemId" Type="Int32" Nullable="false" />
     <Property Name="Quantity" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
     <Property Name="Price" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
-    <Property Name="Sum" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
     <NavigationProperty Name="Receipt" Relationship="Self.ReceiptItems_fk0" FromRole="ReceiptItems" ToRole="Receipts" />
   </EntityType>
   <EntityType Name="Receipt">
