@@ -250,7 +250,7 @@ namespace ExpenseTrackerBackend.Controllers
                         return Json(new
                         {
                             status = 405,
-                            message = "Email address needs to be verified"
+                            message = "Account needs to be verified"
                         }, JsonRequestBehavior.AllowGet);
                     }
 

@@ -22,14 +22,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="PaymentMethods">
-      <EntityTypeMapping TypeName="expensetrackerModel.PaymentMethod">
-        <MappingFragment StoreEntitySet="PaymentMethods">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ReceiptItems">
       <EntityTypeMapping TypeName="expensetrackerModel.ReceiptItem">
         <MappingFragment StoreEntitySet="ReceiptItems">
@@ -49,7 +41,6 @@
           <ScalarProperty Name="StoreId" ColumnName="StoreId" />
           <ScalarProperty Name="originalReceiptId" ColumnName="originalReceiptId" />
           <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
-          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
           <ScalarProperty Name="TotalSum" ColumnName="TotalSum" />
           <ScalarProperty Name="StoreTagId" ColumnName="StoreTagId" />
           <ScalarProperty Name="creationDate" ColumnName="creationDate" />

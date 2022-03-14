@@ -22,7 +22,7 @@ namespace ExpenseTrackerBackend.Models
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public int TaxNumber { get; set; }
+        public string TaxNumber { get; set; }
         public System.DateTime creationDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

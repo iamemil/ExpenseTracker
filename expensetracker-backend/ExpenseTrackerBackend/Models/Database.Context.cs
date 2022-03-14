@@ -27,7 +27,6 @@ namespace ExpenseTrackerBackend.Models
     
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
         public virtual DbSet<ReceiptItem> ReceiptItems { get; set; }
         public virtual DbSet<Receipt> Receipts { get; set; }
         public virtual DbSet<Store> Stores { get; set; }

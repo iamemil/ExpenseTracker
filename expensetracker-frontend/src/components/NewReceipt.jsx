@@ -23,7 +23,8 @@ export default function NewReceipt() {
     storeTaxNumber: "",
     receiptTotalSum: 0.00,
     receiptTimestamp : "",
-    receiptItems: []
+    receiptItems: [],
+    tagId : null,
   }
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [receipt, setReceiptData] = useState(receiptInitialState);

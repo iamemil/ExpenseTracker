@@ -26,16 +26,29 @@ import {
     Spacer,
     Tag
 } from '@chakra-ui/react';
-import { React, useState, useRef } from 'react'
+import { React, useState, useRef, useEffect } from 'react'
 import { RepeatIcon, DeleteIcon, CalendarIcon,AddIcon } from '@chakra-ui/icons'
 import axios from "axios"
+import StoreTagService from '../api/StoreTagService';
+import ReceiptService from "../api/ReceiptService";
 export default function ReceiptForm({ receipt, receiptCallback }) {
     const [modifiedReceipt, setModifiedReceiptData] = useState(receipt);
+    const [receiptCategories, setReceiptCategories] = useState([]);
     //const [isOpen, setIsOpen] = useState(false);
     const [removeItemConfirm, setRemoveItemConfirm] = useState({ isConfirmOpen: false, itemIndex: null });
     const onRemoveItemDialogClose = () => setRemoveItemConfirm({ isConfirmOpen: false, itemIndex: null });
     const cancelRef = useRef();
-
+    useEffect(() => {
+        let storeTagService = new StoreTagService();
+        storeTagService.getStoreTags(true)
+        .then((response) => {
+            setReceiptCategories(response.data.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+     },[]);
+     
     function removeItemFromList() {
         let updatedReceiptItems = modifiedReceipt.receiptItems; // copying the old datas array
         updatedReceiptItems.splice(removeItemConfirm.itemIndex, 1); // remove the item from the array
@@ -60,12 +73,36 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
         });
         receiptCallback(modifiedReceipt);
     }
+
+    const updateCategoryChanged = (event) => {
+        const tag = event.target.value
+        setModifiedReceiptData({
+            ...receipt,
+            tagId : parseInt(tag)
+        });
+        receiptCallback(modifiedReceipt);
+    }
     //https://en66yiq4aanyija.m.pipedream.net
     const handleFormSubmit = event => {
         event.preventDefault();
         //console.log(modifiedReceipt);
-        axios.post('https://httpbin.org/post', modifiedReceipt)
-            .then(response => console.log(response.data.json));
+        const formData = new FormData();
+        formData.append("Id", modifiedReceipt.Id);
+        formData.append("storeName", modifiedReceipt.storeName); 
+        formData.append("storeAddress", modifiedReceipt.storeAddress);
+        formData.append("storeTaxNumber", modifiedReceipt.storeTaxNumber);
+        formData.append("companyName", modifiedReceipt.companyName);
+        formData.append("companyTaxNumber", modifiedReceipt.companyTaxNumber); 
+        formData.append("receiptTotalSum", modifiedReceipt.receiptTotalSum);
+        formData.append("receiptTimestamp", modifiedReceipt.receiptTimestamp);
+        //modifiedReceipt.receiptItems.forEach(item => formData.append("receiptItems", JSON.stringify(item)));
+        formData.append("receiptItems", JSON.stringify(modifiedReceipt.receiptItems)); 
+        formData.append("existing", modifiedReceipt.existing);
+        formData.append("tagId", modifiedReceipt.tagId);
+        let receiptService = new ReceiptService();
+        receiptService
+        .create(formData)
+        .then(response => console.log(response.data));
 
     }
     return (
@@ -85,10 +122,8 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                 </FormControl>
                 <FormControl isRequired>
                     <FormLabel htmlFor='merchantCategory'>Merchant Category</FormLabel>
-                    <Select id='merchantCategory' placeholder='Choose Category' size='sm'>
-                        <option value='1'>Shopping</option>
-                        <option value='2'>Food&Drink</option>
-                        <option value='3'>Entertainment</option>
+                    <Select id='merchantCategory' placeholder='Choose Category' size='sm' onChange={updateCategoryChanged}>
+                        {receiptCategories.map((category) => <option value={category.Id}>{category.Name}</option>)}
                     </Select>
                 </FormControl>
             </Flex>

@@ -42,8 +42,8 @@ function Login(props) {
                 setcredentialError("Please, enter your credentials correctly.");
 
                 // ONLY FOR TESTING
-                props.onLoginSuccess();
-                navigate('/dashboard');
+                //props.onLoginSuccess();
+                //navigate('/dashboard');
                 // ONLY FOR TESTING
             }
             );

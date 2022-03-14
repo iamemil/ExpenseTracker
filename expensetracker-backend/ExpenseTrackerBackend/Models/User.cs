@@ -18,6 +18,7 @@ namespace ExpenseTrackerBackend.Models
         public User()
         {
             this.Receipts = new HashSet<Receipt>();
+            this.StoreTags = new HashSet<StoreTag>();
         }
     
         public int Id { get; set; }
@@ -33,5 +34,7 @@ namespace ExpenseTrackerBackend.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receipt> Receipts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StoreTag> StoreTags { get; set; }
     }
 }

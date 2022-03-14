@@ -40,7 +40,8 @@ export default function ReceiptHistory() {
     receiptTotalSum: 0.00,
     receiptTimestamp: "",
     receiptItems: [],
-    existing: false
+    existing: false,
+    tagId : null,
   }
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -65,7 +66,8 @@ export default function ReceiptHistory() {
           receiptTotalSum: response.data.cheque.content.sum,
           receiptTimestamp: new Date(response.data.cheque.content.createdAtUtc * 1000).toLocaleDateString('az-AZ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }),
           receiptItems: response.data.cheque.content.items,
-          existing: true
+          existing: true,
+          tagId: null
         });
         //existingReceiptCallback(existingReceipt);
         onOpen();
