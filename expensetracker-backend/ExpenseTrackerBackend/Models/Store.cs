@@ -26,7 +26,7 @@ namespace ExpenseTrackerBackend.Models
         public string Name { get; set; }
         public string Address { get; set; }
         public string TaxNumber { get; set; }
-        public System.DateTime creationDate { get; set; }
+        public System.DateTime CreationDate { get; set; }
     
         public virtual Company Company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace ExpenseTrackerBackend.Controllers
 {
-    public class StoreTagController : Controller
+    public class StoreTagsController : Controller
     {
         private expensetrackerEntities db = new expensetrackerEntities();
 
@@ -29,7 +29,7 @@ namespace ExpenseTrackerBackend.Controllers
                             return Json(new
                             {
                                 status = 200,
-                                data = db.StoreTags.Where(st => st.isPublic == true || st.UserId == user.Id).Select(it => new { it.Id, it.Name, it.isPublic, it.creationDate }).ToList()
+                                data = db.StoreTags.Where(st => st.isPublic == true || st.UserId == user.Id).Select(it => new { it.Id, it.Name, it.isPublic, it.CreationDate }).ToList()
                             }, JsonRequestBehavior.AllowGet);
                         }
                         else
@@ -37,7 +37,7 @@ namespace ExpenseTrackerBackend.Controllers
                             return Json(new
                             {
                                 status = 200,
-                                data = db.StoreTags.Where(st => st.UserId == user.Id).Select(it => new { it.Id, it.Name, it.isPublic, it.creationDate }).ToList()
+                                data = db.StoreTags.Where(st => st.UserId == user.Id).Select(it => new { it.Id, it.Name, it.isPublic, it.CreationDate }).ToList()
                             }, JsonRequestBehavior.AllowGet);
                         }
                         
@@ -103,7 +103,7 @@ namespace ExpenseTrackerBackend.Controllers
 
                         StoreTag storeTag = new StoreTag();
                         storeTag.UserId = user.Id;
-                        storeTag.creationDate = DateTime.Now;
+                        storeTag.CreationDate = DateTime.Now;
                         storeTag.Name = tagName;
                         storeTag.isPublic = false;
 
@@ -177,10 +177,10 @@ namespace ExpenseTrackerBackend.Controllers
                         }
 
                         StoreTag storeTag = db.StoreTags.FirstOrDefault(st => st.Id == Id && st.UserId == user.Id);
-                        storeTag.creationDate = DateTime.Now;
+                        storeTag.CreationDate = DateTime.Now;
                         storeTag.Name = tagName;
                         db.Entry(storeTag).Property(c => c.Name).IsModified = true;
-                        db.Entry(storeTag).Property(c => c.creationDate).IsModified = true;
+                        db.Entry(storeTag).Property(c => c.CreationDate).IsModified = true;
 
                         db.SaveChanges();
 

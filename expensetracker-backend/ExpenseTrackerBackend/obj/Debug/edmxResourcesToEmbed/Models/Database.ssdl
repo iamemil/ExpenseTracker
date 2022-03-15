@@ -7,17 +7,17 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="TaxNumber" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="creationDate" Type="datetime" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Items">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="StoreId" Type="int" Nullable="false" />
     <Property Name="ItemStoreCode" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="creationDate" Type="datetime" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="ReceiptItems">
     <Key>
@@ -26,8 +26,8 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ReceiptId" Type="int" Nullable="false" />
     <Property Name="ItemId" Type="int" Nullable="false" />
-    <Property Name="Quantity" Type="decimal" Precision="9" Scale="4" Nullable="false" />
-    <Property Name="Price" Type="decimal" Precision="9" Scale="4" Nullable="false" />
+    <Property Name="Quantity" Type="decimal" Precision="9" Scale="3" Nullable="false" />
+    <Property Name="Price" Type="decimal" Precision="9" Scale="3" Nullable="false" />
   </EntityType>
   <EntityType Name="Receipts">
     <Key>
@@ -36,11 +36,11 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="StoreId" Type="int" Nullable="false" />
-    <Property Name="originalReceiptId" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="OriginalReceiptId" Type="varchar" MaxLength="60" Nullable="false" />
     <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
-    <Property Name="TotalSum" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+    <Property Name="TotalSum" Type="decimal" Precision="9" Scale="3" Nullable="false" />
     <Property Name="StoreTagId" Type="int" />
-    <Property Name="creationDate" Type="datetime" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Stores">
     <Key>
@@ -51,7 +51,7 @@
     <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="Address" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="TaxNumber" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="creationDate" Type="datetime" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="StoreTags">
     <Key>
@@ -59,7 +59,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="creationDate" Type="datetime" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="isPublic" Type="bit" Nullable="false" />
   </EntityType>
@@ -76,8 +76,20 @@
     <Property Name="Token" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
     <Property Name="IsAdmin" Type="bit" Nullable="false" />
-    <Property Name="creationDate" Type="datetime" Nullable="false" />
+    <Property Name="RegisterDate" Type="datetime" Nullable="false" />
   </EntityType>
+  <Association Name="FK_ReceiptItems_Items">
+    <End Role="Items" Type="Self.Items" Multiplicity="1" />
+    <End Role="ReceiptItems" Type="Self.ReceiptItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReceiptItems">
+        <PropertyRef Name="ItemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_StoreTags_Users">
     <End Role="Users" Type="Self.Users" Multiplicity="1" />
     <End Role="StoreTags" Type="Self.StoreTags" Multiplicity="*" />
@@ -170,6 +182,10 @@
     <EntitySet Name="Stores" EntityType="Self.Stores" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StoreTags" EntityType="Self.StoreTags" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ReceiptItems_Items" Association="Self.FK_ReceiptItems_Items">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="ReceiptItems" EntitySet="ReceiptItems" />
+    </AssociationSet>
     <AssociationSet Name="FK_StoreTags_Users" Association="Self.FK_StoreTags_Users">
       <End Role="Users" EntitySet="Users" />
       <End Role="StoreTags" EntitySet="StoreTags" />

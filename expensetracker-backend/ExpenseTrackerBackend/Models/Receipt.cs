@@ -23,11 +23,11 @@ namespace ExpenseTrackerBackend.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public int StoreId { get; set; }
-        public string originalReceiptId { get; set; }
+        public string OriginalReceiptId { get; set; }
         public System.DateTime PurchaseDate { get; set; }
         public decimal TotalSum { get; set; }
         public Nullable<int> StoreTagId { get; set; }
-        public System.DateTime creationDate { get; set; }
+        public System.DateTime CreationDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceiptItem> ReceiptItems { get; set; }

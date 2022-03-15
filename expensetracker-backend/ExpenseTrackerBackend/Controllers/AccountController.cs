@@ -170,7 +170,7 @@ namespace ExpenseTrackerBackend.Controllers
             newUser.PhoneNumber = mobileNumber;
             newUser.Token = Crypto.Hash(newUser.EmailAddress + DateTime.Now.ToString("yyyyMMddHHmmss"), "sha256");
             newUser.Password = Crypto.HashPassword(Password);
-            newUser.creationDate = DateTime.Now;
+            newUser.RegisterDate = DateTime.Now;
             db.Users.Add(newUser);
             db.SaveChanges();
             String verifyUrl = "Thanks for registering on Expense Tracker. Click here to verify your account: " + Request.Url.Scheme + "://" + Request.Url.Authority + "/Account/Confirm?token=" + newUser.Token;

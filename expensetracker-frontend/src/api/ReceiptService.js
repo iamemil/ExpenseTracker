@@ -16,7 +16,25 @@ export default class ReceiptService {
                 Authorization : secureLs.get("Authorization"),
             }
         }
-        return axios.post(API_URL+"/Receipt/Create", body,config);
+        return axios.post(API_URL+"/Receipts/Create", body,config);
+    }
+
+    getReceipts(limit){
+        let config = {
+            headers : {
+                Authorization : secureLs.get("Authorization"),
+            }
+        }
+        return axios.post(API_URL+"/Receipts/GetReceipts","limit="+limit,config);
+    }
+
+    getReceipt(originalReceiptId){
+        let config = {
+            headers : {
+                Authorization : secureLs.get("Authorization"),
+            }
+        }
+        return axios.post(API_URL+"/Receipts/GetReceipt","originalReceiptId="+originalReceiptId,config);
     }
 
 }

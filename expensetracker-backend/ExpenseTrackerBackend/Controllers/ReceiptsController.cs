@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace ExpenseTrackerBackend.Controllers
 {
-    public class ReceiptController : Controller
+    public class ReceiptsController : Controller
     {
         private expensetrackerEntities db = new expensetrackerEntities();
 
@@ -103,7 +103,7 @@ namespace ExpenseTrackerBackend.Controllers
                                 Company newCompany = new Company();
                                 newCompany.Name = companyName;
                                 newCompany.TaxNumber = companyTaxNumber;
-                                newCompany.creationDate = DateTime.Now;
+                                newCompany.CreationDate = DateTime.Now;
                                 db.Companies.Add(newCompany);
                                 db.SaveChanges();
                             }
@@ -117,13 +117,13 @@ namespace ExpenseTrackerBackend.Controllers
                                 newStore.Name = storeName;
                                 newStore.Address = storeAddress;
                                 newStore.TaxNumber = storeTaxNumber;
-                                newStore.creationDate = DateTime.Now;
+                                newStore.CreationDate = DateTime.Now;
                                 db.Stores.Add(newStore);
                                 db.SaveChanges();
                             }
                             store = db.Stores.FirstOrDefault(st => st.TaxNumber == storeTaxNumber);
 
-                            Receipt receiptExists = db.Receipts.FirstOrDefault(r => r.UserId == user.Id && r.originalReceiptId == Id);
+                            Receipt receiptExists = db.Receipts.FirstOrDefault(r => r.UserId == user.Id && r.OriginalReceiptId == Id);
                             if (receiptExists != null)
                             {
                                 //List<Models.DataModels.ReceiptItem> items = new List<Models.DataModels.ReceiptItem>();
@@ -148,11 +148,11 @@ namespace ExpenseTrackerBackend.Controllers
                             Receipt newReceipt = new Receipt();
                             newReceipt.UserId = user.Id;
                             newReceipt.StoreId = store.Id;
-                            newReceipt.originalReceiptId = Id;
+                            newReceipt.OriginalReceiptId = Id;
                             newReceipt.PurchaseDate = DateTime.Parse(receiptTimestamp);
                             newReceipt.TotalSum = decimal.Parse(receiptTotalSum);
                             newReceipt.StoreTagId = storeTag.Id;
-                            newReceipt.creationDate = DateTime.Now;
+                            newReceipt.CreationDate = DateTime.Now;
 
                             db.Receipts.Add(newReceipt);
                             db.SaveChanges();
@@ -168,7 +168,7 @@ namespace ExpenseTrackerBackend.Controllers
                                     newItem.Name = item.itemName;
                                     newItem.StoreId = store.Id;
                                     newItem.ItemStoreCode = item.itemCode;
-                                    newItem.creationDate = DateTime.Now;
+                                    newItem.CreationDate = DateTime.Now;
                                     db.Items.Add(newItem);
                                     db.SaveChanges();
                                 }
@@ -215,6 +215,113 @@ namespace ExpenseTrackerBackend.Controllers
                         message = "Account doesn't exist."
                     }, JsonRequestBehavior.AllowGet);
                 }
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = 404,
+                    message = "Invalid token."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult GetReceipts(int? limit)
+        {
+            string userEmail = Token.ValidateToken(HttpContext.Request.Headers.Get("Authorization"));
+            if (userEmail != null)
+            {
+                User user = db.Users.FirstOrDefault(u => u.EmailAddress == userEmail);
+                if (user != null)
+                {
+                    if (user.IsActive)
+                    {
+                        if (limit !=null)
+                        {
+                            return Json(new
+                            {
+                                status = 200,
+                                data = user.Receipts.OrderByDescending(r=> r.CreationDate).Select(r => new { storeName = r.Store.Name, r.OriginalReceiptId, r.PurchaseDate, r.CreationDate, r.TotalSum, tagName = r.StoreTag.Name }).Take((int)limit).ToList()
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return Json(new
+                            {
+                                status = 200,
+                                data = user.Receipts.OrderByDescending(r => r.CreationDate).Select(r => new { storeName = r.Store.Name, r.OriginalReceiptId, r.PurchaseDate, r.CreationDate, r.TotalSum, tagName = r.StoreTag.Name }).ToList()
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            status = 405,
+                            message = "Account needs to be verified"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        status = 405,
+                        message = "Account doesn't exist."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = 404,
+                    message = "Invalid token."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetReceipt(string originalReceiptId)
+        {
+            string userEmail = Token.ValidateToken(HttpContext.Request.Headers.Get("Authorization"));
+            if (userEmail != null)
+            {
+                User user = db.Users.FirstOrDefault(u => u.EmailAddress == userEmail);
+                if (user != null)
+                {
+                    if (user.IsActive)
+                    {
+                        return Json(new
+                        {
+                            status = 200,
+                            receiptData = user.Receipts.Where(r=> r.OriginalReceiptId==originalReceiptId).Select(r => new { storeName = r.Store.Name, storeAddress= r.Store.Address, storeTaxNumber = r.Store.TaxNumber, r.OriginalReceiptId,r.PurchaseDate, r.CreationDate, r.TotalSum, r.StoreTagId, receiptItems = r.ReceiptItems.Select(ri=> new {ri.Id, ri.Item.ItemStoreCode, itemName= ri.Item.Name, itemQuantity= ri.Quantity, itemPrice=ri.Price, itemSum = ri.Quantity * ri.Price}).ToList() }).ToList()
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            status = 405,
+                            message = "Account needs to be verified"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        status = 405,
+                        message = "Account doesn't exist."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
             }
             else
             {

@@ -22,13 +22,13 @@ import {
   Button,
   useDisclosure
 } from '@chakra-ui/react';
-import { TriangleDownIcon, TriangleUpIcon,ViewIcon } from '@chakra-ui/icons'
+import { TriangleDownIcon, TriangleUpIcon, ViewIcon } from '@chakra-ui/icons'
 import { useTable, useSortBy } from 'react-table'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import NewReceipt from '../../components/NewReceipt';
 import ReceiptForm from '../../components/ReceiptForm';
 import ReceiptService from '../../api/ReceiptService';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 export default function ReceiptHistory() {
   const receiptInitialState = {
     Id: "",
@@ -41,35 +41,33 @@ export default function ReceiptHistory() {
     receiptTimestamp: "",
     receiptItems: [],
     existing: false,
-    tagId : null,
+    tagId: null,
   }
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure()
-  //const [receipt, setReceiptData] = useState(receiptInitialState);
   const [existingReceipt, setExistingReceiptData] = useState(receiptInitialState);
-  //const onExistingReceiptModalClose = () => setExistingReceipt({ isClicked: false, receiptId: null });
+  const [loading, setLoading] = useState(false);
+
+  let receiptService = new ReceiptService();
 
   const existingReceiptCallback = useCallback((receipt) => {
     setExistingReceiptData(receipt);
   }, []);
   function onExistingReceiptModalOpen(receiptId) {
-    let receiptService = new ReceiptService();
-    receiptService.getFromExternalSource(receiptId)
+    receiptService.getReceipt(receiptId)
       .then(function (response) {
+        const timestamp = new Date(parseInt(response.data.receiptData[0].PurchaseDate.replace("/Date(", "").replace(")/", "")));
         setExistingReceiptData({
-          Id: response.data.cheque.documentId,
-          storeName: response.data.cheque.storeName,
-          storeAddress: response.data.cheque.storeAddress,
-          companyName: response.data.cheque.companyName,
-          companyTaxNumber: response.data.cheque.companyTaxNumber,
-          storeTaxNumber: response.data.cheque.storeTaxNumber,
-          receiptTotalSum: response.data.cheque.content.sum,
-          receiptTimestamp: new Date(response.data.cheque.content.createdAtUtc * 1000).toLocaleDateString('az-AZ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-          receiptItems: response.data.cheque.content.items,
+          Id: response.data.receiptData[0].OriginalReceiptId,
+          storeName: response.data.receiptData[0].storeName,
+          storeAddress: response.data.receiptData[0].storeAddress,
+          storeTaxNumber: response.data.receiptData[0].storeTaxNumber,
+          receiptTotalSum: response.data.receiptData[0].TotalSum.toFixed(2),
+          receiptTimestamp: timestamp.toLocaleDateString('az-AZ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          receiptItems: response.data.receiptData[0].receiptItems,
           existing: true,
-          tagId: null
+          tagId: response.data.receiptData[0].StoreTagId
         });
-        //existingReceiptCallback(existingReceipt);
         onOpen();
       })
       .catch(function (error) {
@@ -90,39 +88,29 @@ export default function ReceiptHistory() {
   function closeModal() {
     onClose();
   }
-  const data = React.useMemo(
-    () => [
-      {
-        receiptId: "5QRDHY2EzxUQovEERaf3yrkBuGitygueRqTon5fcBCsv",
-        merchantName: 'Starbucks',
-        categoryName: 'Food&Drink',
-        timestamp: '10:45, 01.01.2022',
-        spentAmount: 25.4,
-      },
-      {
-        receiptId: "HjJciKVPWj7Hojq52LU7G415pZy8dDJk16w4oq8pDBvW",
-        merchantName: 'Bravo Supermarket',
-        categoryName: 'Shopping',
-        timestamp: '11:30, 02.01.2022',
-        spentAmount: 40.48,
-      },
-      {
-        receiptId: "EVLF6RsgSBytGApHPE4n1JEUGL9FbYqdwMYHDWDH4MS4",
-        merchantName: 'Wolt',
-        categoryName: 'Food&Drink',
-        timestamp: '16:00, 03.01.2022',
-        spentAmount: 9.14,
-      },
-      {
-        receiptId: "ACim9ATs25omohKp6p1oeZu54JcPHYmHu6gSfDx9J7WY",
-        merchantName: 'Starbucks',
-        categoryName: 'Food&Drink',
-        timestamp: '09:00, 04.01.2022',
-        spentAmount: 14.5,
-      },
-    ],
-    [],
-  )
+  const [data, setData] = useState([]);
+
+
+  useEffect(() => {
+    setLoading(true);
+    receiptService.getReceipts(5)
+      .then((response) => {
+        const data = response.data.data.map(receipt =>
+        ({
+          receiptId: receipt.OriginalReceiptId,
+          merchantName: receipt.storeName,
+          categoryName: receipt.tagName,
+          timestamp: new Date(parseInt(receipt.PurchaseDate.replace("/Date(", "").replace(")/", ""))).toLocaleDateString('az-AZ', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }),
+          spentAmount: receipt.TotalSum.toFixed(2),
+        })
+        )
+        setData(data)
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const columns = React.useMemo(
     () => [
@@ -159,6 +147,9 @@ export default function ReceiptHistory() {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data, initialState }, useSortBy)
 
+  if (data.length === 0 && !loading) {
+    return <div>There are no receipts</div>;
+  }
   return (
     <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
       <Table {...getTableProps()}
@@ -169,7 +160,7 @@ export default function ReceiptHistory() {
             <Text>Receipt History</Text>
             <HStack>
               <Button colorScheme='teal' variant='outline' onClick={() => navigate('/receipts')}>
-              <ViewIcon boxSize={"1.5em"} />
+                <ViewIcon boxSize={"1.5em"} />
               </Button>
               <NewReceipt />
             </HStack>

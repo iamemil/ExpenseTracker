@@ -9,6 +9,6 @@ export default class StoreTagService{
                 Authorization : secureLs.get("Authorization")
             },
         }
-        return axios.post(API_URL+"/StoreTag/GetStoreTags","withPublicTags="+withPublicTags, config);
+        return axios.post(API_URL+"/StoreTags/GetStoreTags","withPublicTags="+withPublicTags, config);
     }
 }

@@ -7,7 +7,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
-          <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -18,7 +18,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="StoreId" ColumnName="StoreId" />
           <ScalarProperty Name="ItemStoreCode" ColumnName="ItemStoreCode" />
-          <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -39,11 +39,11 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-          <ScalarProperty Name="originalReceiptId" ColumnName="originalReceiptId" />
+          <ScalarProperty Name="OriginalReceiptId" ColumnName="OriginalReceiptId" />
           <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
           <ScalarProperty Name="TotalSum" ColumnName="TotalSum" />
           <ScalarProperty Name="StoreTagId" ColumnName="StoreTagId" />
-          <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -55,7 +55,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Address" ColumnName="Address" />
           <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
-          <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -64,7 +64,7 @@
         <MappingFragment StoreEntitySet="StoreTags">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="isPublic" ColumnName="isPublic" />
         </MappingFragment>
@@ -82,7 +82,7 @@
           <ScalarProperty Name="Token" ColumnName="Token" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
-          <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -22,7 +22,7 @@ namespace ExpenseTrackerBackend.Models
     
         public int Id { get; set; }
         public int UserId { get; set; }
-        public System.DateTime creationDate { get; set; }
+        public System.DateTime CreationDate { get; set; }
         public string Name { get; set; }
         public bool isPublic { get; set; }
     

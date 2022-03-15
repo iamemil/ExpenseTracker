@@ -34,7 +34,6 @@ import ReceiptService from "../api/ReceiptService";
 export default function ReceiptForm({ receipt, receiptCallback }) {
     const [modifiedReceipt, setModifiedReceiptData] = useState(receipt);
     const [receiptCategories, setReceiptCategories] = useState([]);
-    //const [isOpen, setIsOpen] = useState(false);
     const [removeItemConfirm, setRemoveItemConfirm] = useState({ isConfirmOpen: false, itemIndex: null });
     const onRemoveItemDialogClose = () => setRemoveItemConfirm({ isConfirmOpen: false, itemIndex: null });
     const cancelRef = useRef();
@@ -65,7 +64,7 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
     const updateFieldChanged = index => e => {
         let updatedReceiptItems = modifiedReceipt.receiptItems; // copying the old datas array
         updatedReceiptItems[index].itemQuantity = parseFloat(e || 0); // replace e.target.value with whatever you want to change it to
-        updatedReceiptItems[index].itemSum = parseFloat(updatedReceiptItems[index].itemQuantity * modifiedReceipt.receiptItems[index].itemPrice).toFixed(2);
+        updatedReceiptItems[index].itemSum = updatedReceiptItems[index].itemQuantity * modifiedReceipt.receiptItems[index].itemPrice;
         setModifiedReceiptData({
             ...receipt,
             receiptTotalSum: parseFloat(updatedReceiptItems.reduce((a, b) => parseFloat(a) + parseFloat(b.itemSum), 0)).toFixed(2),
@@ -95,7 +94,6 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
         formData.append("companyTaxNumber", modifiedReceipt.companyTaxNumber); 
         formData.append("receiptTotalSum", modifiedReceipt.receiptTotalSum);
         formData.append("receiptTimestamp", modifiedReceipt.receiptTimestamp);
-        //modifiedReceipt.receiptItems.forEach(item => formData.append("receiptItems", JSON.stringify(item)));
         formData.append("receiptItems", JSON.stringify(modifiedReceipt.receiptItems)); 
         formData.append("existing", modifiedReceipt.existing);
         formData.append("tagId", modifiedReceipt.tagId);
@@ -122,7 +120,7 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                 </FormControl>
                 <FormControl isRequired>
                     <FormLabel htmlFor='merchantCategory'>Merchant Category</FormLabel>
-                    <Select id='merchantCategory' placeholder='Choose Category' size='sm' onChange={updateCategoryChanged}>
+                    <Select id='merchantCategory' placeholder='Choose Category' size='sm' onChange={updateCategoryChanged} value={modifiedReceipt.tagId}>
                         {receiptCategories.map((category) => <option value={category.Id}>{category.Name}</option>)}
                     </Select>
                 </FormControl>
@@ -151,8 +149,8 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                                     </NumberInputStepper>
                                 </NumberInput>
                             </Td>
-                            <Td>{element.itemPrice}</Td>
-                            <Td>{element.itemSum} ₼</Td>
+                            <Td>{element.itemPrice.toFixed(2)}</Td>
+                            <Td>{element.itemSum.toFixed(2)} ₼</Td>
                             <Td>
                                 <Button colorScheme='red' size={'sm'} variant='outline' onClick={() => setRemoveItemConfirm({ isConfirmOpen: true, itemIndex: index })}>
                                     <DeleteIcon />

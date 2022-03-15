@@ -12,17 +12,17 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="TaxNumber" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="creationDate" Type="datetime" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Items">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="StoreId" Type="int" Nullable="false" />
           <Property Name="ItemStoreCode" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="creationDate" Type="datetime" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ReceiptItems">
           <Key>
@@ -41,11 +41,11 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="StoreId" Type="int" Nullable="false" />
-          <Property Name="originalReceiptId" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="OriginalReceiptId" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
           <Property Name="TotalSum" Type="decimal" Precision="9" Scale="3" Nullable="false" />
           <Property Name="StoreTagId" Type="int" />
-          <Property Name="creationDate" Type="datetime" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Stores">
           <Key>
@@ -56,7 +56,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="TaxNumber" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="creationDate" Type="datetime" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="StoreTags">
           <Key>
@@ -64,7 +64,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="creationDate" Type="datetime" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="isPublic" Type="bit" Nullable="false" />
         </EntityType>
@@ -81,8 +81,20 @@
           <Property Name="Token" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsAdmin" Type="bit" Nullable="false" />
-          <Property Name="creationDate" Type="datetime" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_ReceiptItems_Items">
+          <End Role="Items" Type="Self.Items" Multiplicity="1" />
+          <End Role="ReceiptItems" Type="Self.ReceiptItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReceiptItems">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_StoreTags_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="StoreTags" Type="Self.StoreTags" Multiplicity="*" />
@@ -175,6 +187,10 @@
           <EntitySet Name="Stores" EntityType="Self.Stores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreTags" EntityType="Self.StoreTags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ReceiptItems_Items" Association="Self.FK_ReceiptItems_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="ReceiptItems" EntitySet="ReceiptItems" />
+          </AssociationSet>
           <AssociationSet Name="FK_StoreTags_Users" Association="Self.FK_StoreTags_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="StoreTags" EntitySet="StoreTags" />
@@ -216,7 +232,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TaxNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Stores" Relationship="Self.Stores_fk0" FromRole="Companies" ToRole="Stores" />
         </EntityType>
         <EntityType Name="Item">
@@ -224,10 +240,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="StoreId" Type="Int32" Nullable="false" />
           <Property Name="ItemStoreCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ReceiptItems" Relationship="Self.FK_ReceiptItems_Items" FromRole="Items" ToRole="ReceiptItems" />
           <NavigationProperty Name="Store" Relationship="Self.Items_fk0" FromRole="Items" ToRole="Stores" />
         </EntityType>
         <EntityType Name="ReceiptItem">
@@ -239,6 +256,7 @@
           <Property Name="ItemId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_ReceiptItems_Items" FromRole="ReceiptItems" ToRole="Items" />
           <NavigationProperty Name="Receipt" Relationship="Self.ReceiptItems_fk0" FromRole="ReceiptItems" ToRole="Receipts" />
         </EntityType>
         <EntityType Name="Receipt">
@@ -248,11 +266,11 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="StoreId" Type="Int32" Nullable="false" />
-          <Property Name="originalReceiptId" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OriginalReceiptId" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TotalSum" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
           <Property Name="StoreTagId" Type="Int32" />
-          <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="ReceiptItems" Relationship="Self.ReceiptItems_fk0" FromRole="Receipts" ToRole="ReceiptItems" />
           <NavigationProperty Name="User" Relationship="Self.Receipts_fk0" FromRole="Receipts" ToRole="Users" />
           <NavigationProperty Name="Store" Relationship="Self.Receipts_fk1" FromRole="Receipts" ToRole="Stores" />
@@ -267,7 +285,7 @@
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TaxNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Company" Relationship="Self.Stores_fk0" FromRole="Stores" ToRole="Companies" />
           <NavigationProperty Name="Items" Relationship="Self.Items_fk0" FromRole="Stores" ToRole="Items" />
           <NavigationProperty Name="Receipts" Relationship="Self.Receipts_fk1" FromRole="Stores" ToRole="Receipts" />
@@ -278,7 +296,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="isPublic" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Receipts" Relationship="Self.Receipts_fk3" FromRole="StoreTags" ToRole="Receipts" />
@@ -297,7 +315,7 @@
           <Property Name="Token" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
-          <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Receipts" Relationship="Self.Receipts_fk0" FromRole="Users" ToRole="Receipts" />
           <NavigationProperty Name="StoreTags" Relationship="Self.FK_StoreTags_Users" FromRole="Users" ToRole="StoreTags" />
         </EntityType>
@@ -310,6 +328,18 @@
             </Principal>
             <Dependent Role="Stores">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReceiptItems_Items">
+          <End Role="Items" Type="Self.Item" Multiplicity="1" />
+          <End Role="ReceiptItems" Type="Self.ReceiptItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReceiptItems">
+              <PropertyRef Name="ItemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -397,6 +427,10 @@
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Stores" EntitySet="Stores" />
           </AssociationSet>
+          <AssociationSet Name="FK_ReceiptItems_Items" Association="Self.FK_ReceiptItems_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="ReceiptItems" EntitySet="ReceiptItems" />
+          </AssociationSet>
           <AssociationSet Name="Items_fk0" Association="Self.Items_fk0">
             <End Role="Stores" EntitySet="Stores" />
             <End Role="Items" EntitySet="Items" />
@@ -434,7 +468,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
-                <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -445,7 +479,7 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
                 <ScalarProperty Name="ItemStoreCode" ColumnName="ItemStoreCode" />
-                <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -466,11 +500,11 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-                <ScalarProperty Name="originalReceiptId" ColumnName="originalReceiptId" />
+                <ScalarProperty Name="OriginalReceiptId" ColumnName="OriginalReceiptId" />
                 <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
                 <ScalarProperty Name="TotalSum" ColumnName="TotalSum" />
                 <ScalarProperty Name="StoreTagId" ColumnName="StoreTagId" />
-                <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -482,7 +516,7 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
-                <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -491,7 +525,7 @@
               <MappingFragment StoreEntitySet="StoreTags">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="isPublic" ColumnName="isPublic" />
               </MappingFragment>
@@ -509,7 +543,7 @@
                 <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
-                <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

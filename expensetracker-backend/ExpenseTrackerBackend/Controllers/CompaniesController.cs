@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace ExpenseTrackerBackend.Controllers
 {
-    public class CompanyController : Controller
+    public class CompaniesController : Controller
     {
         private expensetrackerEntities db = new expensetrackerEntities();
 
@@ -25,7 +25,7 @@ namespace ExpenseTrackerBackend.Controllers
                         return Json(new
                         {
                             status = 200,
-                            data = db.Companies.Select(it => new { it.Id, it.Name, it.creationDate, it.TaxNumber }).ToList()
+                            data = db.Companies.Select(it => new { it.Id, it.Name, it.CreationDate, it.TaxNumber }).ToList()
                         }, JsonRequestBehavior.AllowGet);
                     }
                     else
