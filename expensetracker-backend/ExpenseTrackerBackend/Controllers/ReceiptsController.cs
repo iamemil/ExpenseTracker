@@ -81,6 +81,7 @@ namespace ExpenseTrackerBackend.Controllers
                         if (string.IsNullOrEmpty(Id) || string.IsNullOrWhiteSpace(Id)
                             || string.IsNullOrEmpty(companyName) || string.IsNullOrWhiteSpace(companyName)
                             || string.IsNullOrEmpty(companyTaxNumber) || string.IsNullOrWhiteSpace(companyTaxNumber)
+                            || string.IsNullOrEmpty(receiptItems) || string.IsNullOrWhiteSpace(receiptItems)
                             || string.IsNullOrEmpty(receiptTimestamp) || string.IsNullOrWhiteSpace(receiptTimestamp)
                             || string.IsNullOrEmpty(receiptTotalSum) || string.IsNullOrWhiteSpace(receiptTotalSum)
                             || string.IsNullOrEmpty(storeAddress) || string.IsNullOrWhiteSpace(storeAddress)
@@ -95,6 +96,8 @@ namespace ExpenseTrackerBackend.Controllers
                             }, JsonRequestBehavior.AllowGet);
 
                         }
+                        decimal totalSum = decimal.Parse(receiptTotalSum);
+
                         if (!existing)
                         {
                             Company company = db.Companies.FirstOrDefault(c => c.TaxNumber==companyTaxNumber);
@@ -150,7 +153,7 @@ namespace ExpenseTrackerBackend.Controllers
                             newReceipt.StoreId = store.Id;
                             newReceipt.OriginalReceiptId = Id;
                             newReceipt.PurchaseDate = DateTime.Parse(receiptTimestamp);
-                            newReceipt.TotalSum = decimal.Parse(receiptTotalSum);
+                            newReceipt.TotalSum = totalSum;
                             newReceipt.StoreTagId = storeTag.Id;
                             newReceipt.CreationDate = DateTime.Now;
 
@@ -185,15 +188,15 @@ namespace ExpenseTrackerBackend.Controllers
                             return Json(new
                             {
                                 status = 200,
-                                message = "Receipt has been added successfully"
+                                message = "Receipt has been added successfully."
                             }, JsonRequestBehavior.AllowGet);
                         }
                         else
                         {
                             return Json(new
                             {
-                                status = 200,
-                                message = "Work on progress"
+                                status = 404,
+                                message = "Something went wrong while updating receipt details, try again."
                             }, JsonRequestBehavior.AllowGet);
                         }
 
@@ -226,6 +229,123 @@ namespace ExpenseTrackerBackend.Controllers
             }
         }
 
+
+        [HttpPost]
+        public JsonResult Update(string Id, string receiptItems, decimal receiptTotalSum, int tagId)
+        {
+            string userEmail = Token.ValidateToken(HttpContext.Request.Headers.Get("Authorization"));
+            if (userEmail != null)
+            {
+                User user = db.Users.FirstOrDefault(u => u.EmailAddress == userEmail);
+                if (user != null)
+                {
+                    if (user.IsActive)
+                    {
+
+                        if (string.IsNullOrEmpty(Id) || string.IsNullOrWhiteSpace(Id)
+                            || string.IsNullOrEmpty(receiptItems) || string.IsNullOrWhiteSpace(receiptItems)
+                            || tagId == null)
+                        {
+                            return Json(new
+                            {
+                                status = 405,
+                                message = "Something went wrong, try again later."
+                            }, JsonRequestBehavior.AllowGet);
+
+                        }
+                        decimal totalSum =receiptTotalSum;
+
+                        Receipt receipt = db.Receipts.FirstOrDefault(r => r.OriginalReceiptId == Id);
+                        if (receipt == null)
+                        {
+                            return Json(new
+                            {
+                                status = 405,
+                                message = "Receipt doesn't exist."
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+
+                        StoreTag existingTag = db.StoreTags.FirstOrDefault(st => st.Id == tagId);
+                        if (existingTag == null)
+                        {
+                            return Json(new
+                            {
+                                status = 405,
+                                message = "This category doesn't exist."
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+
+                        receipt.TotalSum = totalSum;
+                        receipt.StoreTagId = existingTag.Id;
+                        db.Entry(receipt).Property(c => c.TotalSum).IsModified = true;
+                        db.Entry(receipt).Property(c => c.StoreTagId).IsModified = true;
+                        db.SaveChanges();
+
+                        foreach (ReceiptItem item in db.ReceiptItems.Where(ri=> ri.ReceiptId==receipt.Id).ToList())
+                        {
+                            db.ReceiptItems.Remove(item);
+                        }
+                        db.SaveChanges();
+
+                        List<Models.DataModels.ReceiptItem> items = JsonConvert.DeserializeObject<List<Models.DataModels.ReceiptItem>>(receiptItems);
+
+                        foreach (var item in items)
+                        {
+                            Item item1 = db.Items.FirstOrDefault(i => i.ItemStoreCode == item.itemCode && i.StoreId == receipt.Store.Id);
+                            if (item1 == null)
+                            {
+                                Item newItem = new Item();
+                                newItem.Name = item.itemName;
+                                newItem.StoreId = receipt.Store.Id;
+                                newItem.ItemStoreCode = item.itemCode;
+                                newItem.CreationDate = DateTime.Now;
+                                db.Items.Add(newItem);
+                                db.SaveChanges();
+                            }
+                            item1 = db.Items.FirstOrDefault(i => i.ItemStoreCode == item.itemCode && i.StoreId == receipt.Store.Id);
+
+                            ReceiptItem receiptItem = new ReceiptItem();
+                            receiptItem.ReceiptId = receipt.Id;
+                            receiptItem.ItemId = item1.Id;
+                            receiptItem.Quantity = item.itemQuantity;
+                            receiptItem.Price = item.itemPrice;
+                            db.ReceiptItems.Add(receiptItem);
+                        }
+                        db.SaveChanges();
+                        
+                        return Json(new
+                        {
+                            status = 200,
+                            message = "Receipt details updated successfully."
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            status = 405,
+                            message = "Account needs to be verified"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        status = 405,
+                        message = "Account doesn't exist."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = 404,
+                    message = "Invalid token."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [HttpPost]
         public JsonResult GetReceipts(int? limit)
@@ -300,7 +420,7 @@ namespace ExpenseTrackerBackend.Controllers
                         return Json(new
                         {
                             status = 200,
-                            receiptData = user.Receipts.Where(r=> r.OriginalReceiptId==originalReceiptId).Select(r => new { storeName = r.Store.Name, storeAddress= r.Store.Address, storeTaxNumber = r.Store.TaxNumber, r.OriginalReceiptId,r.PurchaseDate, r.CreationDate, r.TotalSum, r.StoreTagId, receiptItems = r.ReceiptItems.Select(ri=> new {ri.Id, ri.Item.ItemStoreCode, itemName= ri.Item.Name, itemQuantity= ri.Quantity, itemPrice=ri.Price, itemSum = ri.Quantity * ri.Price}).ToList() }).ToList()
+                            receiptData = user.Receipts.Where(r=> r.OriginalReceiptId==originalReceiptId).Select(r => new { storeName = r.Store.Name, storeAddress= r.Store.Address, storeTaxNumber = r.Store.TaxNumber, r.OriginalReceiptId,r.PurchaseDate, r.CreationDate, r.TotalSum, r.StoreTagId, receiptItems = r.ReceiptItems.Select(ri=> new { itemCode = ri.Item.ItemStoreCode, itemName= ri.Item.Name, itemQuantity= ri.Quantity, itemPrice=ri.Price, itemSum = ri.Quantity * ri.Price}).ToList() }).ToList()
                         }, JsonRequestBehavior.AllowGet);
                     }
                     else

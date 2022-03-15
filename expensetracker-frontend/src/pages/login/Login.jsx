@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
     Box,
     Text,
@@ -16,7 +16,6 @@ import secureLs from "../../common/helper";
 import {useNavigate} from 'react-router-dom';
 function Login(props) {
     const navigate = useNavigate();
-    const [credentialError, setcredentialError] = useState("");
     const emailAddressRef = useRef();
     const passwordRef = useRef();
 
@@ -36,10 +35,12 @@ function Login(props) {
                     props.onLoginSuccess();
                     secureLs.set("Authorization", response.data.token);
                     navigate('/dashboard');
+                }else{
+                    alert(response.data.message);
                 }
             })
             .catch((error) => {
-                setcredentialError("Please, enter your credentials correctly.");
+                alert("Please, enter your credentials correctly.");
 
                 // ONLY FOR TESTING
                 props.onLoginSuccess();

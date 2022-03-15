@@ -18,6 +18,14 @@ export default class ReceiptService {
         }
         return axios.post(API_URL+"/Receipts/Create", body,config);
     }
+    update(body) {
+        let config = {
+            headers : {
+                Authorization : secureLs.get("Authorization"),
+            }
+        }
+        return axios.post(API_URL+"/Receipts/Update", body,config);
+    }
 
     getReceipts(limit){
         let config = {

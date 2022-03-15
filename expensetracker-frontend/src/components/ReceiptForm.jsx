@@ -28,7 +28,6 @@ import {
 } from '@chakra-ui/react';
 import { React, useState, useRef, useEffect } from 'react'
 import { RepeatIcon, DeleteIcon, CalendarIcon,AddIcon } from '@chakra-ui/icons'
-import axios from "axios"
 import StoreTagService from '../api/StoreTagService';
 import ReceiptService from "../api/ReceiptService";
 export default function ReceiptForm({ receipt, receiptCallback }) {
@@ -62,8 +61,8 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
     }
 
     const updateFieldChanged = index => e => {
-        let updatedReceiptItems = modifiedReceipt.receiptItems; // copying the old datas array
-        updatedReceiptItems[index].itemQuantity = parseFloat(e || 0); // replace e.target.value with whatever you want to change it to
+        let updatedReceiptItems = modifiedReceipt.receiptItems;
+        updatedReceiptItems[index].itemQuantity = parseFloat(e || 0);
         updatedReceiptItems[index].itemSum = updatedReceiptItems[index].itemQuantity * modifiedReceipt.receiptItems[index].itemPrice;
         setModifiedReceiptData({
             ...receipt,
@@ -87,20 +86,33 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
         //console.log(modifiedReceipt);
         const formData = new FormData();
         formData.append("Id", modifiedReceipt.Id);
-        formData.append("storeName", modifiedReceipt.storeName); 
-        formData.append("storeAddress", modifiedReceipt.storeAddress);
-        formData.append("storeTaxNumber", modifiedReceipt.storeTaxNumber);
-        formData.append("companyName", modifiedReceipt.companyName);
-        formData.append("companyTaxNumber", modifiedReceipt.companyTaxNumber); 
+
+        if(!modifiedReceipt.existing){
+            formData.append("storeName", modifiedReceipt.storeName); 
+            formData.append("storeAddress", modifiedReceipt.storeAddress);
+            formData.append("storeTaxNumber", modifiedReceipt.storeTaxNumber);
+            formData.append("companyName", modifiedReceipt.companyName);
+            formData.append("companyTaxNumber", modifiedReceipt.companyTaxNumber); 
+            formData.append("receiptTimestamp", modifiedReceipt.receiptTimestamp);
+            formData.append("existing", modifiedReceipt.existing);
+        }
         formData.append("receiptTotalSum", modifiedReceipt.receiptTotalSum);
-        formData.append("receiptTimestamp", modifiedReceipt.receiptTimestamp);
         formData.append("receiptItems", JSON.stringify(modifiedReceipt.receiptItems)); 
-        formData.append("existing", modifiedReceipt.existing);
         formData.append("tagId", modifiedReceipt.tagId);
         let receiptService = new ReceiptService();
-        receiptService
-        .create(formData)
-        .then(response => console.log(response.data));
+
+        if(modifiedReceipt.existing){
+            for (var pair of formData.entries()) {
+                console.log(pair[0]+ ', ' + pair[1]); 
+            }
+            receiptService
+            .update(formData)
+            .then(response => console.log(response.data));
+        }else{
+            receiptService
+            .create(formData)
+            .then(response => console.log(response.data));
+        }
 
     }
     return (
@@ -121,7 +133,7 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                 <FormControl isRequired>
                     <FormLabel htmlFor='merchantCategory'>Merchant Category</FormLabel>
                     <Select id='merchantCategory' placeholder='Choose Category' size='sm' onChange={updateCategoryChanged} value={modifiedReceipt.tagId}>
-                        {receiptCategories.map((category) => <option value={category.Id}>{category.Name}</option>)}
+                        {receiptCategories.map((category,index) => <option key={index} value={category.Id}>{category.Name}</option>)}
                     </Select>
                 </FormControl>
             </Flex>

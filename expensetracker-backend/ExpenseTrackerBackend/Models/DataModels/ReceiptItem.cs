@@ -7,14 +7,14 @@ namespace ExpenseTrackerBackend.Models.DataModels
 {
     public class ReceiptItem
     {
-        public int itemNumber;
+        public int? itemNumber;
         public string itemName;
-        public int itemCodeType;
+        public int? itemCodeType;
         public decimal itemQuantity;
         public string itemCode;
         public decimal itemPrice;
-        public string itemSum;
-        public int itemVatPercent;
+        public decimal itemSum;
+        public int? itemVatPercent;
 
     }
 }
