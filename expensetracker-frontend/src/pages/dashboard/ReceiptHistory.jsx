@@ -5,6 +5,7 @@ import {
   Table,
   Thead,
   Tbody,
+  Center,
   Tag,
   Tr,
   Th,
@@ -148,7 +149,50 @@ export default function ReceiptHistory() {
     useTable({ columns, data, initialState }, useSortBy)
 
   if (data.length === 0 && !loading) {
-    return <div>There are no receipts</div>;
+    return (
+      <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
+      <Table {...getTableProps()}
+        colorScheme={'gray'}
+        fontSize={'sm'}>
+        <TableCaption placement={'top'} fontSize={'2xl'}>
+          <HStack justifyContent={'space-between'}>
+            <Text>Receipt History</Text>
+            <HStack>
+              <Button colorScheme='teal' variant='outline' onClick={() => navigate('/receipts')}>
+                <ViewIcon boxSize={"1.5em"} />
+              </Button>
+              <NewReceipt />
+            </HStack>
+          </HStack>
+
+        </TableCaption>
+        <Thead>
+          {headerGroups.map((headerGroup) => (
+            <Tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <Th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  isNumeric={column.isNumeric}
+                >
+                  {column.render('Header')}
+                  <chakra.span pl='4'>
+                    {column.isSorted ? (
+                      column.isSortedDesc ? (
+                        <TriangleDownIcon aria-label='sorted descending' />
+                      ) : (
+                        <TriangleUpIcon aria-label='sorted ascending' />
+                      )
+                    ) : null}
+                  </chakra.span>
+                </Th>
+              ))}
+            </Tr>
+          ))}
+        </Thead>
+      </Table>
+      <Center>There are no receipts yet</Center>
+    </Box>
+    );
   }
   return (
     <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
