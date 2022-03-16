@@ -34,7 +34,7 @@ namespace ExpenseTrackerBackend.Controllers
                         return Json(new
                         {
                             status = 200,
-                            data = user.Receipts
+                            data = user.Receipts.OrderByDescending(r => r.CreationDate).Select(r => new { storeName = r.Store.Name, r.OriginalReceiptId, r.PurchaseDate, r.CreationDate, r.TotalSum, tagName = r.StoreTag.Name }).ToList()
                         }, JsonRequestBehavior.AllowGet);
                     }
                     else
@@ -231,7 +231,7 @@ namespace ExpenseTrackerBackend.Controllers
 
 
         [HttpPost]
-        public JsonResult Update(string Id, string receiptItems, decimal receiptTotalSum, int tagId)
+        public JsonResult Update(string Id, string receiptItems, string receiptTotalSum, int tagId)
         {
             string userEmail = Token.ValidateToken(HttpContext.Request.Headers.Get("Authorization"));
             if (userEmail != null)
@@ -253,7 +253,7 @@ namespace ExpenseTrackerBackend.Controllers
                             }, JsonRequestBehavior.AllowGet);
 
                         }
-                        decimal totalSum =receiptTotalSum;
+                        decimal totalSum =decimal.Parse(receiptTotalSum);
 
                         Receipt receipt = db.Receipts.FirstOrDefault(r => r.OriginalReceiptId == Id);
                         if (receipt == null)
@@ -280,14 +280,22 @@ namespace ExpenseTrackerBackend.Controllers
                         db.Entry(receipt).Property(c => c.TotalSum).IsModified = true;
                         db.Entry(receipt).Property(c => c.StoreTagId).IsModified = true;
                         db.SaveChanges();
+                        List<Models.DataModels.ReceiptItem> items = JsonConvert.DeserializeObject<List<Models.DataModels.ReceiptItem>>(receiptItems);
 
+                        if (items.Count == 0)
+                        {
+                            return Json(new
+                            {
+                                status = 404,
+                                message = "Unable to remove all items from the receipt."
+                            }, JsonRequestBehavior.AllowGet);
+                        }
                         foreach (ReceiptItem item in db.ReceiptItems.Where(ri=> ri.ReceiptId==receipt.Id).ToList())
                         {
                             db.ReceiptItems.Remove(item);
                         }
                         db.SaveChanges();
 
-                        List<Models.DataModels.ReceiptItem> items = JsonConvert.DeserializeObject<List<Models.DataModels.ReceiptItem>>(receiptItems);
 
                         foreach (var item in items)
                         {
@@ -312,7 +320,7 @@ namespace ExpenseTrackerBackend.Controllers
                             db.ReceiptItems.Add(receiptItem);
                         }
                         db.SaveChanges();
-                        
+
                         return Json(new
                         {
                             status = 200,

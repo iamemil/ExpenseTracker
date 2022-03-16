@@ -221,6 +221,7 @@
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReceiptsController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\StoreTagsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -323,6 +324,7 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Company\" />
     <Folder Include="Views\Receipt\" />
+    <Folder Include="Views\Statistics\" />
     <Folder Include="Views\StoreTag\" />
   </ItemGroup>
   <ItemGroup>

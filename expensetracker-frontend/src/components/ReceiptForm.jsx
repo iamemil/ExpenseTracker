@@ -27,9 +27,12 @@ import {
     Tag
 } from '@chakra-ui/react';
 import { React, useState, useRef, useEffect } from 'react'
-import { RepeatIcon, DeleteIcon, CalendarIcon,AddIcon } from '@chakra-ui/icons'
+import { RepeatIcon, DeleteIcon, CalendarIcon, AddIcon } from '@chakra-ui/icons'
 import StoreTagService from '../api/StoreTagService';
 import ReceiptService from "../api/ReceiptService";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import "./ReceiptForm.css";
 export default function ReceiptForm({ receipt, receiptCallback }) {
     const [modifiedReceipt, setModifiedReceiptData] = useState(receipt);
     const [receiptCategories, setReceiptCategories] = useState([]);
@@ -39,18 +42,17 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
     useEffect(() => {
         let storeTagService = new StoreTagService();
         storeTagService.getStoreTags(true)
-        .then((response) => {
-            setReceiptCategories(response.data.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-     },[]);
-     
+            .then((response) => {
+                setReceiptCategories(response.data.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
     function removeItemFromList() {
         let updatedReceiptItems = modifiedReceipt.receiptItems; // copying the old datas array
         updatedReceiptItems.splice(removeItemConfirm.itemIndex, 1); // remove the item from the array
-        //setModifiedReceiptData()
         setModifiedReceiptData({
             ...receipt,
             receiptTotalSum: parseFloat(updatedReceiptItems.reduce((a, b) => parseFloat(a) + parseFloat(b.itemSum), 0)).toFixed(2),
@@ -76,42 +78,72 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
         const tag = event.target.value
         setModifiedReceiptData({
             ...receipt,
-            tagId : parseInt(tag)
+            tagId: parseInt(tag)
         });
         receiptCallback(modifiedReceipt);
     }
-    //https://en66yiq4aanyija.m.pipedream.net
     const handleFormSubmit = event => {
         event.preventDefault();
-        //console.log(modifiedReceipt);
         const formData = new FormData();
+        const MySwal = withReactContent(Swal);
         formData.append("Id", modifiedReceipt.Id);
 
-        if(!modifiedReceipt.existing){
-            formData.append("storeName", modifiedReceipt.storeName); 
+        if (!modifiedReceipt.existing) {
+            formData.append("storeName", modifiedReceipt.storeName);
             formData.append("storeAddress", modifiedReceipt.storeAddress);
             formData.append("storeTaxNumber", modifiedReceipt.storeTaxNumber);
             formData.append("companyName", modifiedReceipt.companyName);
-            formData.append("companyTaxNumber", modifiedReceipt.companyTaxNumber); 
+            formData.append("companyTaxNumber", modifiedReceipt.companyTaxNumber);
             formData.append("receiptTimestamp", modifiedReceipt.receiptTimestamp);
             formData.append("existing", modifiedReceipt.existing);
         }
         formData.append("receiptTotalSum", modifiedReceipt.receiptTotalSum);
-        formData.append("receiptItems", JSON.stringify(modifiedReceipt.receiptItems)); 
+        formData.append("receiptItems", JSON.stringify(modifiedReceipt.receiptItems));
         formData.append("tagId", modifiedReceipt.tagId);
         let receiptService = new ReceiptService();
 
-        if(modifiedReceipt.existing){
-            for (var pair of formData.entries()) {
-                console.log(pair[0]+ ', ' + pair[1]); 
-            }
+        if (modifiedReceipt.existing) {
             receiptService
-            .update(formData)
-            .then(response => console.log(response.data));
-        }else{
+                .update(formData)
+                .then((response) => {
+                    if(response.data.status==200){
+                        MySwal.fire({
+                            title: 'Success!',
+                            text: response.data.message,
+                            icon: 'success',
+                            confirmButtonColor: '#319795'
+                        });
+                    }else{
+                        MySwal.fire({
+                            title: 'Error',
+                            text: response.data.message,
+                            icon: 'error',
+                            confirmButtonColor: '#319795'
+                        });
+                    }
+                    
+                });
+        } else {
             receiptService
-            .create(formData)
-            .then(response => console.log(response.data));
+                .create(formData)
+                .then((response) => {
+                    if(response.data.status==200){
+                        MySwal.fire({
+                            title: 'Success!',
+                            text: response.data.message,
+                            icon: 'success',
+                            confirmButtonColor: '#319795'
+                        });
+                    }else{
+                        MySwal.fire({
+                            title: 'Error',
+                            text: response.data.message,
+                            icon: 'error',
+                            confirmButtonColor: '#319795'
+                        });
+                    }
+                    
+                });
         }
 
     }
@@ -133,7 +165,7 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                 <FormControl isRequired>
                     <FormLabel htmlFor='merchantCategory'>Merchant Category</FormLabel>
                     <Select id='merchantCategory' placeholder='Choose Category' size='sm' onChange={updateCategoryChanged} value={modifiedReceipt.tagId}>
-                        {receiptCategories.map((category,index) => <option key={index} value={category.Id}>{category.Name}</option>)}
+                        {receiptCategories.map((category, index) => <option key={index} value={category.Id}>{category.Name}</option>)}
                     </Select>
                 </FormControl>
             </Flex>
@@ -178,14 +210,14 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                 <Tag colorScheme='teal'><CalendarIcon color={'black.600'} mr={2} />{modifiedReceipt.receiptTimestamp}</Tag>
             </Flex>
             {(() => {
-                if(modifiedReceipt.existing){
+                if (modifiedReceipt.existing) {
                     return (
-                    <Button colorScheme={'teal'} width={'100%'} mt={4} leftIcon={<RepeatIcon />} type='submit'>Update Receipt</Button>
+                        <Button colorScheme={'teal'} width={'100%'} mt={4} leftIcon={<RepeatIcon />} type='submit'>Update Receipt</Button>
                     );
-                }else{
+                } else {
                     return (
                         <Button colorScheme={'teal'} width={'100%'} mt={4} leftIcon={<AddIcon />} type='submit'>Add Receipt</Button>
-                        );
+                    );
                 }
             })()}
 

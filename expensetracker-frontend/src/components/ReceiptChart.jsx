@@ -2,148 +2,37 @@ import {
     Box,
     Text
 } from '@chakra-ui/react';
-import { React } from 'react';
+import { React, useState, useEffect } from 'react';
+import StatisticsService from '../api/StatisticsService';
+import randomColor from "randomcolor";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 export default function ReceiptChart() {
     const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState([]);
 
-    const data = [
-        {
-            id: 1,
-            name: "Food&Drink",
-            color: "#82ca9d",
-            data: [
-                {
-                    year: 2022,
-                    month: 1,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 2,
-                    amount: 20
-                },
-                {
-                    year: 2022,
-                    month: 3,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 4,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 5,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 6,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 7,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 8,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 9,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 10,
-                    amount: 300
-                },
-                {
-                    year: 2022,
-                    month: 11,
-                    amount: 30
-                },
-                {
-                    year: 2022,
-                    month: 12,
-                    amount: 100
-                }
-            ]
-        },
-        {
-            id: 2,
-            name: "Shopping",
-            color: "#8884d8",
-            data: [
-                {
-                    year: 2022,
-                    month: 1,
-                    amount: 20
-                },
-                {
-                    year: 2022,
-                    month: 2,
-                    amount: 60
-                },
-                {
-                    year: 2022,
-                    month: 3,
-                    amount: 200
-                },
-                {
-                    year: 2022,
-                    month: 4,
-                    amount: 150
-                },
-                {
-                    year: 2022,
-                    month: 5,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 6,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 7,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 8,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 9,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 10,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 11,
-                    amount: 100
-                },
-                {
-                    year: 2022,
-                    month: 12,
-                    amount: 100
-                }
-            ]
-        }
-    ];
+    let statisticsService = new StatisticsService();
+    
+    useEffect(() => {
+        setLoading(true);
+        statisticsService.getStatistics()
+        .then((response) => {
+            var data = response.data.data.map(item =>
+            ({
+                id: item.tagId,
+                name: item.tagName,
+                data: item.data
+            })
+            )
+            setData(data)
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        .finally(() => setLoading(false));
+    }, []);
+
     return (
         <Box border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} height={'400px'} py={6} mb={4}>
             <Text fontSize={'2xl'} color={'gray.800'} mb={2} pl={6}>Expenses Chart</Text>
@@ -161,14 +50,17 @@ export default function ReceiptChart() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month"
                         allowDuplicatedCategory={false}
+                        type="number"
+                        domain={[1, 12]}
+                        tickCount={12}
                         tickFormatter={(value) => {
                             return shortMonths[value - 1];
 
                         }} />
                     <YAxis dataKey="amount" tickFormatter={(value) => {
-                            return `${value} ₼`;
+                        return `${value} ₼`;
 
-                        }} />
+                    }} />
                     <Tooltip
                         formatter={function (value, name) {
                             return `${value} ₼`;
@@ -178,7 +70,7 @@ export default function ReceiptChart() {
                         }} />
                     <Legend />
                     {data.map((category) => (
-                        <Line type="monotone" key={category.id} dataKey="amount" data={category.data} name={category.name} stroke={category.color} />
+                        <Line type="monotone" connectNulls={true} key={category.id} dataKey="amount" data={category.data} name={category.name} stroke={randomColor({luminosity: 'dark'})} />
                     ))}
                 </LineChart>
             </ResponsiveContainer>

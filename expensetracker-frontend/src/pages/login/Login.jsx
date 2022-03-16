@@ -11,13 +11,16 @@ import {
 } from '@chakra-ui/react';
 import AuthService from "../../api/AuthService";
 import { connect } from "react-redux";
-import {loginSuccessfull} from "../../redux/actions/authAction";
+import { loginSuccessfull } from "../../redux/actions/authAction";
 import secureLs from "../../common/helper";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 function Login(props) {
     const navigate = useNavigate();
     const emailAddressRef = useRef();
     const passwordRef = useRef();
+    const MySwal = withReactContent(Swal);
 
     const handleFormSubmit = event => {
         event.preventDefault();
@@ -35,13 +38,23 @@ function Login(props) {
                     props.onLoginSuccess();
                     secureLs.set("Authorization", response.data.token);
                     navigate('/dashboard');
-                }else{
-                    alert(response.data.message);
+                } else {
+                    MySwal.fire({
+                        title: 'Warning',
+                        text: response.data.message,
+                        icon: 'warning',
+                        confirmButtonColor: '#319795'
+                    });
+                    //alert(response.data.message);
                 }
             })
             .catch((error) => {
-                alert("Please, enter your credentials correctly.");
-
+                MySwal.fire({
+                    title: 'Error',
+                    text: error,
+                    icon: 'error',
+                    confirmButtonColor: '#319795'
+                });
                 // ONLY FOR TESTING
                 props.onLoginSuccess();
                 navigate('/dashboard');
