@@ -7,7 +7,7 @@ const configureStore = () => {
 
     let authState = {
         isLoggedIn: false,
-        newReceiptAdded: false
+        receiptDataModified: false
     };
     if (Auth) {
         authState = Auth;

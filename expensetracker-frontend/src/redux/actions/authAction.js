@@ -12,15 +12,15 @@ export const logoutSuccessfull = () => {
     }
 }
 
-export const newReceiptAdded = () => {
+export const receiptDataModified = () => {
     return {
-        type : AUTH_CONSTANTS.RECEIPT_ADDED
+        type : AUTH_CONSTANTS.RECEIPT_DATA_MODIFIED
     }
 }
 
-export const newReceiptNotAdded = () => {
+export const receiptDataNotModified = () => {
     return {
-        type : AUTH_CONSTANTS.RECEIPT_NOT_ADDED
+        type : AUTH_CONSTANTS.RECEIPT_DATA_NOT_MODIFIED
     }
 }
 

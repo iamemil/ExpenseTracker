@@ -29,7 +29,7 @@ import {
 import { React, useState, useRef, useEffect } from 'react'
 import { RepeatIcon, DeleteIcon, CalendarIcon, AddIcon } from '@chakra-ui/icons'
 import { connect } from "react-redux";
-import { newReceiptAdded } from "../redux/actions/authAction";
+import { receiptDataModified } from "../redux/actions/authAction";
 import StoreTagService from '../api/StoreTagService';
 import ReceiptService from "../api/ReceiptService";
 import Swal from 'sweetalert2';
@@ -66,8 +66,8 @@ function ReceiptForm(props) {
         onRemoveItemDialogClose();
     }
 
-    function newReceipt(){
-        props.onNewAddedReceipt();
+    function modifyReceiptData(){
+        props.onReceiptDataModified();
     }
 
     const updateFieldChanged = index => e => {
@@ -115,7 +115,7 @@ function ReceiptForm(props) {
                 .update(formData)
                 .then((response) => {
                     if(response.data.status==200){
-                        newReceipt();
+                        modifyReceiptData();
                         MySwal.fire({
                             title: 'Success!',
                             text: response.data.message,
@@ -137,6 +137,7 @@ function ReceiptForm(props) {
                 .create(formData)
                 .then((response) => {
                     if(response.data.status==200){
+                        modifyReceiptData();
                         MySwal.fire({
                             title: 'Success!',
                             text: response.data.message,
@@ -261,7 +262,7 @@ function ReceiptForm(props) {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        onNewAddedReceipt: () => dispatch(newReceiptAdded())
+        onReceiptDataModified: () => dispatch(receiptDataModified())
     };
 };
 

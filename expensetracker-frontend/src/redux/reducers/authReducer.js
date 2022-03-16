@@ -3,7 +3,7 @@ import * as AUTH_CONSTANTS from "../constants";
 
 const authState = {
   isLoggedIn: false,
-  newReceiptAdded: false
+  receiptDataModified: false
 };
 const authReducer = (state = { ...authState }, action) => {
   if (action.type === AUTH_CONSTANTS.SUCCESSFULL_LOGIN) {
@@ -18,16 +18,16 @@ const authReducer = (state = { ...authState }, action) => {
       isLoggedIn: false
     };
   }
-  else if (action.type === AUTH_CONSTANTS.RECEIPT_ADDED) {
+  else if (action.type === AUTH_CONSTANTS.RECEIPT_DATA_MODIFIED) {
     return {
       ...state,
-      newReceiptAdded: true
+      receiptDataModified: true
     };
   }
-  else if (action.type === AUTH_CONSTANTS.RECEIPT_NOT_ADDED) {
+  else if (action.type === AUTH_CONSTANTS.RECEIPT_DATA_NOT_MODIFIED) {
     return {
       ...state,
-      newReceiptAdded: false
+      receiptDataModified: false
     };
   }
   return state;
