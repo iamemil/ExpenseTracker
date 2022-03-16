@@ -16,7 +16,7 @@ export default function ReceiptChart() {
     
     useEffect(() => {
         setLoading(true);
-        statisticsService.getStatistics()
+        statisticsService.getChartStatistics()
         .then((response) => {
             var data = response.data.data.map(item =>
             ({

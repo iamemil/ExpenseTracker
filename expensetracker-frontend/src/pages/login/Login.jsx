@@ -96,7 +96,7 @@ function Login(props) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onLoginSuccess: () => dispatch(loginSuccessfull()),
+        onLoginSuccess: () => dispatch(loginSuccessfull())
     };
 };
 

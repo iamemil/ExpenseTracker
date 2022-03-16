@@ -28,12 +28,16 @@ import {
 } from '@chakra-ui/react';
 import { React, useState, useRef, useEffect } from 'react'
 import { RepeatIcon, DeleteIcon, CalendarIcon, AddIcon } from '@chakra-ui/icons'
+import { connect } from "react-redux";
+import { newReceiptAdded } from "../redux/actions/authAction";
 import StoreTagService from '../api/StoreTagService';
 import ReceiptService from "../api/ReceiptService";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import "./ReceiptForm.css";
-export default function ReceiptForm({ receipt, receiptCallback }) {
+function ReceiptForm(props) {
+    const receipt = props.receipt;
+    const receiptCallback = props.receiptCallback;
     const [modifiedReceipt, setModifiedReceiptData] = useState(receipt);
     const [receiptCategories, setReceiptCategories] = useState([]);
     const [removeItemConfirm, setRemoveItemConfirm] = useState({ isConfirmOpen: false, itemIndex: null });
@@ -60,6 +64,10 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
         });
         receiptCallback(modifiedReceipt);
         onRemoveItemDialogClose();
+    }
+
+    function newReceipt(){
+        props.onNewAddedReceipt();
     }
 
     const updateFieldChanged = index => e => {
@@ -107,6 +115,7 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
                 .update(formData)
                 .then((response) => {
                     if(response.data.status==200){
+                        newReceipt();
                         MySwal.fire({
                             title: 'Success!',
                             text: response.data.message,
@@ -250,3 +259,10 @@ export default function ReceiptForm({ receipt, receiptCallback }) {
         </form>
     );
 }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onNewAddedReceipt: () => dispatch(newReceiptAdded())
+    };
+};
+
+export default connect(null, mapDispatchToProps)(ReceiptForm);

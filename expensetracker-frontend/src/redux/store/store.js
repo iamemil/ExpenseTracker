@@ -6,7 +6,8 @@ const configureStore = () => {
     const Auth = secureLs.get("auth");
 
     let authState = {
-        isLoggedIn: false
+        isLoggedIn: false,
+        newReceiptAdded: false
     };
     if (Auth) {
         authState = Auth;
