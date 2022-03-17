@@ -7,7 +7,9 @@ import {
     StatLabel,
     StatNumber,
     StatHelpText,
-    Box
+    Box,
+    Skeleton,
+    Text
 } from '@chakra-ui/react';
 import ReceiptHistory from "./ReceiptHistory";
 import { useState, useEffect } from "react";
@@ -41,18 +43,28 @@ function Dashboard(props) {
                 <StatGroup border='1px' borderColor='gray.100' borderRadius='15px' boxShadow={'xl'} p={6} my={6}>
                     <Stat>
                         <StatLabel>Total Spent</StatLabel>
+                        <Skeleton width={'120px'} height={'36px'}>
                         <StatNumber>Loading...</StatNumber>
+                        </Skeleton>
                         <StatHelpText>All time</StatHelpText>
                     </Stat>
                     <Stat>
                         <StatLabel mb={2}>Top Category</StatLabel>
+                        <Skeleton width={'80px'} height={'30px'}>
                         <Tag colorScheme='teal'>Loading...</Tag>
+                        </Skeleton>
+                        <Skeleton width={'120px'} height={'24px'}>
                         <StatHelpText mt={2}>Total Spent: Loading... </StatHelpText>
+                        </Skeleton>
                     </Stat>
                     <Stat>
                         <StatLabel>Top Merchant</StatLabel>
+                        <Skeleton width={'120px'} height={'36px'}>
                         <StatNumber>Loading...</StatNumber>
+                        </Skeleton>
+                        <Skeleton mt={2} width={'120px'} height={'24px'}>
                         <StatHelpText>Total: Loading...</StatHelpText>
+                        </Skeleton>
                     </Stat>
                 </StatGroup>
                 <Center width={'full'} my={6}>

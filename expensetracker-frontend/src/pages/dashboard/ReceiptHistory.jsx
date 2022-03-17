@@ -155,7 +155,9 @@ function ReceiptHistory(props) {
 
   if (data.length === 0 && !loading) {
     return (
-      <><Table {...getTableProps()}
+      <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
+
+      <Table {...getTableProps()}
         colorScheme={'gray'}
         fontSize={'sm'}>
         <TableCaption placement={'top'} fontSize={'2xl'}>
@@ -193,7 +195,9 @@ function ReceiptHistory(props) {
             </Tr>
           ))}
         </Thead>
-      </Table><Center>There are no receipts yet</Center></>
+      </Table>
+      <Center>There are no receipts yet</Center>
+      </Box>
     );
   }
   return (

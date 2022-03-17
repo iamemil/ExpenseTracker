@@ -139,7 +139,7 @@ function Receipts(props) {
                         setValue(e.target.value);
                         onChange(e.target.value);
                     }}
-                    placeholder={`${data.length} records...`}
+                    placeholder={`${data.length} receipts...`}
                     style={{
                         fontSize: '1.1rem',
                         border: '0',
