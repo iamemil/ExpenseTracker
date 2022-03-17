@@ -9,20 +9,23 @@ import {
     StatHelpText,
     Box,
     Skeleton,
-    Text
+    SimpleGrid
 } from '@chakra-ui/react';
 import { useState, useEffect } from "react";
 import ReceiptChart from "../../components/ReceiptChart";
 import StatisticsService from '../../api/StatisticsService';
 import { connect  } from "react-redux";
 import { receiptDataNotModified } from '../../redux/actions/authAction';
+import StatisticsTable from "./StatisticsTable";
 function Statistics(props) {
     const [totalStats, setTotalStats] = useState([]);
-    function updateDashboard(){
+    function updateStatistics(){
         let statisticsService = new StatisticsService();
         statisticsService.getTotalStatistics()
             .then((response) => {
-                setTotalStats(response.data.data);
+                if(response.data.status==200){
+                    setTotalStats(response.data.data);
+                }
                 if(props.store.receiptDataModified){
                     props.onReceiptDataNotModified();
                 }
@@ -32,7 +35,7 @@ function Statistics(props) {
             });
     }
     useEffect(() => {
-        updateDashboard();
+        updateStatistics();
     }, [props.store.receiptDataModified]);
 
     
@@ -66,6 +69,13 @@ function Statistics(props) {
                         </Skeleton>
                     </Stat>
                 </StatGroup>
+                <SimpleGrid columns={[1, null, 2]} spacing='20px' my={6}>
+                <StatisticsTable data={totalStats.topCategories} tableName={"Category Ranking"} />
+                <StatisticsTable data={totalStats.topStores} tableName={"Store Ranking"} />
+            </SimpleGrid>
+            <Center>
+                <ReceiptChart datepickerEnabled={true} />
+            </Center>
             </Box>
         );
     }
@@ -89,8 +99,12 @@ function Statistics(props) {
                     <StatHelpText>Total: {totalStats.topStores[0].Amount} ₼</StatHelpText>
                 </Stat>
             </StatGroup>
+            <SimpleGrid columns={[1, null, 2]} spacing='20px' my={6}>
+                <StatisticsTable data={totalStats.topCategories} tableName={"Category Ranking"} />
+                <StatisticsTable data={totalStats.topStores} tableName={"Store Ranking"} />
+            </SimpleGrid>
             <Center>
-                <ReceiptChart />
+                <ReceiptChart datepickerEnabled={true} />
             </Center>
         </Box>
     )

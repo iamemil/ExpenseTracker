@@ -28,14 +28,26 @@ namespace ExpenseTrackerBackend.Controllers
                 {
                     if (user.IsActive)
                     {
-                        var totalSpent = db.Receipts.Where(r => r.UserId == user.Id).Sum(r => r.TotalSum);
-                        var topCategories = db.Receipts.Where(r => r.UserId == user.Id).Select(r => new { r.StoreTag.Name, r.TotalSum }).GroupBy(x => new { x.Name }, (key, group) => new {key.Name, Amount = group.Sum(c => c.TotalSum) }).OrderByDescending(k=> k.Amount).ToList();
-                        var topStores = db.Receipts.Where(r => r.UserId == user.Id).Select(r => new { r.Store.Name, r.TotalSum }).GroupBy(x => new { x.Name }, (key, group) => new { key.Name, Amount = group.Sum(c => c.TotalSum) }).OrderByDescending(k => k.Amount).ToList();
-                        return Json(new
+                        if(user.Receipts.Count() > 0)
                         {
-                            status = 200,
-                            data = new {totalSpent, topCategories, topStores }
-                        }, JsonRequestBehavior.AllowGet);
+                            var totalSpent = db.Receipts.Where(r => r.UserId == user.Id).Sum(r => r.TotalSum);
+                            var topCategories = db.Receipts.Where(r => r.UserId == user.Id).Select(r => new { r.StoreTag.Name, r.TotalSum }).GroupBy(x => new { x.Name }, (key, group) => new { key.Name, Amount = group.Sum(c => c.TotalSum) }).OrderByDescending(k => k.Amount).ToList();
+                            var topStores = db.Receipts.Where(r => r.UserId == user.Id).Select(r => new { r.Store.Name, r.TotalSum }).GroupBy(x => new { x.Name }, (key, group) => new { key.Name, Amount = group.Sum(c => c.TotalSum) }).OrderByDescending(k => k.Amount).ToList();
+                            return Json(new
+                            {
+                                status = 200,
+                                data = new { totalSpent, topCategories, topStores }
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return Json(new
+                            {
+                                status = 405,
+                                message = "There are no receipts"
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+
                     }
                     else
                     {
@@ -66,7 +78,7 @@ namespace ExpenseTrackerBackend.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetChartStatistics(DateTime? beginDate, DateTime? endDate)
+        public JsonResult GetChartStatistics(int? year)
         {
             string userEmail = Token.ValidateToken(HttpContext.Request.Headers.Get("Authorization"));
             if (userEmail != null)
@@ -76,13 +88,25 @@ namespace ExpenseTrackerBackend.Controllers
                 {
                     if (user.IsActive)
                     {
-                        var Expenses = db.Receipts.Where(r => r.UserId == user.Id).Select(re => new {re.PurchaseDate.Year, re.PurchaseDate.Month,re.StoreTag.Name,re.StoreTagId,re.TotalSum }).GroupBy(x => new{ x.StoreTagId, x.Name}, (key,group) => new {tagId = key.StoreTagId, tagName = key.Name, data = group.GroupBy(q=> new {q.Year, q.Month }, (kkey,ggroup) => new{ year = kkey.Year, month=kkey.Month, amount=ggroup.Sum(c => c.TotalSum) }) }).ToList();
-
-                        return Json(new
+                        if (user.Receipts.Count() > 0)
                         {
-                            status = 200,
-                            data = Expenses
-                        }, JsonRequestBehavior.AllowGet);
+                            var Expenses = db.Receipts.Where(r => r.UserId == user.Id && (year.HasValue ? r.PurchaseDate.Year == year.Value : true)).Select(re => new { re.PurchaseDate.Year, re.PurchaseDate.Month, re.StoreTag.Name, re.StoreTagId, re.TotalSum }).GroupBy(x => new { x.StoreTagId, x.Name }, (key, group) => new { tagId = key.StoreTagId, tagName = key.Name, data = group.GroupBy(q => new { q.Year, q.Month }, (kkey, ggroup) => new { year = kkey.Year, month = kkey.Month, amount = ggroup.Sum(c => c.TotalSum) }) }).ToList();
+
+                            return Json(new
+                            {
+                                status = 200,
+                                data = Expenses
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return Json(new
+                            {
+                                status = 405,
+                                message = "There are no receipts"
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        
                     }
                     else
                     {

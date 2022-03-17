@@ -94,7 +94,7 @@ namespace ExpenseTrackerBackend.Controllers
             lastName = sanitizer.Sanitize(lastName.Trim());
             emailAddress = emailAddress.Trim();
             emailAddress = emailAddress.ToLower();
-            mobileNumber = "+" + mobileNumber.Trim();
+            mobileNumber = mobileNumber.Trim();
             if (firstName.Length < 3)
             {
                 return Json(new
@@ -130,7 +130,7 @@ namespace ExpenseTrackerBackend.Controllers
                 return Json(new
                 {
                     status = 405,
-                    message = "Invalid Email Address"
+                    message = "Invalid Email Address" + mobileNumber
                 }, JsonRequestBehavior.AllowGet);
             }
 
@@ -146,6 +146,7 @@ namespace ExpenseTrackerBackend.Controllers
                     message = "Invalid mobile number"
                 }, JsonRequestBehavior.AllowGet);
             }
+            
 
 
             User userExists = db.Users.FirstOrDefault(c => c.EmailAddress == emailAddress);
@@ -178,8 +179,9 @@ namespace ExpenseTrackerBackend.Controllers
 
             return Json(new
             {
-                status = 200
-            });
+                status = 200,
+                message="Account created"
+            }, JsonRequestBehavior.AllowGet);
         }
 
 

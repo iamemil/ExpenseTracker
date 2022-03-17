@@ -23,10 +23,9 @@ import {
     Button,
     useDisclosure
 } from '@chakra-ui/react';
-import { TriangleDownIcon, TriangleUpIcon, ViewIcon } from '@chakra-ui/icons'
+import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { useTable, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import { useState, useCallback, useEffect } from 'react'
-import NewReceipt from '../../components/NewReceipt';
 import ReceiptForm from '../../components/ReceiptForm';
 import ReceiptService from '../../api/ReceiptService';
 import { useNavigate } from 'react-router-dom';

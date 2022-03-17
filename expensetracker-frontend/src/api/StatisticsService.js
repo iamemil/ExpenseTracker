@@ -4,13 +4,13 @@ import secureLs from "../common/helper";
 export default class StatisticsService {
 
 
-    getChartStatistics(){
+    getChartStatistics(year){
         let config = {
             headers : {
                 Authorization : secureLs.get("Authorization"),
             }
         }
-        return axios.post(API_URL+"/Statistics/GetChartStatistics",null,config);
+        return axios.post(API_URL+"/Statistics/GetChartStatistics","year="+year,config);
     }
 
     getTotalStatistics(){

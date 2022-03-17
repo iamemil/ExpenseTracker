@@ -23,7 +23,9 @@ function Dashboard(props) {
         let statisticsService = new StatisticsService();
         statisticsService.getTotalStatistics()
             .then((response) => {
-                setTotalStats(response.data.data);
+                if(response.data.status==200){
+                    setTotalStats(response.data.data);
+                }
                 if(props.store.receiptDataModified){
                     props.onReceiptDataNotModified();
                 }
@@ -71,7 +73,7 @@ function Dashboard(props) {
                     <ReceiptHistory />
                 </Center>
                 <Center width={'full'} my={6}>
-                    <ReceiptChart />
+                    <ReceiptChart datepickerEnabled={false} />
                 </Center>
             </Box>
         );

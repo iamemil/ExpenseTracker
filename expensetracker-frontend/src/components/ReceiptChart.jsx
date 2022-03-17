@@ -1,46 +1,59 @@
 import {
     Box,
-    Text
+    Text,
+    HStack
 } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
 import StatisticsService from '../api/StatisticsService';
 import randomColor from "randomcolor";
-import { connect  } from "react-redux";
+import { connect } from "react-redux";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./datepicker.css";
 import { receiptDataNotModified } from '../redux/actions/authAction';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 function ReceiptChart(props) {
+    const datepickerEnabled = props.datepickerEnabled;
     const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-
+    const [year, setYear] = useState(new Date());
     let statisticsService = new StatisticsService();
-    
+
     useEffect(() => {
         setLoading(true);
-        statisticsService.getChartStatistics()
-        .then((response) => {
-            var data = response.data.data.map(item =>
-            ({
-                id: item.tagId,
-                name: item.tagName,
-                data: item.data
+        statisticsService.getChartStatistics(datepickerEnabled ? year.getFullYear() : null)
+            .then((response) => {
+                var data = response.data.data.map(item =>
+                ({
+                    id: item.tagId,
+                    name: item.tagName,
+                    data: item.data
+                })
+                )
+                setData(data);
+                if (props.store.receiptDataModified) {
+                    props.onReceiptDataNotModified();
+                }
             })
-            )
-            setData(data);
-            if(props.store.receiptDataModified){
-                props.onReceiptDataNotModified();
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-        .finally(() => setLoading(false));
-    }, [props.store.receiptDataModified]);
-
+            .catch((error) => {
+                console.log(error);
+            })
+            .finally(() => setLoading(false));
+    }, [props.store.receiptDataModified,year]);
     return (
         <Box border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} height={'400px'} py={6} mb={4}>
-            <Text fontSize={'2xl'} color={'gray.800'} mb={2} pl={6}>Expenses Chart</Text>
+            <HStack>
+                <Text fontSize={'2xl'} color={'gray.800'} mb={2} pl={6}>Expenses Chart</Text>
+                {datepickerEnabled ? (<>
+                    <Box>
+                        <DatePicker selected={year} onChange={(year) => setYear(year)}
+                            showYearPicker
+                            dateFormat="yyyy" />
+                    </Box>
+                </>) : null}
+            </HStack>
             <ResponsiveContainer width="100%" height="90%">
 
                 <LineChart width={500}
@@ -75,7 +88,7 @@ function ReceiptChart(props) {
                         }} />
                     <Legend />
                     {data.map((category) => (
-                        <Line type="monotone" connectNulls={true} key={category.id} dataKey="amount" data={category.data} name={category.name} stroke={randomColor({luminosity: 'dark'})} />
+                        <Line type="monotone" connectNulls={true} key={category.id} dataKey="amount" data={category.data} name={category.name} stroke={randomColor({ luminosity: 'dark' })} />
                     ))}
                 </LineChart>
             </ResponsiveContainer>
@@ -84,13 +97,13 @@ function ReceiptChart(props) {
 }
 function mapStateToProps(store) {
     return {
-      store
+        store
     };
-  };
-  
-  const mapDispatchToProps = dispatch => {
+};
+
+const mapDispatchToProps = dispatch => {
     return {
-      onReceiptDataNotModified: () => dispatch(receiptDataNotModified())
+        onReceiptDataNotModified: () => dispatch(receiptDataNotModified())
     }
-  }
+}
 export default connect(mapStateToProps, mapDispatchToProps)(ReceiptChart);

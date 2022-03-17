@@ -50,9 +50,8 @@ export default function Register() {
         authService
             .register(formData)
             .then((response) => {
-                if(response.data.status===200){
                     console.log(response.data.message);
-                }
+                
                 //history.replace("/dashboard");
             })
             .catch((error) => {
