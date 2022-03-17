@@ -30,7 +30,9 @@ import NewReceipt from '../../components/NewReceipt';
 import ReceiptForm from '../../components/ReceiptForm';
 import ReceiptService from '../../api/ReceiptService';
 import { useNavigate } from 'react-router-dom';
-export default function ReceiptHistory() {
+import { connect  } from "react-redux";
+import { receiptDataNotModified } from '../../redux/actions/authAction';
+function ReceiptHistory(props) {
   const receiptInitialState = {
     Id: "",
     storeName: "",
@@ -105,13 +107,16 @@ export default function ReceiptHistory() {
           spentAmount: receipt.TotalSum.toFixed(2),
         })
         )
-        setData(data)
+        setData(data);
+        if(props.store.receiptDataModified){
+          props.onReceiptDataNotModified();
+      }
       })
       .catch((error) => {
         console.log(error);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [props.store.receiptDataModified]);
 
   const columns = React.useMemo(
     () => [
@@ -271,3 +276,15 @@ export default function ReceiptHistory() {
     </Box>
   )
 }
+function mapStateToProps(store) {
+  return {
+    store
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onReceiptDataNotModified: () => dispatch(receiptDataNotModified())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ReceiptHistory);

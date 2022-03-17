@@ -5,8 +5,10 @@ import {
 import { React, useState, useEffect } from 'react';
 import StatisticsService from '../api/StatisticsService';
 import randomColor from "randomcolor";
+import { connect  } from "react-redux";
+import { receiptDataNotModified } from '../redux/actions/authAction';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-export default function ReceiptChart() {
+function ReceiptChart(props) {
     const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const [loading, setLoading] = useState(false);
@@ -25,13 +27,16 @@ export default function ReceiptChart() {
                 data: item.data
             })
             )
-            setData(data)
+            setData(data);
+            if(props.store.receiptDataModified){
+                props.onReceiptDataNotModified();
+            }
         })
         .catch((error) => {
             console.log(error);
         })
         .finally(() => setLoading(false));
-    }, []);
+    }, [props.store.receiptDataModified]);
 
     return (
         <Box border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} height={'400px'} py={6} mb={4}>
@@ -77,3 +82,15 @@ export default function ReceiptChart() {
         </Box>
     );
 }
+function mapStateToProps(store) {
+    return {
+      store
+    };
+  };
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+      onReceiptDataNotModified: () => dispatch(receiptDataNotModified())
+    }
+  }
+export default connect(mapStateToProps, mapDispatchToProps)(ReceiptChart);

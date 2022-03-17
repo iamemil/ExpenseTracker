@@ -13,7 +13,7 @@ import ReceiptHistory from "./ReceiptHistory";
 import { useState, useEffect } from "react";
 import StatisticsService from '../../api/StatisticsService';
 import ReceiptChart from "../../components/ReceiptChart";
-import { connect } from "react-redux";
+import { connect  } from "react-redux";
 import { receiptDataNotModified } from '../../redux/actions/authAction';
 function Dashboard(props) {
     const [totalStats, setTotalStats] = useState([]);
@@ -22,7 +22,9 @@ function Dashboard(props) {
         statisticsService.getTotalStatistics()
             .then((response) => {
                 setTotalStats(response.data.data);
-                props.onReceiptDataNotModified();
+                if(props.store.receiptDataModified){
+                    props.onReceiptDataNotModified();
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -30,9 +32,9 @@ function Dashboard(props) {
     }
     useEffect(() => {
         updateDashboard();
-    }, [props.store.newReceiptAdded]);
+    }, [props.store.receiptDataModified]);
 
-
+    
     if (totalStats.length === 0) {
         return (
             <Box mx='6'>
@@ -91,15 +93,15 @@ function Dashboard(props) {
         </Box>
     )
 }
-const mapStateToProps = (store) => {
+function mapStateToProps(store) {
     return {
-      store,
+        store
     };
-  };
-  
-  const mapDispatchToProps = dispatch => {
+};
+
+const mapDispatchToProps = dispatch => {
     return {
-      onReceiptDataNotModified: () => dispatch(receiptDataNotModified())
+        onReceiptDataNotModified: () => dispatch(receiptDataNotModified())
     }
-  }
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
