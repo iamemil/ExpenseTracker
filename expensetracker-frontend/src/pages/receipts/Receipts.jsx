@@ -200,15 +200,9 @@ function Receipts(props) {
                             colorScheme={'gray'}
                             fontSize={'sm'}>
                             <TableCaption placement={'top'} fontSize={'2xl'}>
-                                <HStack justifyContent={'space-between'}>
-                                    <Text>Receipt History</Text>
-                                    <HStack>
-                                        <Button colorScheme='teal' variant='outline' onClick={() => navigate('/receipts')}>
-                                            <ViewIcon boxSize={"1.5em"} />
-                                        </Button>
-                                        <NewReceipt />
-                                    </HStack>
-                                </HStack>
+                            <Center>
+                                <Text>My Receipts</Text>
+                            </Center>
 
                             </TableCaption>
                             <Thead>
