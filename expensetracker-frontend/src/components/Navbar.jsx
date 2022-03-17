@@ -85,6 +85,7 @@ const MenuLinks = ({ props, isOpen }) => {
         {props.store.isLoggedIn ? (<>
           <MenuItem to="/dashboard">Dashboard</MenuItem>
           <MenuItem to="/receipts">My Receipts</MenuItem>
+          <MenuItem to="/statistics">Statistics</MenuItem>
           <Button onClick={logoutHandler} size="sm"
             rounded="md"
             color={["primary.500", "primary.500", "white", "white"]}

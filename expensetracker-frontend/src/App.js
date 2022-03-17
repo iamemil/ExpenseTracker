@@ -6,6 +6,7 @@ import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Receipts from './pages/receipts/Receipts';
+import Statistics from './pages/statistics/Statistics';
 import {
   ChakraProvider,
 } from '@chakra-ui/react';
@@ -23,6 +24,7 @@ function App(props) {
         <>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route exact path="/receipts" element={<Receipts />} />
+        <Route exact path="/statistics" element={<Statistics />} />
         </>
         ) : (
           <>
