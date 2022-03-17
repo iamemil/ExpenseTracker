@@ -85,7 +85,9 @@ function Dashboard(props) {
                 </Stat>
             </StatGroup>
             <Center width={'full'} my={6}>
-                <ReceiptHistory />
+            <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
+            <ReceiptHistory />
+            </Box>
             </Center>
             <Center width={'full'} my={6}>
                 <ReceiptChart />

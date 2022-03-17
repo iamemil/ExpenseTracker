@@ -111,5 +111,63 @@ namespace ExpenseTrackerBackend.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        [HttpPost]
+        public JsonResult GetItemStatistics(int storeId, string itemStoreCode,DateTime? beginDate, DateTime? endDate)
+        {
+            string userEmail = Token.ValidateToken(HttpContext.Request.Headers.Get("Authorization"));
+            if (userEmail != null)
+            {
+                User user = db.Users.FirstOrDefault(u => u.EmailAddress == userEmail);
+                if (user != null)
+                {
+                    if (user.IsActive)
+                    {
+                        Item item = db.Items.FirstOrDefault(i => i.ItemStoreCode == itemStoreCode && i.StoreId==storeId);
+                        if (item == null)
+                        {
+                            return Json(new
+                            {
+                                status = 405,
+                                message = "This item doesn't exist"
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        var ItemData = item.ReceiptItems.Select(ri => new { ri.Price, ri.Receipt.PurchaseDate }).GroupBy(x => new { x.PurchaseDate }, (key, group) => new { key.PurchaseDate, Price= group.Select(c=> c.Price).First() }).ToList();
+                        return Json(new
+                        {
+                            status = 200,
+                            itemName = item.Name,
+                            storeName = item.Store.Name,
+                            data = ItemData
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            status = 405,
+                            message = "Account needs to be verified"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        status = 405,
+                        message = "Account doesn't exist."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = 404,
+                    message = "Invalid token."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
