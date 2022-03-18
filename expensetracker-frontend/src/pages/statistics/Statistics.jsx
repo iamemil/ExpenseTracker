@@ -14,31 +14,29 @@ import {
 import { useState, useEffect } from "react";
 import ReceiptChart from "../../components/ReceiptChart";
 import StatisticsService from '../../api/StatisticsService';
-import { connect  } from "react-redux";
+import { connect } from "react-redux";
 import { receiptDataNotModified } from '../../redux/actions/authAction';
 import StatisticsTable from "./StatisticsTable";
+import StatisticsTab from "./StatisticsTab";
 function Statistics(props) {
     const [totalStats, setTotalStats] = useState([]);
-    function updateStatistics(){
+    useEffect(() => {
         let statisticsService = new StatisticsService();
         statisticsService.getTotalStatistics()
             .then((response) => {
-                if(response.data.status==200){
+                if (response.data.status == 200) {
                     setTotalStats(response.data.data);
                 }
-                if(props.store.receiptDataModified){
+                if (props.store.receiptDataModified) {
                     props.onReceiptDataNotModified();
                 }
             })
             .catch((error) => {
                 console.log(error);
             });
-    }
-    useEffect(() => {
-        updateStatistics();
     }, [props.store.receiptDataModified]);
 
-    
+
     if (totalStats.length === 0) {
         return (
             <Box mx='6'>
@@ -46,36 +44,35 @@ function Statistics(props) {
                     <Stat>
                         <StatLabel>Total Spent</StatLabel>
                         <Skeleton width={'120px'} height={'36px'}>
-                        <StatNumber>Loading...</StatNumber>
+                            <StatNumber>Loading...</StatNumber>
                         </Skeleton>
                         <StatHelpText>All time</StatHelpText>
                     </Stat>
                     <Stat>
                         <StatLabel mb={2}>Top Category</StatLabel>
                         <Skeleton width={'80px'} height={'30px'}>
-                        <Tag colorScheme='teal'>Loading...</Tag>
+                            <Tag colorScheme='teal'>Loading...</Tag>
                         </Skeleton>
                         <Skeleton width={'120px'} height={'24px'}>
-                        <StatHelpText mt={2}>Total Spent: Loading... </StatHelpText>
+                            <StatHelpText mt={2}>Total Spent: Loading... </StatHelpText>
                         </Skeleton>
                     </Stat>
                     <Stat>
                         <StatLabel>Top Merchant</StatLabel>
                         <Skeleton width={'120px'} height={'36px'}>
-                        <StatNumber>Loading...</StatNumber>
+                            <StatNumber>Loading...</StatNumber>
                         </Skeleton>
                         <Skeleton mt={2} width={'120px'} height={'24px'}>
-                        <StatHelpText>Total: Loading...</StatHelpText>
+                            <StatHelpText>Total: Loading...</StatHelpText>
                         </Skeleton>
                     </Stat>
                 </StatGroup>
                 <SimpleGrid columns={[1, null, 2]} spacing='20px' my={6}>
-                <StatisticsTable data={totalStats.topCategories} tableName={"Category Ranking"} />
-                <StatisticsTable data={totalStats.topStores} tableName={"Store Ranking"} />
-            </SimpleGrid>
-            <Center>
+                    <StatisticsTable data={totalStats.topCategories} tableName={"Category Ranking"} />
+                    <StatisticsTable data={totalStats.topStores} tableName={"Store Ranking"} />
+                    <StatisticsTab name={"Price Chart"} />
                 <ReceiptChart datepickerEnabled={true} />
-            </Center>
+                </SimpleGrid>
             </Box>
         );
     }
@@ -102,10 +99,9 @@ function Statistics(props) {
             <SimpleGrid columns={[1, null, 2]} spacing='20px' my={6}>
                 <StatisticsTable data={totalStats.topCategories} tableName={"Category Ranking"} />
                 <StatisticsTable data={totalStats.topStores} tableName={"Store Ranking"} />
-            </SimpleGrid>
-            <Center>
+                <StatisticsTab name={"Price Chart"} />
                 <ReceiptChart datepickerEnabled={true} />
-            </Center>
+            </SimpleGrid>
         </Box>
     )
 }

@@ -157,7 +157,7 @@ namespace ExpenseTrackerBackend.Controllers
                                 message = "This item doesn't exist"
                             }, JsonRequestBehavior.AllowGet);
                         }
-                        var ItemData = item.ReceiptItems.Select(ri => new { ri.Price, ri.Receipt.PurchaseDate }).GroupBy(x => new { x.PurchaseDate }, (key, group) => new { key.PurchaseDate, Price= group.Select(c=> c.Price).First() }).ToList();
+                        var ItemData = item.ReceiptItems.Select(ri => new { ri.Price, ri.Receipt.PurchaseDate.Year, ri.Receipt.PurchaseDate.Month }).GroupBy(x => new { x.Year, x.Month }, (key, group) => new { key.Year, key.Month, Price= group.Select(c=> c.Price).First() }).ToList();
                         return Json(new
                         {
                             status = 200,

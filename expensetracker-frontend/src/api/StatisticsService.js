@@ -21,4 +21,13 @@ export default class StatisticsService {
         }
         return axios.post(API_URL+"/Statistics/GetTotalStatistics",null,config);
     }
+    getItemStatistics(storeId,itemStoreCode){
+        let config = {
+            headers : {
+                Authorization : secureLs.get("Authorization"),
+            }
+            
+        }
+        return axios.post(API_URL+"/Statistics/GetItemStatistics",{storeId,itemStoreCode},config);
+    }
 }

@@ -15,36 +15,11 @@ import { receiptDataNotModified } from '../redux/actions/authAction';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 function ReceiptChart(props) {
     const datepickerEnabled = props.datepickerEnabled;
-    const parentData = props.parentData;
     const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState([]);
+    const data = props.data ==null ? [] : props.data;
     const [year, setYear] = useState(new Date());
-    let statisticsService = new StatisticsService();
-
-    useEffect(() => {
-        setLoading(true);
-        statisticsService.getChartStatistics(datepickerEnabled ? year.getFullYear() : null)
-            .then((response) => {
-                var data = response.data.data.map(item =>
-                ({
-                    id: item.tagId,
-                    name: item.tagName,
-                    data: item.data
-                })
-                )
-                setData(data);
-                if (props.store.receiptDataModified) {
-                    props.onReceiptDataNotModified();
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-            .finally(() => setLoading(false));
-    }, [props.store.receiptDataModified,year]);
-
 
     if(data.length===0 && !loading){
     return(
@@ -110,8 +85,8 @@ function ReceiptChart(props) {
                             return months[value - 1];
                         }} />
                     <Legend />
-                    {data.map((category) => (
-                        <Line type="monotone" connectNulls={true} key={category.id} dataKey="amount" data={category.data} name={category.name} stroke={randomColor({ luminosity: 'dark' })} />
+                    {data.map((item) => (
+                        <Line type="monotone" connectNulls={true} key={item.id} dataKey="price" data={item.data} name={item.itemName} stroke={randomColor({ luminosity: 'dark' })} />
                     ))}
                 </LineChart>
             </ResponsiveContainer>

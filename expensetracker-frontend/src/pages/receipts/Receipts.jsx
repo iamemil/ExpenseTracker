@@ -28,7 +28,6 @@ import { useTable, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } fr
 import { useState, useCallback, useEffect } from 'react'
 import ReceiptForm from '../../components/ReceiptForm';
 import ReceiptService from '../../api/ReceiptService';
-import { useNavigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import { receiptDataNotModified } from '../../redux/actions/authAction';
 function Receipts(props) {
@@ -45,7 +44,6 @@ function Receipts(props) {
         existing: false,
         tagId: null,
     }
-    const navigate = useNavigate();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [existingReceipt, setExistingReceiptData] = useState(receiptInitialState);
     const [loading, setLoading] = useState(false);
@@ -269,18 +267,18 @@ function Receipts(props) {
                                 </Tr>
                             ))}
                             <Tr>
-                                        <Th
-                                            colSpan={visibleColumns.length}
-                                            style={{
-                                                textAlign: 'left',
-                                            }}
-                                        >
-                                            <GlobalFilter
-                                                preGlobalFilteredRows={preGlobalFilteredRows}
-                                                globalFilter={state.globalFilter}
-                                                setGlobalFilter={setGlobalFilter} />
-                                        </Th>
-                                    </Tr>
+                                <Th
+                                    colSpan={visibleColumns.length}
+                                    style={{
+                                        textAlign: 'left',
+                                    }}
+                                >
+                                    <GlobalFilter
+                                        preGlobalFilteredRows={preGlobalFilteredRows}
+                                        globalFilter={state.globalFilter}
+                                        setGlobalFilter={setGlobalFilter} />
+                                </Th>
+                            </Tr>
                         </Thead>
                         <Tbody {...getTableBodyProps()}>
                             {rows.map((row) => {

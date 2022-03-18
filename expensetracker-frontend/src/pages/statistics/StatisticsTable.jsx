@@ -14,12 +14,7 @@ import {
     Flex,
     IconButton,
     Tooltip,
-    Select,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper
+    Select
 } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon, ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import { useTable, useSortBy, usePagination } from 'react-table'
@@ -53,12 +48,8 @@ function StatisticsTable(props) {
         getTableProps,
         getTableBodyProps,
         headerGroups,
-        rows,
         prepareRow,
-        page, // Instead of using 'rows', we'll use page,
-        // which has only the rows for the active page
-
-        // The rest of these things are super handy, too ;)
+        page,
         canPreviousPage,
         canNextPage,
         pageOptions,
