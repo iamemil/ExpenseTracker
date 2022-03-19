@@ -104,7 +104,7 @@ function Dashboard(props) {
             </Box>
             </Center>
             <Center width={'full'} my={6}>
-                <ReceiptChart />
+                <ReceiptChart datepickerEnabled={true} />
             </Center>
         </Box>
     )
