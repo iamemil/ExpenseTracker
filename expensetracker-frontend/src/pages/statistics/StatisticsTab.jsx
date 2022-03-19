@@ -167,20 +167,33 @@ function StatisticsTab(props) {
                     ...columns,
                 ])
             })
+    const tempArrayInitial = new Set();
+    const [tempArray, setTempArray] = useState(tempArrayInitial);
+
+
     function updateChartData() {
         if (selectedFlatRows.length > 0) {
             let statisticsService = new StatisticsService();
-            statisticsService.getItemStatistics(selectedFlatRows[0].original.storeId, selectedFlatRows[0].original.itemStoreCode)
-                .then((response) => {
-                    if (response.data.status == 200) {
-                        setChartData(response.data);
-                        console.log(chartData);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            for (let i = 0; i < selectedFlatRows.length; i++) {
+                //console.log(selectedFlatRows[i]);
+                statisticsService.getItemStatistics(selectedFlatRows[i].original.storeId, selectedFlatRows[i].original.itemStoreCode)
+                    .then((response) => {
+                        if (response.data.status == 200) {
+                            if(!tempArray.has(response.data)){
+                                setTempArray(prevState => new Set(prevState).add(response.data));
+                            }
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        }else{
+            setTempArray(tempArrayInitial);
+            setChartData(tempArrayInitial);
         }
+        setChartData(tempArray);
+        setTempArray(tempArrayInitial);
     }
     if (data.length === 0) {
         return (
@@ -218,15 +231,14 @@ function StatisticsTab(props) {
     }
     return (
         <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} pt={6}>
-            <Text pl={6} fontSize={'2xl'}>{props.name}</Text>
             <Tabs variant='soft-rounded' colorScheme='teal'>
                 <TabList pl={6}>
                     <Tab>Items</Tab>
-                    <Tab>Chart</Tab>
+                    <Tab>Price Chart</Tab>
                 </TabList>
                 <TabPanels>
                     <TabPanel>
-                        <Button colorScheme='teal' variant='outline' onClick={()=>{updateChartData()}}>Get Info</Button>
+                        <Button colorScheme='teal' variant='outline' onClick={() => { updateChartData() }}>Get Info</Button>
                         <Table {...getTableProps()}
                             colorScheme={'gray'}
                             fontSize={'sm'}>
@@ -346,7 +358,7 @@ function StatisticsTab(props) {
                         </Flex>
                     </TabPanel>
                     <TabPanel>
-                            <Chart data={chartData} datepickerEnabled={false} />
+                        <Chart data={chartData} datepickerEnabled={false} />
                     </TabPanel>
                 </TabPanels>
             </Tabs>

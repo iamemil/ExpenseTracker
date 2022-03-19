@@ -6,25 +6,21 @@ import {
 } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
 import randomColor from "randomcolor";
-import { connect } from "react-redux";
-import { receiptDataNotModified } from '../../redux/actions/authAction';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-function ReceiptChart(props) {
+function Chart(props) {
     const datepickerEnabled = props.datepickerEnabled;
     const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    const [year, setYear] = useState(new Date());
-
 
     useEffect(() => {
-        setData(props.data);
+        setData(Array.from(props.data));
     }, [props.data]);
 
     if (data.length === 0 && !loading) {
         return (
-            <Box border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} height={'400px'} py={6} mb={4}>
+            <Box border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} height={'300px'} py={6} mb={4}>
                 <Center>
                     <Text>Not enough data to show</Text>
                 </Center>
@@ -32,12 +28,11 @@ function ReceiptChart(props) {
         );
     }
     return (
-        <Box border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} height={'400px'} py={6} mb={4}>
-            <ResponsiveContainer width="100%" height="90%">
-
+        <Box height={'300px'}>
+            <ResponsiveContainer width="100%" height="100%">
                 <LineChart width={500}
                     height={300}
-                    data={data} margin={{
+                    margin={{
                         top: 5,
                         right: 30,
                         left: 20,
@@ -66,21 +61,12 @@ function ReceiptChart(props) {
                             return months[value - 1];
                         }} />
                     <Legend />
-                    <Line type="monotone" connectNulls={true} dataKey="Price" data={data.data} name={data.storeName+"-"+data.itemName} stroke={randomColor({ luminosity: 'dark' })} />
+                    {data.map((item) => (
+                        <Line type="monotone" connectNulls={true} key={item.storeName + "-" + item.itemName} dataKey="Price" data={item.data} name={item.storeName + "-" + item.itemName} stroke={randomColor({ luminosity: 'dark' })} />
+                    ))}
                 </LineChart>
             </ResponsiveContainer>
         </Box>
     );
 }
-function mapStateToProps(store) {
-    return {
-        store
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onReceiptDataNotModified: () => dispatch(receiptDataNotModified())
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(ReceiptChart);
+export default Chart;
