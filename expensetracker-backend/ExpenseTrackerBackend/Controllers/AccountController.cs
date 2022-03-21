@@ -174,13 +174,13 @@ namespace ExpenseTrackerBackend.Controllers
             newUser.RegisterDate = DateTime.Now;
             db.Users.Add(newUser);
             db.SaveChanges();
-            String verifyUrl = "Thanks for registering on Expense Tracker. Click here to verify your account: " + Request.Url.Scheme + "://" + Request.Url.Authority + "/Account/Confirm?token=" + newUser.Token;
+            String verifyUrl = "Thanks for registering on Expense Tracker. Click here to verify your account: http://localhost:3000/login/?confirmToken=" + newUser.Token;
             this.SendSms(mobileNumber, verifyUrl);
 
             return Json(new
             {
                 status = 200,
-                message="Account created"
+                message="Account created. Please verify your account by clicking the link in SMS message."
             }, JsonRequestBehavior.AllowGet);
         }
 

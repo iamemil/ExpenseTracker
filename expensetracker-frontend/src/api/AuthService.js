@@ -6,6 +6,10 @@ export default class AuthService{
         return axios.post(API_URL+"/Account/SignIn", body);
     }
 
+    confirm(body){
+        return axios.post(API_URL+"/Account/Confirm","token="+body);
+    }
+
     register(body){
         return axios.post(API_URL+"/Account/Register", body);
     }

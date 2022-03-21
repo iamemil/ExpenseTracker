@@ -13,19 +13,37 @@ import AuthService from "../../api/AuthService";
 import { connect } from "react-redux";
 import { loginSuccessfull } from "../../redux/actions/authAction";
 import secureLs from "../../common/helper";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 function Login(props) {
     const navigate = useNavigate();
+    let authService = new AuthService();
     const emailAddressRef = useRef();
+    const [searchParams, setSearchParams] = useSearchParams();
+    
     const passwordRef = useRef();
     const MySwal = withReactContent(Swal);
 
+    if(searchParams.get("confirmToken")!=null){
+        authService.confirm(searchParams.get("confirmToken")).then(res=>{
+            if(res.data.status==200){
+                MySwal.fire({
+                    title: 'Success',
+                    text: 'Your account has been verified',
+                    icon: 'success'
+                })
+            }else{
+                MySwal.fire({
+                    title: 'Warning',
+                    text: res.data.message,
+                    icon: 'warning'
+                })
+            }
+        })
+    }
     const handleFormSubmit = event => {
         event.preventDefault();
-
-        let authService = new AuthService();
         const email = emailAddressRef.current.value;
         const password = passwordRef.current.value;
         const formData = new FormData();
@@ -45,7 +63,6 @@ function Login(props) {
                         icon: 'warning',
                         confirmButtonColor: '#319795'
                     });
-                    //alert(response.data.message);
                 }
             })
             .catch((error) => {

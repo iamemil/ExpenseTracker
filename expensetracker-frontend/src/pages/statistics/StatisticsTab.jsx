@@ -30,7 +30,6 @@ import Chart from './Chart';
 function StatisticsTab(props) {
     const [data, setData] = useState([]);
     const [chartData, setChartData] = useState([]);
-    const [chartDataLoading, setChartDataLoading] = useState(false);
     useEffect(() => {
         let itemService = new ItemService();
         itemService.getUserReceiptItems()
@@ -179,7 +178,7 @@ function StatisticsTab(props) {
                 statisticsService.getItemStatistics(selectedFlatRows[i].original.storeId, selectedFlatRows[i].original.itemStoreCode)
                     .then((response) => {
                         if (response.data.status == 200) {
-                            if(!tempArray.has(response.data)){
+                            if (!tempArray.has(response.data)) {
                                 setTempArray(prevState => new Set(prevState).add(response.data));
                             }
                         }
@@ -188,49 +187,21 @@ function StatisticsTab(props) {
                         console.log(error);
                     });
             }
-        }else{
+        } else {
             setTempArray(tempArrayInitial);
             setChartData(tempArrayInitial);
         }
         setChartData(tempArray);
         setTempArray(tempArrayInitial);
     }
+    function clearChartData() {
+        
+        setTempArray(tempArrayInitial);
+        setChartData(tempArray);
+    }
     if (data.length === 0) {
         return (
-            <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'}>
-                <Table {...getTableProps()}
-                    colorScheme={'gray'}
-                    fontSize={'sm'}>
-                    <Thead>
-                        {headerGroups.map((headerGroup) => (
-                            <Tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map((column) => (
-                                    <Th
-                                        {...column.getHeaderProps(column.getSortByToggleProps())}
-                                        isNumeric={column.isNumeric}
-                                    >
-                                        {column.render('Header')}
-                                        <chakra.span pl='4'>
-                                            {column.isSorted ? (
-                                                column.isSortedDesc ? (
-                                                    <TriangleDownIcon aria-label='sorted descending' />
-                                                ) : (
-                                                    <TriangleUpIcon aria-label='sorted ascending' />
-                                                )
-                                            ) : null}
-                                        </chakra.span>
-                                    </Th>
-                                ))}
-                            </Tr>
-                        ))}
-                    </Thead>
-                </Table>
-                <Center>Not enough data to show</Center>
-            </Box>
-        );
-    }
-    return (
-        <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} pt={6}>
+            <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} pt={6}>
             <Tabs variant='soft-rounded' colorScheme='teal'>
                 <TabList pl={6}>
                     <Tab>Items</Tab>
@@ -238,7 +209,6 @@ function StatisticsTab(props) {
                 </TabList>
                 <TabPanels>
                     <TabPanel>
-                        <Button colorScheme='teal' variant='outline' onClick={() => { updateChartData() }}>Get Info</Button>
                         <Table {...getTableProps()}
                             colorScheme={'gray'}
                             fontSize={'sm'}>
@@ -358,6 +328,145 @@ function StatisticsTab(props) {
                         </Flex>
                     </TabPanel>
                     <TabPanel>
+                        <Button colorScheme='teal' variant='outline' onClick={() => { updateChartData() }}>Show</Button>
+                        <Button colorScheme='red' variant='outline' onClick={() => { clearChartData() }}>Clear</Button>
+                        <Chart data={chartData} datepickerEnabled={false} />
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
+            </Box>
+        );
+    }
+    return (
+        <Box fontSize="l" border='1px' borderColor='gray.100' borderRadius='15px' width={'full'} boxShadow={'xl'} pt={6}>
+            <Tabs variant='soft-rounded' colorScheme='teal'>
+                <TabList pl={6}>
+                    <Tab>Items</Tab>
+                    <Tab>Price Chart</Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
+                        <Table {...getTableProps()}
+                            colorScheme={'gray'}
+                            fontSize={'sm'}>
+                            <Thead>
+                                {headerGroups.map((headerGroup) => (
+                                    <Tr {...headerGroup.getHeaderGroupProps()}>
+                                        {headerGroup.headers.map((column) => (
+                                            <Th
+                                                {...column.getHeaderProps(column.getSortByToggleProps())}
+                                                isNumeric={column.isNumeric}
+                                            >
+                                                {column.render('Header')}
+                                                <chakra.span pl='4'>
+                                                    {column.isSorted ? (
+                                                        column.isSortedDesc ? (
+                                                            <TriangleDownIcon aria-label='sorted descending' />
+                                                        ) : (
+                                                            <TriangleUpIcon aria-label='sorted ascending' />
+                                                        )
+                                                    ) : null}
+                                                </chakra.span>
+                                            </Th>
+                                        ))}
+                                    </Tr>
+                                ))}
+                                <Tr>
+                                    <Th
+                                        colSpan={visibleColumns.length}
+                                        style={{
+                                            textAlign: 'left',
+                                        }}
+                                    >
+                                        <GlobalFilter
+                                            preGlobalFilteredRows={preGlobalFilteredRows}
+                                            globalFilter={state.globalFilter}
+                                            setGlobalFilter={setGlobalFilter} />
+                                    </Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody {...getTableBodyProps()}>
+                                {page.map((row, i) => {
+                                    prepareRow(row);
+                                    return (
+                                        <Tr {...row.getRowProps()}>
+                                            {row.cells.map((cell) => (
+                                                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
+                                                    {cell.render('Cell')}
+                                                </Td>
+                                            ))}
+                                        </Tr>
+                                    );
+                                })}
+                            </Tbody>
+                        </Table>
+                        <Flex justifyContent="space-between" m={4} alignItems="center">
+                            <Flex>
+                                <Tooltip label="First Page">
+                                    <IconButton
+                                        onClick={() => gotoPage(0)}
+                                        isDisabled={!canPreviousPage}
+                                        icon={<ArrowLeftIcon h={3} w={3} />}
+                                        mr={4}
+                                    />
+                                </Tooltip>
+                                <Tooltip label="Previous Page">
+                                    <IconButton
+                                        onClick={previousPage}
+                                        isDisabled={!canPreviousPage}
+                                        icon={<ChevronLeftIcon h={6} w={6} />}
+                                    />
+                                </Tooltip>
+                            </Flex>
+
+                            <Flex alignItems="center">
+                                <Text flexShrink="0" mr={8}>
+                                    Page{" "}
+                                    <Text fontWeight="bold" as="span">
+                                        {pageIndex + 1}
+                                    </Text>{" "}
+                                    of{" "}
+                                    <Text fontWeight="bold" as="span">
+                                        {pageOptions.length}
+                                    </Text>
+                                </Text>
+                                <Select
+                                    w={32}
+                                    value={pageSize}
+                                    onChange={(e) => {
+                                        setPageSize(Number(e.target.value));
+                                    }}
+                                >
+                                    {[5, 15, 30, 50, 100].map((pageSize) => (
+                                        <option key={pageSize} value={pageSize}>
+                                            Show {pageSize}
+                                        </option>
+                                    ))}
+                                </Select>
+                            </Flex>
+
+                            <Flex>
+                                <Tooltip label="Next Page">
+                                    <IconButton
+                                        onClick={nextPage}
+                                        isDisabled={!canNextPage}
+                                        icon={<ChevronRightIcon h={6} w={6} />}
+                                    />
+                                </Tooltip>
+                                <Tooltip label="Last Page">
+                                    <IconButton
+                                        onClick={() => gotoPage(pageCount - 1)}
+                                        isDisabled={!canNextPage}
+                                        icon={<ArrowRightIcon h={3} w={3} />}
+                                        ml={4}
+                                    />
+                                </Tooltip>
+                            </Flex>
+                        </Flex>
+                    </TabPanel>
+                    <TabPanel>
+                        <Button colorScheme='teal' variant='outline' onClick={() => { updateChartData() }}>Show</Button>
+                        <Button colorScheme='red' variant='outline' onClick={() => { clearChartData() }}>Clear</Button>
                         <Chart data={chartData} datepickerEnabled={false} />
                     </TabPanel>
                 </TabPanels>

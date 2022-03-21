@@ -11,7 +11,8 @@ import {
     Center,
 } from '@chakra-ui/react';
 import AuthService from "../../api/AuthService";
-import secureLs from "../../common/helper";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 export default function Register() {
 
     const firstnameRef = useRef();
@@ -20,6 +21,8 @@ export default function Register() {
     const mobileNumberRef = useRef();
     const passwordRef = useRef();
     const passwordRepeatRef = useRef();
+    
+    const MySwal = withReactContent(Swal);
 
     const handleFormSubmit = event => {
         event.preventDefault();
@@ -50,12 +53,29 @@ export default function Register() {
         authService
             .register(formData)
             .then((response) => {
-                    console.log(response.data.message);
-                
-                //history.replace("/dashboard");
+                if(response.data.status==200){
+                    MySwal.fire({
+                        title: 'Success',
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonColor: '#319795'
+                    });
+                }else{
+                    MySwal.fire({
+                        title: 'Warning',
+                        text: response.data.message,
+                        icon: 'warning',
+                        confirmButtonColor: '#319795'
+                    });
+                }
             })
             .catch((error) => {
-                console.log("Something went wrong, try again.")
+                MySwal.fire({
+                    title: 'Error',
+                    text: "Something went wrong, try again.",
+                    icon: 'error',
+                    confirmButtonColor: '#319795'
+                });
             }
             );
 
