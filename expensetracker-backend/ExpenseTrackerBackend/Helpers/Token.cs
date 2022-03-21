@@ -14,7 +14,7 @@ namespace ExpenseTrackerBackend.Helpers
     {
         private static string SECRET_KEY = "4t7w!z%C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPeShVmYp3s6v9y$B&E)H@McQfTjW";
         private static HttpRequest request = HttpContext.Current.Request;
-        private static string WEBSITE_URL = request.Url.Scheme + "://" + request.Url.Authority;
+        private static string WEBSITE_URL = "https://emil-expensetracker.netlify.app/";
         public static string GetToken(User user)
         {
             byte[] secretKey = Encoding.UTF8.GetBytes(SECRET_KEY);
