@@ -17,7 +17,7 @@ namespace ExpenseTrackerBackend
             if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
             {
                 HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods",
-                             "GET,POST");
+                             "GET,POST,PUT,OPTIONS");
                 HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers",
                              "*");
                 HttpContext.Current.Response.End();
