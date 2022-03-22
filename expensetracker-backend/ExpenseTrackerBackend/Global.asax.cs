@@ -12,7 +12,7 @@ namespace ExpenseTrackerBackend
 
         {
 
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "https://receipttracker.me");
             HttpContext.Current.Response.AddHeader("X-Frame-Options", "ALLOW FROM *");
             if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
             {

@@ -67,7 +67,7 @@ namespace ExpenseTrackerBackend.Controllers
 
 
         [HttpPost]
-        public JsonResult Create(string Id, string companyName, string companyTaxNumber, bool existing,string receiptItems, string receiptTimestamp, string receiptTotalSum, string storeAddress, string storeName, string storeTaxNumber, int tagId)
+        public JsonResult Create(string Id, string companyName, string companyTaxNumber, bool existing,string receiptItems, long receiptTimestamp, string receiptTotalSum, string storeAddress, string storeName, string storeTaxNumber, int tagId)
         {
             string userEmail = Token.ValidateToken(HttpContext.Request.Headers.Get("Authorization"));
             if (userEmail != null)
@@ -82,7 +82,6 @@ namespace ExpenseTrackerBackend.Controllers
                             || string.IsNullOrEmpty(companyName) || string.IsNullOrWhiteSpace(companyName)
                             || string.IsNullOrEmpty(companyTaxNumber) || string.IsNullOrWhiteSpace(companyTaxNumber)
                             || string.IsNullOrEmpty(receiptItems) || string.IsNullOrWhiteSpace(receiptItems)
-                            || string.IsNullOrEmpty(receiptTimestamp) || string.IsNullOrWhiteSpace(receiptTimestamp)
                             || string.IsNullOrEmpty(receiptTotalSum) || string.IsNullOrWhiteSpace(receiptTotalSum)
                             || string.IsNullOrEmpty(storeAddress) || string.IsNullOrWhiteSpace(storeAddress)
                             || string.IsNullOrEmpty(storeName) || string.IsNullOrWhiteSpace(storeName)
@@ -152,7 +151,8 @@ namespace ExpenseTrackerBackend.Controllers
                             newReceipt.UserId = user.Id;
                             newReceipt.StoreId = store.Id;
                             newReceipt.OriginalReceiptId = Id;
-                            newReceipt.PurchaseDate = DateTime.Parse(receiptTimestamp);
+                            //newReceipt.PurchaseDate = DateTime.Parse(receiptTimestamp);
+                            newReceipt.PurchaseDate = DateTimeOffset.FromUnixTimeMilliseconds(receiptTimestamp).DateTime.AddHours(2);
                             newReceipt.TotalSum = totalSum;
                             newReceipt.StoreTagId = storeTag.Id;
                             newReceipt.CreationDate = DateTime.Now;

@@ -59,14 +59,15 @@ function ReceiptHistory(props) {
   function onExistingReceiptModalOpen(receiptId) {
     receiptService.getReceipt(receiptId)
       .then(function (response) {
-        const timestamp = new Date(parseInt(response.data.receiptData[0].PurchaseDate.replace("/Date(", "").replace(")/", "")));
+        const datetime =new Date(parseInt(response.data.receiptData[0].PurchaseDate.replace("/Date(", "").replace(")/", "")));
+        const timestamp =  datetime.setHours(datetime.getHours() - 9);
         setExistingReceiptData({
           Id: response.data.receiptData[0].OriginalReceiptId,
           storeName: response.data.receiptData[0].storeName,
           storeAddress: response.data.receiptData[0].storeAddress,
           storeTaxNumber: response.data.receiptData[0].storeTaxNumber,
           receiptTotalSum: response.data.receiptData[0].TotalSum.toFixed(2),
-          receiptTimestamp: timestamp.toLocaleDateString('az-AZ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          receiptTimestamp: timestamp.toString(),
           receiptItems: response.data.receiptData[0].receiptItems,
           existing: true,
           tagId: response.data.receiptData[0].StoreTagId
@@ -103,7 +104,7 @@ function ReceiptHistory(props) {
           receiptId: receipt.OriginalReceiptId,
           merchantName: receipt.storeName,
           categoryName: receipt.tagName,
-          timestamp: new Date(parseInt(receipt.PurchaseDate.replace("/Date(", "").replace(")/", ""))).toLocaleDateString('az-AZ', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }),
+          timestamp: new Date(new Date(parseInt(receipt.PurchaseDate.replace("/Date(", "").replace(")/", ""))).setHours(new Date(parseInt(receipt.PurchaseDate.replace("/Date(", "").replace(")/", ""))).getHours() - 9)).toLocaleString('az-AZ',{day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit',second:'2-digit'}),
           spentAmount: receipt.TotalSum.toFixed(2),
         })
         )

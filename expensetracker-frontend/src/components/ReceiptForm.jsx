@@ -217,7 +217,7 @@ function ReceiptForm(props) {
             <Flex fontSize={'sm'} mt={4}>
                 <Tag colorScheme='teal'>Total: {modifiedReceipt.receiptTotalSum} ₼</Tag>
                 <Spacer />
-                <Tag colorScheme='teal'><CalendarIcon color={'black.600'} mr={2} />{modifiedReceipt.receiptTimestamp}</Tag>
+                {/*<Tag colorScheme='teal'><CalendarIcon color={'black.600'} mr={2} />{modifiedReceipt.receiptTimestamp}</Tag>*/}
             </Flex>
             {(() => {
                 if (modifiedReceipt.existing) {
