@@ -174,7 +174,7 @@ namespace ExpenseTrackerBackend.Controllers
             newUser.RegisterDate = DateTime.Now;
             db.Users.Add(newUser);
             db.SaveChanges();
-            String verifyUrl = "Thanks for registering on Expense Tracker. Click here to verify your account: https://emil-expensetracker.netlify.app/login/?confirmToken=" + newUser.Token;
+            String verifyUrl = "Thanks for registering on Expense Tracker. Click here to verify your account: https://receipttracker.me/login/?confirmToken=" + newUser.Token;
             this.SendSms(mobileNumber, verifyUrl);
 
             return Json(new
