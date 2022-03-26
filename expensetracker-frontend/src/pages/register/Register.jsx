@@ -3,25 +3,32 @@ import {
     Box,
     Text,
     Button,
-    Grid,
     FormControl,
     FormLabel,
     Input,
     HStack,
-    Center,
+    Flex,
+    InputGroup,
+    InputRightElement,
+    Stack,
+    Heading,
+    useColorModeValue,
+    Link,
 } from '@chakra-ui/react';
 import AuthService from "../../api/AuthService";
 import Swal from 'sweetalert2';
+import { useState } from 'react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import withReactContent from 'sweetalert2-react-content';
 export default function Register() {
-
+    const [showPassword, setShowPassword] = useState(false);
     const firstnameRef = useRef();
     const lastnameRef = useRef();
     const emailAddressRef = useRef();
     const mobileNumberRef = useRef();
     const passwordRef = useRef();
     const passwordRepeatRef = useRef();
-    
+
     const MySwal = withReactContent(Swal);
 
     const handleFormSubmit = event => {
@@ -34,13 +41,6 @@ export default function Register() {
         const email = emailAddressRef.current.value;
         const mobile = mobileNumberRef.current.value;
         const password = passwordRef.current.value;
-        const passwordRepeat = passwordRepeatRef.current.value;
-
-
-        if(password!==passwordRepeat){
-            console.log("Passwords do not match");
-            return;
-        }
 
         const formData = new FormData();
 
@@ -53,14 +53,14 @@ export default function Register() {
         authService
             .register(formData)
             .then((response) => {
-                if(response.data.status==200){
+                if (response.data.status == 200) {
                     MySwal.fire({
                         title: 'Success',
                         text: response.data.message,
                         icon: 'success',
                         confirmButtonColor: '#319795'
                     });
-                }else{
+                } else {
                     MySwal.fire({
                         title: 'Warning',
                         text: response.data.message,
@@ -80,57 +80,77 @@ export default function Register() {
             );
 
     }
-    return (
-        <Center textAlign="center" fontSize="xl" >
-            <Grid mx={5} px={5} boxShadow='lg' width={{ sm: '100%', md: '75%', lg: '65%', xl: '50%' }} border='1px' borderColor='gray.100' borderRadius='25px'>
-                <Box>
-                    <Text fontSize='5xl'>Register</Text>
-                </Box>
-                <form onSubmit={handleFormSubmit}>
-                <Box>
-                    <HStack>
-                        <FormControl isRequired w='50%'>
-                            <FormLabel htmlFor='firstname'>Firstname</FormLabel>
-                            <Input id='firstname' type='text' ref={firstnameRef} placeholder='Firstname' />
-                        </FormControl>
-                        <FormControl isRequired w='50%'>
-                            <FormLabel htmlFor='firstname'>Lastname</FormLabel>
-                            <Input id='lastname' type='text' ref={lastnameRef} placeholder='Lastname' />
-                        </FormControl>
-                    </HStack>
-                </Box>
-                <Box>
-                    <HStack>
-                        <FormControl w='50%' isRequired>
-                            <FormLabel htmlFor='email'>Email address</FormLabel>
-                            <Input id='email' type='email' ref={emailAddressRef} placeholder='Email address' />
-                        </FormControl>
-                        <FormControl w='50%' isRequired>
-                            <FormLabel htmlFor='mobileNumber'>Mobile Number</FormLabel>
-                            <Input id='mobileNumber' type='text' ref={mobileNumberRef} placeholder='Mobile Number' pattern="^\+(?:[0-9]●?){6,14}[0-9]$" />
-                        </FormControl>
-                    </HStack>
-                </Box>
-                <Box>
-                    <HStack>
-                        <FormControl w='50%' isRequired>
-                            <FormLabel htmlFor='password'>Password</FormLabel>
-                            <Input id='password' type='password' ref={passwordRef} placeholder='Password' />
-                        </FormControl>
-                        <FormControl w='50%' isRequired>
-                            <FormLabel htmlFor='passwordRepeat'>Repeat password</FormLabel>
-                            <Input id='passwordRepeat' type='password' ref={passwordRepeatRef} placeholder='Repeat password' />
-                        </FormControl>
-                    </HStack>
-
-                </Box>
-                <Box>
-                    <Button my={4} colorScheme='teal' type='submit'>
+    return (<Flex
+            align={'center'}
+            justify={'center'}>
+            <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+                <Stack align={'center'}>
+                    <Heading fontSize={'4xl'} textAlign={'center'}>
                         Register
-                    </Button>
+                    </Heading>
+                    <Text fontSize={'lg'} color={'gray.600'}>
+                        to enjoy all of our cool features ✌️
+                    </Text>
+                </Stack>
+                <Box
+                    rounded={'lg'}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    boxShadow={'lg'}
+                    p={8}>
+                    <form onSubmit={handleFormSubmit}>
+                        <Stack spacing={4}>
+                            <HStack>
+                                <Box>
+                                    <FormControl id="firstName" isRequired>
+                                        <FormLabel>First Name</FormLabel>
+                                        <Input type="text" ref={firstnameRef} />
+                                    </FormControl>
+                                </Box>
+                                <Box>
+                                    <FormControl id="lastName" isRequired>
+                                        <FormLabel>Last Name</FormLabel>
+                                        <Input type="text" ref={lastnameRef} />
+                                    </FormControl>
+                                </Box>
+                            </HStack>
+                            <FormControl id="email" isRequired>
+                                <FormLabel>Email address</FormLabel>
+                                <Input type="email" ref={emailAddressRef} />
+                            </FormControl>
+                            <FormControl id="mobileNumber" isRequired>
+                                <FormLabel>Mobile Number</FormLabel>
+                                <Input type="text" ref={mobileNumberRef} pattern="^\+(?:[0-9]●?){6,14}[0-9]$" />
+                            </FormControl>
+                            <FormControl id="password" isRequired>
+                                <FormLabel>Password</FormLabel>
+                                <InputGroup>
+                                    <Input type={showPassword ? 'text' : 'password'} ref={passwordRef} />
+                                    <InputRightElement h={'full'}>
+                                        <Button
+                                            variant={'ghost'}
+                                            onClick={() => setShowPassword((showPassword) => !showPassword)}>
+                                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>
+                            </FormControl>
+                            <Stack spacing={10} pt={2}>
+                                <Button
+                                    loadingText="Submitting"
+                                    size="lg"
+                                    colorScheme={'teal'} type="submit">
+                                    Sign up
+                                </Button>
+                            </Stack>
+                            <Stack pt={6}>
+                                <Text align={'center'}>
+                                    Already a user?<Link color={'blue.400'} href="/login">Login</Link>
+                                </Text>
+                            </Stack>
+                        </Stack>
+                    </form>
                 </Box>
-                </form>
-            </Grid>
-        </Center>
+            </Stack>
+        </Flex>
     );
 }

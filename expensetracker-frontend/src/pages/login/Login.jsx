@@ -7,13 +7,19 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Center
+    Center,
+    Flex,
+    Checkbox,
+    Stack,
+    Link,
+    Heading,
+    useColorModeValue
 } from '@chakra-ui/react';
 import AuthService from "../../api/AuthService";
 import { connect } from "react-redux";
 import { loginSuccessfull } from "../../redux/actions/authAction";
 import secureLs from "../../common/helper";
-import { useNavigate,useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 function Login(props) {
@@ -21,19 +27,19 @@ function Login(props) {
     let authService = new AuthService();
     const emailAddressRef = useRef();
     const [searchParams, setSearchParams] = useSearchParams();
-    
+
     const passwordRef = useRef();
     const MySwal = withReactContent(Swal);
 
-    if(searchParams.get("confirmToken")!=null){
-        authService.confirm(searchParams.get("confirmToken")).then(res=>{
-            if(res.data.status==200){
+    if (searchParams.get("confirmToken") != null) {
+        authService.confirm(searchParams.get("confirmToken")).then(res => {
+            if (res.data.status == 200) {
                 MySwal.fire({
                     title: 'Success',
                     text: 'Your account has been verified',
                     icon: 'success'
                 })
-            }else{
+            } else {
                 MySwal.fire({
                     title: 'Warning',
                     text: res.data.message,
@@ -81,33 +87,49 @@ function Login(props) {
 
     }
     return (
-        <Center textAlign="center" fontSize="xl">
+            <Flex
+                align={'center'}
+                justify={'center'}>
+                <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+                    <Stack align={'center'}>
+                        <Heading fontSize={'4xl'}>Sign in to your account</Heading>
+                        <Text fontSize={'lg'} color={'gray.600'}>
+                            to track all your expenses easily✌️
+                        </Text>
+                    </Stack>
+                    <Box
+                        rounded={'lg'}
+                        bg={useColorModeValue('white', 'gray.700')}
+                        boxShadow={'lg'}
+                        p={8}>
+                        <Stack spacing={4}>
+                            <form onSubmit={handleFormSubmit}>
+                                <FormControl id="email" isRequired>
+                                    <FormLabel>Email address</FormLabel>
+                                    <Input type="email" ref={emailAddressRef} />
+                                </FormControl>
+                                <FormControl id="password" isRequired>
+                                    <FormLabel>Password</FormLabel>
+                                    <Input type="password" ref={passwordRef} />
+                                </FormControl>
+                                <Stack spacing={10}>
+                                    <Stack
+                                        direction={{ base: 'column', sm: 'row' }}
+                                        align={'start'}
+                                        justify={'space-between'}>
+                                        <Link color={'blue.400'}>Forgot password?</Link>
+                                    </Stack>
+                                    <Button
+                                        colorScheme='teal' type="submit">
+                                        Sign in
+                                    </Button>
+                                </Stack>
 
-            <Grid mx={5} px={5} boxShadow='lg' width={{ sm: '100%', md: '75%', lg: '65%', xl: '50%' }} border='1px' borderColor='gray.100' borderRadius='25px'>
-                <Box>
-                    <Text fontSize='5xl'>Login</Text>
-                </Box>
-                <form onSubmit={handleFormSubmit}>
-                    <Box>
-                        <FormControl isRequired>
-                            <FormLabel htmlFor='email'>Email address</FormLabel>
-                            <Input id='email' type='email' ref={emailAddressRef} placeholder='Email address' />
-                        </FormControl>
+                            </form>
+                        </Stack>
                     </Box>
-                    <Box>
-                        <FormControl isRequired>
-                            <FormLabel htmlFor='password'>Password</FormLabel>
-                            <Input id='password' type='password' ref={passwordRef} placeholder='Password' />
-                        </FormControl>
-                    </Box>
-                    <Box>
-                        <Button my={4} colorScheme='teal' type='submit'>
-                            Login
-                        </Button>
-                    </Box>
-                </form>
-            </Grid>
-        </Center>
+                </Stack>
+            </Flex>
     );
 }
 
