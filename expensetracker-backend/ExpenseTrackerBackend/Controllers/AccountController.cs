@@ -230,6 +230,86 @@ namespace ExpenseTrackerBackend.Controllers
             });
         }
 
+        [HttpPost]
+        public JsonResult ForgotPassword(string email)
+        {
+            string validEmailPattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|"
+            + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)"
+            + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
+
+            if (!Regex.Match(email, validEmailPattern).Success)
+            {
+                return Json(new
+                {
+                    status = 405,
+                    message = "Wrong Email address format"
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            User user = db.Users.FirstOrDefault(u => u.EmailAddress == email);
+            if (user == null)
+            {
+                return Json(new
+                {
+                    status = 405,
+                    message = "Account doesn't exist"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            user.Token = Crypto.Hash(user.EmailAddress + DateTime.Now.ToString("yyyyMMddHHmmss"), "sha256");
+
+            db.Entry(user).Property(c => c.Token).IsModified = true;
+            db.SaveChanges();
+            SendSms(user.PhoneNumber, "Click here to change your password for Expense Tracker account: https://receipttracker.me/reset-password?resetToken=" + user.Token);
+            return Json(new
+            {
+                status = 200,
+                message = "Password reset link has been sent"
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult ResetPassword(string Token, string Password)
+        {
+            User user = db.Users.FirstOrDefault(u => u.Token == Token);
+
+            if (user == null)
+            {
+                return Json(new
+                {
+                    status = 405,
+                    message = "Account doesn't exist"
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            if (Password.Length > 8 && !string.IsNullOrEmpty(Password) && !string.IsNullOrWhiteSpace(Password))
+            {
+
+                user.Password = Crypto.HashPassword(Password);
+                user.Token = null;
+
+                db.Entry(user).Property(c => c.Token).IsModified = true;
+                db.Entry(user).Property(c => c.Password).IsModified = true;
+                db.SaveChanges();
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = 405,
+                    message = "Password should be minimum 8 characters"
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+
+
+            return Json(new
+            {
+                status = 200,
+                message = "Password has been changed"
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public JsonResult GetAccountDetails()
         {

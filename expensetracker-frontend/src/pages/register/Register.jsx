@@ -27,7 +27,6 @@ export default function Register() {
     const emailAddressRef = useRef();
     const mobileNumberRef = useRef();
     const passwordRef = useRef();
-    const passwordRepeatRef = useRef();
 
     const MySwal = withReactContent(Swal);
 

@@ -13,4 +13,11 @@ export default class AuthService{
     register(body){
         return axios.post(API_URL+"/Account/Register", body);
     }
+
+    forgotPassword(emailAddress){
+        return axios.post(API_URL+"/Account/ForgotPassword", "email="+emailAddress);
+    }
+    resetPassword(Token,Password){
+        return axios.post(API_URL+"/Account/ResetPassword", {Token,Password});
+    }
 }

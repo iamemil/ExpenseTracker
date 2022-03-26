@@ -73,7 +73,7 @@
     <Property Name="EmailAddress" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="PhoneNumber" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="150" Nullable="false" />
-    <Property Name="Token" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Token" Type="varchar" MaxLength="100" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
     <Property Name="IsAdmin" Type="bit" Nullable="false" />
     <Property Name="RegisterDate" Type="datetime" Nullable="false" />

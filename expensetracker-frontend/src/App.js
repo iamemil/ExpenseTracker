@@ -7,6 +7,8 @@ import Login from "./pages/login/Login";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Receipts from './pages/receipts/Receipts';
 import Statistics from './pages/statistics/Statistics';
+import ForgotPassword from './pages/forgotPassword/ForgotPassword';
+import ResetPassword from './pages/resetPassword/ResetPassword';
 import {
   ChakraProvider,
 } from '@chakra-ui/react';
@@ -30,6 +32,8 @@ function App(props) {
           <>
           <Route exact path="/signup" element={<Register/>} />
         <Route exact path="/login" element={<Login/>} />
+        <Route exact path="/forgot-password" element={<ForgotPassword/>} />
+        <Route exact path="/reset-password" element={<ResetPassword/>} />
           </>
         )}
         

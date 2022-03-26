@@ -3,13 +3,10 @@ import {
     Box,
     Text,
     Button,
-    Grid,
     FormControl,
     FormLabel,
     Input,
-    Center,
     Flex,
-    Checkbox,
     Stack,
     Link,
     Heading,
@@ -117,7 +114,7 @@ function Login(props) {
                                         direction={{ base: 'column', sm: 'row' }}
                                         align={'start'}
                                         justify={'space-between'}>
-                                        <Link color={'blue.400'}>Forgot password?</Link>
+                                        <Link color={'blue.400'} href="/forgot-password">Forgot password?</Link>
                                     </Stack>
                                     <Button
                                         colorScheme='teal' type="submit">
