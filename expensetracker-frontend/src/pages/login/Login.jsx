@@ -76,8 +76,8 @@ function Login(props) {
                     confirmButtonColor: '#319795'
                 });
                 // ONLY FOR TESTING
-                props.onLoginSuccess();
-                navigate('/dashboard');
+                //props.onLoginSuccess();
+                //navigate('/dashboard');
                 // ONLY FOR TESTING
             }
             );

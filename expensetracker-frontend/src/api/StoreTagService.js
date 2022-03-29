@@ -36,6 +36,6 @@ export default class StoreTagService{
                 Authorization : secureLs.get("Authorization")
             },
         }
-        return axios.post(API_URL+"/StoreTags/Delete",Id, config);
+        return axios.post(API_URL+"/StoreTags/Delete",{Id}, config);
     }
 }

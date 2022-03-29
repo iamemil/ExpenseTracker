@@ -1,7 +1,13 @@
 import React from 'react'
 import {
-    Box,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
     Text,
+    Button,
     Table,
     Thead,
     Tbody,
@@ -16,14 +22,21 @@ import {
     Tooltip,
     Select
 } from '@chakra-ui/react';
-import { TriangleDownIcon, TriangleUpIcon, ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { TriangleDownIcon, TriangleUpIcon, ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon, DeleteIcon } from '@chakra-ui/icons'
 import { useTable, useSortBy, usePagination } from 'react-table'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import StoreTagService from '../../api/StoreTagService';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 function UserCategoriesTable(props) {
     const [data, setData] = useState([]);
+    const cancelRef = useRef();
+    const [removeItemConfirm, setRemoveItemConfirm] = useState({ isConfirmOpen: false, itemIndex: null });
+    const onRemoveItemDialogClose = () => setRemoveItemConfirm({ isConfirmOpen: false, itemIndex: null });
+    const MySwal = withReactContent(Swal);
+
+    let storeTagService = new StoreTagService();
     useEffect(() => {
-        let storeTagService = new StoreTagService();
         storeTagService.getStoreTags(false)
             .then((response) => {
                 if (response.data.status == 200) {
@@ -34,6 +47,30 @@ function UserCategoriesTable(props) {
                 console.log(error);
             });
     }, []);
+
+    function removeItemFromList() {
+        storeTagService.deleteStoreTag(removeItemConfirm.itemIndex)
+            .then((response) => {
+                if (response.data.status == 200) {
+                    MySwal.fire({
+                        title: 'Success',
+                        text: response.data.message,
+                        icon: 'success'
+                    })
+                } else {
+                    MySwal.fire({
+                        title: 'Warning',
+                        text: response.data.message,
+                        icon: 'warning'
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        onRemoveItemDialogClose();
+    }
+
     const columns = React.useMemo(
         () => [
             {
@@ -70,7 +107,7 @@ function UserCategoriesTable(props) {
 
     if (data.length === 0) {
         return (
-                <><Table {...getTableProps()}
+            <><Table {...getTableProps()}
                 colorScheme={'gray'}
                 fontSize={'sm'}>
                 <TableCaption placement={'top'} fontSize={'2xl'}>
@@ -103,14 +140,14 @@ function UserCategoriesTable(props) {
         );
     }
     return (
-            <><Table {...getTableProps()}
+        <><Table {...getTableProps()}
             colorScheme={'gray'}
             fontSize={'sm'}>
             <Thead>
                 {headerGroups.map((headerGroup) => (
                     <Tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => (
-                            <Th
+                            <><Th
                                 {...column.getHeaderProps(column.getSortByToggleProps())}
                                 isNumeric={column.isNumeric}
                             >
@@ -124,7 +161,7 @@ function UserCategoriesTable(props) {
                                         )
                                     ) : null}
                                 </chakra.span>
-                            </Th>
+                            </Th><Th></Th></>
                         ))}
                     </Tr>
                 ))}
@@ -135,11 +172,18 @@ function UserCategoriesTable(props) {
                     return (
                         <Tr {...row.getRowProps()}>
                             {row.cells.map((cell) => (
-                                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
+                                <><Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
                                     {cell.render('Cell')}
                                 </Td>
+                                <Td>
+                                    <Button colorScheme='red' size={'sm'} variant='outline' onClick={() => setRemoveItemConfirm({ isConfirmOpen: true, itemIndex: row.original.Id })}>
+                                        <DeleteIcon />
+                                    </Button>
+                                </Td></>
                             ))}
+
                         </Tr>
+
                     );
                 })}
             </Tbody>
@@ -176,7 +220,7 @@ function UserCategoriesTable(props) {
                         value={pageSize}
                         onChange={(e) => {
                             setPageSize(Number(e.target.value));
-                        } }
+                        }}
                     >
                         {[5, 15, 30, 50, 100].map((pageSize) => (
                             <option key={pageSize} value={pageSize}>
@@ -201,7 +245,33 @@ function UserCategoriesTable(props) {
                             ml={4} />
                     </Tooltip>
                 </Flex>
-            </Flex></>
+            </Flex>
+            <AlertDialog
+                isOpen={removeItemConfirm.isConfirmOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onRemoveItemDialogClose}
+                isCentered>
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                            Remove Item
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                            Are you sure to remove this item?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onRemoveItemDialogClose}>
+                                Cancel
+                            </Button>
+                            <Button colorScheme='red' onClick={removeItemFromList} ml={3}>
+                                Remove
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog></>
     )
 }
 export default UserCategoriesTable;
