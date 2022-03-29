@@ -11,4 +11,31 @@ export default class StoreTagService{
         }
         return axios.post(API_URL+"/StoreTags/GetStoreTags","withPublicTags="+withPublicTags, config);
     }
+
+    createStoreTag(tagName){
+        let config = {
+            headers : {
+                Authorization : secureLs.get("Authorization")
+            },
+        }
+        return axios.post(API_URL+"/StoreTags/Create",tagName, config);
+    }
+
+    editStoreTag(Id,tagName){
+        let config = {
+            headers : {
+                Authorization : secureLs.get("Authorization")
+            },
+        }
+        return axios.post(API_URL+"/StoreTags/Edit",{Id,tagName}, config);
+    }
+
+    deleteStoreTag(Id){
+        let config = {
+            headers : {
+                Authorization : secureLs.get("Authorization")
+            },
+        }
+        return axios.post(API_URL+"/StoreTags/Delete",Id, config);
+    }
 }

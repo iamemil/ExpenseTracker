@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import { receiptDataNotModified } from '../../redux/actions/authAction';
 import StatisticsTable from "./StatisticsTable";
 import StatisticsTab from "./StatisticsTab";
+import CategoryTab from "./CategoryTab";
 function Statistics(props) {
     const [totalStats, setTotalStats] = useState([]);
     useEffect(() => {
@@ -68,7 +69,7 @@ function Statistics(props) {
                     </Stat>
                 </StatGroup>
                 <SimpleGrid columns={[1, null, 2]} spacing='20px' my={6}>
-                    <StatisticsTable data={totalStats.topCategories} tableName={"Category Ranking"} />
+                    <CategoryTab data={totalStats.topCategories} name={"Categories"} />
                     <StatisticsTable data={totalStats.topStores} tableName={"Store Ranking"} />
                     <StatisticsTab name={"Price Chart"} />
                 <ReceiptChart datepickerEnabled={true} />
@@ -97,7 +98,7 @@ function Statistics(props) {
                 </Stat>
             </StatGroup>
             <SimpleGrid columns={[1, null, 2]} spacing='20px' my={6}>
-                <StatisticsTable data={totalStats.topCategories} tableName={"Category Ranking"} />
+                <CategoryTab data={totalStats.topCategories} name={"Categories"} />
                 <StatisticsTable data={totalStats.topStores} tableName={"Store Ranking"} />
                 <StatisticsTab name={"Price Chart"} />
                 <ReceiptChart datepickerEnabled={true} />
