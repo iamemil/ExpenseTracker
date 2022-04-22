@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:fontFamily="sans-serif-light"
+            android:onClick="onSignInBtnClick"
             android:paddingHorizontal="40dp"
             android:paddingVertical="20dp"
             android:text="@string/signInTxt"
