@@ -7,7 +7,7 @@ export default class ReceiptService {
 
 
     getFromExternalSource(body) {
-        return axios.get(receiptApiUrl + body);
+        return axios.get("https://api.allorigins.win/raw?url="+receiptApiUrl + body);
     }
 
     create(body) {
