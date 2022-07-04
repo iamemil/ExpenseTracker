@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../utils/constants/constants.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -124,6 +126,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       //print(formData);
+      Navigator.pushNamedAndRemoveUntil(context,Routes.home,(Route<dynamic> route) => false);
     }
   }
 }
