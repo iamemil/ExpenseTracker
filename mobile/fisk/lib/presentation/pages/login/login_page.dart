@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10), // <-- Radius
                         ),
-                        padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                       ),
                       child: const Text(
                         'Sign in',
