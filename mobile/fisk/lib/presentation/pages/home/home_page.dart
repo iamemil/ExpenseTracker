@@ -1,6 +1,6 @@
-import 'package:fisk/presentation/pages/home/widgets/short_stats.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fisk/presentation/pages/home/widgets/short_stats/short_stats.dart';
+import 'package:fisk/presentation/widgets/expense_chart/expense_chart.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -11,6 +11,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -45,8 +46,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 180.0,
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: deviceHeight * 0.10,
+                maxHeight: deviceHeight * 0.25,
+              ),
               child: ListView(
                 physics: const ClampingScrollPhysics(),
                 shrinkWrap: true,
@@ -79,6 +83,22 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                 ),
               ),
+            ),
+            LineChartSample1(),
+            Card(
+              child: ListTile(
+                  title: Text('Motivation $int'),
+                  subtitle: Text('this is a description of the motivation')),
+            ),
+            Card(
+              child: ListTile(
+                  title: Text('Motivation $int'),
+                  subtitle: Text('this is a description of the motivation')),
+            ),
+            Card(
+              child: ListTile(
+                  title: Text('Motivation $int'),
+                  subtitle: Text('this is a description of the motivation')),
             ),
             Card(
               child: ListTile(

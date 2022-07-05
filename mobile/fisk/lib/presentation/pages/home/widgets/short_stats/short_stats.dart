@@ -13,8 +13,9 @@ class ShortStats extends StatefulWidget {
 class _ShortStatsState extends State<ShortStats> {
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     return SizedBox(
-      width: 180,
+      width: deviceWidth * 0.4,
       child: Card(
         elevation: 3,
         margin: const EdgeInsets.all(10),
