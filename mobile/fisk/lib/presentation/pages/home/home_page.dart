@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fisk/presentation/pages/home/widgets/short_stats/short_stats.dart';
 import 'package:fisk/presentation/widgets/expense_chart/expense_chart.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -12,6 +13,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -48,8 +50,8 @@ class _HomePageState extends State<HomePage> {
             ),
             ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: deviceHeight * 0.10,
-                maxHeight: deviceHeight * 0.25,
+                minHeight: deviceWidth * 0.10,
+                maxHeight: deviceWidth * 0.4,
               ),
               child: ListView(
                 physics: const ClampingScrollPhysics(),
@@ -84,31 +86,146 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            LineChartSample1(),
-            Card(
-              child: ListTile(
-                  title: Text('Motivation $int'),
-                  subtitle: Text('this is a description of the motivation')),
+            const LineChartSample1(),
+            const Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  'Last receipts',
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                ),
+              ),
             ),
             Card(
-              child: ListTile(
-                  title: Text('Motivation $int'),
-                  subtitle: Text('this is a description of the motivation')),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Expanded(
+                    child:ListTile(
+                      title: Text(
+                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        "11.08.2021 20:11:14",
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Text(
+                      "32.78 ₼",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Card(
-              child: ListTile(
-                  title: Text('Motivation $int'),
-                  subtitle: Text('this is a description of the motivation')),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Expanded(
+                    child:ListTile(
+                      title: Text(
+                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        "11.08.2021 20:11:14",
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Text(
+                      "32.78 ₼",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Card(
-              child: ListTile(
-                  title: Text('Motivation $int'),
-                  subtitle: Text('this is a description of the motivation')),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Expanded(
+                    child:ListTile(
+                      title: Text(
+                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        "11.08.2021 20:11:14",
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Text(
+                      "32.78 ₼",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Card(
-              child: ListTile(
-                  title: Text('Motivation $int'),
-                  subtitle: Text('this is a description of the motivation')),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Expanded(
+                    child:ListTile(
+                      title: Text(
+                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        "11.08.2021 20:11:14",
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Text(
+                      "32.78 ₼",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Card(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Expanded(
+                    child:ListTile(
+                      title: Text(
+                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        "11.08.2021 20:11:14",
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Text(
+                      "32.78 ₼",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
