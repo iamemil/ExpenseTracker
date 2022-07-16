@@ -41,39 +41,45 @@ class _HomePageState extends State<HomePage> {
             const Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: EdgeInsets.only(left: 10),
+                padding: EdgeInsets.only(left: 10, bottom: 10),
                 child: Text(
                   'Quick statistics',
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                 ),
               ),
             ),
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: deviceWidth * 0.10,
-                maxHeight: deviceWidth * 0.4,
-              ),
-              child: ListView(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  ShortStats(
-                    name: 'Total Spent',
-                    value: '484.65 ₼',
-                    bottomText: 'All time',
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: deviceWidth * 0.10,
+                  maxHeight: deviceWidth * 0.4,
+                ),
+                child: Container(
+                  color: Colors.tealAccent.withOpacity(0.3),
+                  child: ListView(
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    children: const [
+                      ShortStats(
+                        name: 'Total Spent',
+                        value: '484.65 ₼',
+                        bottomText: 'All time',
+                      ),
+                      ShortStats(
+                        name: 'Top Category',
+                        value: 'Shopping',
+                        bottomText: 'Total Spent: 352.78 ₼',
+                      ),
+                      ShortStats(
+                        name: 'Top Merchant',
+                        value: 'MARKET GÜNƏŞLİ',
+                        bottomText: 'Total: 169.97 ₼',
+                      ),
+                    ],
                   ),
-                  ShortStats(
-                    name: 'Top Category',
-                    value: 'Shopping',
-                    bottomText: 'Total Spent: 352.78 ₼',
-                  ),
-                  ShortStats(
-                    name: 'Top Merchant',
-                    value: 'MARKET GÜNƏŞLİ',
-                    bottomText: 'Total: 169.97 ₼',
-                  ),
-                ],
+                ),
               ),
             ),
             const Align(
