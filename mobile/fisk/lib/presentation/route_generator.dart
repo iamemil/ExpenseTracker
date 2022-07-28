@@ -16,11 +16,7 @@ class RouteGenerator {
         );
       default:
         return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${routeSettings.name}'),
-            ),
-          ),
+          builder: (_) => const LoginPage(),
         );
     }
   }
