@@ -95,7 +95,6 @@ C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrac
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\WebGrease.dll
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\AngleSharp.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\AngleSharp.Css.xml
-C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\EntityFramework.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\EntityFramework.SqlServer.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\HtmlSanitizer.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Microsoft.AspNetCore.Http.Abstractions.xml
@@ -129,7 +128,6 @@ C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrac
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Web.WebPages.Deployment.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\System.Web.WebPages.Razor.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Newtonsoft.Json.xml
-C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Twilio.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Antlr3.Runtime.pdb
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\obj\Release\ExpenseTrackerBackend.csprojAssemblyReference.cache

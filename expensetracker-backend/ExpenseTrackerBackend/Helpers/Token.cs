@@ -28,7 +28,7 @@ namespace ExpenseTrackerBackend.Helpers
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
                 Subject = parameters,
-                Expires = DateTime.UtcNow.AddMinutes(120),
+                Expires = DateTime.UtcNow.AddDays(30),
                 Issuer = WEBSITE_URL,
                 SigningCredentials = signingCredentials
             };
