@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fisk/presentation/pages/home/widgets/short_stats/short_stats.dart';
 import 'package:fisk/presentation/widgets/expense_chart/expense_chart.dart';
 
+import '../../../utils/constants/constants.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -12,10 +14,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: 0,
         title: const Text(
           'Fisk',
           style: TextStyle(color: Colors.black),
@@ -181,58 +183,21 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Card(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
-                  Expanded(
-                    child:ListTile(
-                      title: Text(
-                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        "11.08.2021 20:11:14",
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Text(
-                      "32.78 ₼",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                  ),
-                ],
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(context,Routes.receipts);
+          },
+          child: const Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              child: Text(
+                'Show all',
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
               ),
             ),
-            Card(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
-                  Expanded(
-                    child:ListTile(
-                      title: Text(
-                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        "11.08.2021 20:11:14",
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Text(
-                      "32.78 ₼",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          ),
+        )
           ],
         ),
       ),

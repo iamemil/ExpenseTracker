@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../utils/constants/constants.dart';
 import 'package:fisk/presentation/pages/login/login_page.dart';
 import 'package:fisk/presentation/pages/home/home_page.dart';
-
+import 'package:fisk/presentation/pages/receipts/receipts_page.dart';
 class RouteGenerator {
   static Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
@@ -13,6 +13,10 @@ class RouteGenerator {
       case Routes.home:
         return MaterialPageRoute(
           builder: (_) => const HomePage(),
+        );
+      case Routes.receipts:
+        return MaterialPageRoute(
+          builder: (_) => const ReceiptsPage(),
         );
       default:
         return MaterialPageRoute(
