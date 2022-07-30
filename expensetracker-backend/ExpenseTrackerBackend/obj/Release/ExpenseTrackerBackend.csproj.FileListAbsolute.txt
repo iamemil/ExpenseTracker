@@ -135,3 +135,5 @@ C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrac
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\obj\Release\ExpenseTrackerBackend.csproj.CopyComplete
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\obj\Release\ExpenseTrackerBackend.dll
 C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\obj\Release\ExpenseTrackerBackend.pdb
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\EntityFramework.xml
+C:\Users\Emil\Documents\GitHub\ExpenseTracker\expensetracker-backend\ExpenseTrackerBackend\bin\Twilio.xml

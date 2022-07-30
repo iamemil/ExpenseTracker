@@ -185,6 +185,17 @@ namespace ExpenseTrackerBackend.Controllers
                                 db.ReceiptItems.Add(receiptItem);
                             }
                             db.SaveChanges();
+
+                            if (newReceipt.ReceiptItems.Count() == 0)
+                            {
+                                db.Receipts.Remove(newReceipt);
+                                db.SaveChanges();
+                                return Json(new
+                                {
+                                    status = 404,
+                                    message = "An error happened while adding the receipt. Please try again."
+                                }, JsonRequestBehavior.AllowGet);
+                            }
                             return Json(new
                             {
                                 status = 200,
