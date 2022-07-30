@@ -14,7 +14,7 @@ class _ReceiptsPageState extends State<ReceiptsPage> {
         centerTitle: true,
         leadingWidth: 0,
         title: const Text(
-          'Receipts',
+          'My receipts',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.transparent,
