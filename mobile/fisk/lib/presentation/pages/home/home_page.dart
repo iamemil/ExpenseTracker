@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
       body: _pageNo[selectedPage],
       bottomNavigationBar: ConvexAppBar(
         items: [
-          TabItem(icon: Iconsax.home, title: 'Home'),
+          TabItem(icon: selectedPage==0?Iconsax.home1:Iconsax.home, title: 'Home'),
           TabItem(
               icon: Container(
                 decoration: BoxDecoration(
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: const Icon(Iconsax.scan_barcode, color: Colors.white, size: 40),
               )),
-          TabItem(icon: Iconsax.graph, title: 'Stats'),
+          TabItem(icon: selectedPage==2?Iconsax.graph5:Iconsax.graph, title: 'Stats'),
         ],
         initialActiveIndex: selectedPage,
         backgroundColor: Colors.white,
