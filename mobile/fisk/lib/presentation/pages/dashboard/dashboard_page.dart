@@ -82,84 +82,99 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             Card(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.receiptDetails);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const <Widget>[
+                      Expanded(
+                        child: ListTile(
+                          title: Text(
+                            "MCDONALD'S RESTORAN GƏNCLİK MALL",
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            "11.08.2021 20:11:14",
+                            style: TextStyle(fontSize: 10),
+                          ),
+                        ),
                       ),
-                      subtitle: Text(
-                        "11.08.2021 20:11:14",
-                        style: TextStyle(fontSize: 10),
+                      Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          "32.78 ₼",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            Card(
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.receiptDetails);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const <Widget>[
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          "MCDONALD'S RESTORAN GƏNCLİK MALL",
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          "11.08.2021 20:11:14",
+                          style: TextStyle(fontSize: 10),
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Text(
-                      "32.78 ₼",
-                      style: TextStyle(fontSize: 12),
+                    Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Text(
+                        "32.78 ₼",
+                        style: TextStyle(fontSize: 12),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Card(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        "11.08.2021 20:11:14",
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Text(
-                      "32.78 ₼",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Card(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        "MCDONALD'S RESTORAN GƏNCLİK MALL",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        "11.08.2021 20:11:14",
-                        style: TextStyle(fontSize: 10),
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.receiptDetails);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const <Widget>[
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          "MCDONALD'S RESTORAN GƏNCLİK MALL",
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          "11.08.2021 20:11:14",
+                          style: TextStyle(fontSize: 10),
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Text(
-                      "32.78 ₼",
-                      style: TextStyle(fontSize: 12),
+                    Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Text(
+                        "32.78 ₼",
+                        style: TextStyle(fontSize: 12),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             InkWell(
