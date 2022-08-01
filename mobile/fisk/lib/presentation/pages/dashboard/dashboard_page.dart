@@ -16,6 +16,7 @@ class _DashboardPageState extends State<DashboardPage> {
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -37,7 +38,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   maxHeight: deviceWidth * 0.4,
                 ),
                 child: ListView(
-                  physics: const ClampingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: const [
