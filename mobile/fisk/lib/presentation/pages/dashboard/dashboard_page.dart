@@ -185,7 +185,7 @@ class _DashboardPageState extends State<DashboardPage> {
               child: const Align(
                 alignment: Alignment.center,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 10,bottom: 20),
+                    padding: EdgeInsets.only(top: 20,bottom: 40),
                     child: Text(
                       'Show all',
                       style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
