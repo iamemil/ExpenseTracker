@@ -37,6 +37,8 @@ dependencies:
   fl_chart: ^0.55.0
   convex_bottom_bar: ^3.0.0
   iconsax: ^0.0.6
+  dropdown_button2: ^1.7.1
+
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 class ReceiptDetailsPage extends StatefulWidget {
   const ReceiptDetailsPage({Key? key}) : super(key: key);
 
@@ -7,6 +8,14 @@ class ReceiptDetailsPage extends StatefulWidget {
 }
 
 class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
+
+  final List<String> receiptCategories = [
+    'Food&Drink',
+    'Shopping',
+    'Entertainment',
+  ];
+  String? selectedCategory = "Food&Drink";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,16 +30,14 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Card(
               elevation: 3.0,
               margin: const EdgeInsets.only(left: 10,right: 10,bottom: 10),
-              shape: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: Colors.white)),
-              child: Column(mainAxisSize: MainAxisSize.min, children: const [
+              child: Column(mainAxisSize: MainAxisSize.min, children: const <Widget>[
                 ListTile(
                   title: Text(
                     "Merchant name",
@@ -66,9 +73,6 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
             Card(
               elevation: 3.0,
               margin: const EdgeInsets.only(left: 10,right: 10,bottom: 10),
-              shape: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: Colors.white)),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -203,12 +207,37 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                           ),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10),
-                          child: Text(
-                            "Food&Drink",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.teal[900]),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              hint: Text(
+                                'Select category',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.teal[900]),
+                              ),
+                              items: receiptCategories
+                                  .map((item) =>
+                                  DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ))
+                                  .toList(),
+                              value: selectedCategory,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedCategory = value as String;
+                                });
+                              },
+                              buttonHeight: 20,
+                              buttonWidth: 140,
+                              itemHeight: 40,
+                            ),
                           ),
                         ),
                       ),
