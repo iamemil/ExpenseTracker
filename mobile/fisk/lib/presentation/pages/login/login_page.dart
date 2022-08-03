@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../utils/constants/constants.dart';
 
 class LoginPage extends StatefulWidget {
@@ -58,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                       maxLines: 1,
                       decoration: InputDecoration(
                         hintText: 'Email address',
-                        prefixIcon: const Icon(Icons.email),
+                        prefixIcon: const Icon(Icons.email_rounded),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

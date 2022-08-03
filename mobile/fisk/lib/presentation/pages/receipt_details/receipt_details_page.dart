@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
+
+import '../../../assets/fonts/iconsax.dart';
 class ReceiptDetailsPage extends StatefulWidget {
   const ReceiptDetailsPage({Key? key}) : super(key: key);
 
@@ -76,9 +79,9 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Expanded(
-                      child:ListTile(
+                  children: <Widget>[
+                    const Expanded(
+                      child: ListTile(
                         title: Text(
                           "Latte Grande",
                           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
@@ -89,14 +92,35 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "1.000",
-                        style: TextStyle(fontSize: 12),
+                    Container(
+                      width: 130,
+                      height: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: NumberInputPrefabbed.roundedEdgeButtons(
+                          controller: TextEditingController(),
+                          style: const TextStyle(
+                            fontSize: 10,
+                          ),
+                          incDecBgColor: Colors.tealAccent.withOpacity(0.6),
+                          incIconColor: Colors.teal[900],
+                          isInt: false,
+                          min: 0,
+                          incDecFactor: 0.10,
+                          initialValue: 1,
+                          incIcon: Iconsax.add,
+                          decIcon: Iconsax.minus,
+                          buttonArrangement: ButtonArrangement.incRightDecLeft,
+                          onIncrement: (num newlyIncrementedValue) {
+                            print('Newly incremented value is $newlyIncrementedValue');
+                          },
+                          onDecrement: (num newlyDecrementedValue) {
+                            print('Newly decremented value is $newlyDecrementedValue');
+                          },
+                        ),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
                         "7.20 ₼",
@@ -107,8 +131,8 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Expanded(
+                  children: <Widget>[
+                    const Expanded(
                       child:ListTile(
                         title: Text(
                           "Americano Tall",
@@ -120,14 +144,35 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "1.000",
-                        style: TextStyle(fontSize: 12),
+                    Container(
+                      width: 130,
+                      height: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: NumberInputPrefabbed.roundedEdgeButtons(
+                          controller: TextEditingController(),
+                          style: const TextStyle(
+                            fontSize: 10,
+                          ),
+                          incDecBgColor: Colors.tealAccent.withOpacity(0.6),
+                          incIconColor: Colors.teal[900],
+                          isInt: false,
+                          min: 0,
+                          incDecFactor: 0.10,
+                          initialValue: 1,
+                          incIcon: Iconsax.add,
+                          decIcon: Iconsax.minus,
+                          buttonArrangement: ButtonArrangement.incRightDecLeft,
+                          onIncrement: (num newlyIncrementedValue) {
+                            print('Newly incremented value is $newlyIncrementedValue');
+                          },
+                          onDecrement: (num newlyDecrementedValue) {
+                            print('Newly decremented value is $newlyDecrementedValue');
+                          },
+                        ),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
                         "5.70 ₼",
@@ -138,8 +183,8 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Expanded(
+                  children: <Widget>[
+                    const Expanded(
                       child:ListTile(
                         title: Text(
                           "Tiramisu",
@@ -151,14 +196,35 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "1.000",
-                        style: TextStyle(fontSize: 12),
+                    Container(
+                      width: 130,
+                      height: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: NumberInputPrefabbed.roundedEdgeButtons(
+                          controller: TextEditingController(),
+                          style: const TextStyle(
+                            fontSize: 10
+                          ),
+                          incDecBgColor: Colors.tealAccent.withOpacity(0.6),
+                          incIconColor: Colors.teal[900],
+                          isInt: false,
+                          min: 0,
+                          incDecFactor: 0.10,
+                          initialValue: 1,
+                          incIcon: Iconsax.add,
+                          decIcon: Iconsax.minus,
+                          buttonArrangement: ButtonArrangement.incRightDecLeft,
+                          onIncrement: (num newlyIncrementedValue) {
+                            print('Newly incremented value is $newlyIncrementedValue');
+                          },
+                          onDecrement: (num newlyDecrementedValue) {
+                            print('Newly decremented value is $newlyDecrementedValue');
+                          },
+                        ),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
                         "6.00 ₼",
@@ -191,7 +257,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                           child: Text(
                             "Total: 18.90 ₼",
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.teal[900]),
                           ),
@@ -212,7 +278,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                               hint: Text(
                                 'Select category',
                                 style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.teal[900]),
                               ),
@@ -223,7 +289,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                                     child: Text(
                                       item,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.teal[900]
                                       ),
@@ -237,7 +303,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                                 });
                               },
                               buttonHeight: 20,
-                              buttonWidth: 140,
+                              buttonWidth: double.infinity,
                               itemHeight: 40,
                             ),
                           ),
@@ -248,6 +314,22 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                 ),
               ]),
             ),
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: const <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(Iconsax.refresh_circle),
+                  ),
+                  Text('Update Receipt')
+                ],
+              ),
+              //child: const Text('Update Receipt'),
+
+            )
           ],
         ),
       ),
