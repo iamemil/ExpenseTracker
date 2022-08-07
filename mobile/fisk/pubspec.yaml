@@ -39,6 +39,8 @@ dependencies:
   iconsax: ^0.0.6
   dropdown_button2: ^1.7.1
   number_inc_dec: ^0.8.0
+  flutter_bloc: ^8.0.1
+  equatable: ^2.0.3
 
 
 dev_dependencies:

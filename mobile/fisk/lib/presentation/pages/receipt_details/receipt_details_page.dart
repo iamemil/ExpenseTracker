@@ -81,88 +81,47 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     const Expanded(
-                      child: ListTile(
-                        title: Text(
-                          "Latte Grande",
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                        subtitle: Text(
-                          "Price: 7.20 ₼",
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 130,
-                      height: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: NumberInputPrefabbed.roundedEdgeButtons(
-                          controller: TextEditingController(),
-                          style: const TextStyle(
-                            fontSize: 10,
-                          ),
-                          incDecBgColor: Colors.tealAccent.withOpacity(0.6),
-                          incIconColor: Colors.teal[900],
-                          isInt: false,
-                          min: 0,
-                          incDecFactor: 0.10,
-                          initialValue: 1,
-                          incIcon: Iconsax.add,
-                          decIcon: Iconsax.minus,
-                          buttonArrangement: ButtonArrangement.incRightDecLeft,
-                          onIncrement: (num newlyIncrementedValue) {
-                            print('Newly incremented value is $newlyIncrementedValue');
-                          },
-                          onDecrement: (num newlyDecrementedValue) {
-                            print('Newly decremented value is $newlyDecrementedValue');
-                          },
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "7.20 ₼",
-                        style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Expanded(
                       child:ListTile(
                         title: Text(
-                          "Americano Tall",
+                          "Tiramisu",
                           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                         subtitle: Text(
-                          "Price: 5.70 ₼",
+                          "Price: 6.00 ₼",
                           style: TextStyle(fontSize: 10),
                         ),
                       ),
                     ),
                     Container(
-                      width: 130,
+                      width: 140,
                       height: 30,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 10),
-                        child: NumberInputPrefabbed.roundedEdgeButtons(
+                        child: NumberInputWithIncrementDecrement(
                           controller: TextEditingController(),
                           style: const TextStyle(
-                            fontSize: 10,
+                              fontSize: 10
                           ),
-                          incDecBgColor: Colors.tealAccent.withOpacity(0.6),
-                          incIconColor: Colors.teal[900],
                           isInt: false,
+                          fractionDigits: 3,
                           min: 0,
+                          max: 9999,
                           incDecFactor: 0.10,
                           initialValue: 1,
                           incIcon: Iconsax.add,
                           decIcon: Iconsax.minus,
-                          buttonArrangement: ButtonArrangement.incRightDecLeft,
+                          incIconSize: 27,
+                          decIconSize: 27,
+                          buttonArrangement: ButtonArrangement.incLeftDecRight,
+                          widgetContainerDecoration: const BoxDecoration(
+                              borderRadius: BorderRadius.zero
+                          ),
+                          incIconDecoration: const BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          decIconDecoration: const BoxDecoration(
+                              color: Colors.transparent
+                          ),
                           onIncrement: (num newlyIncrementedValue) {
                             print('Newly incremented value is $newlyIncrementedValue');
                           },
@@ -175,7 +134,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                     const Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
-                        "5.70 ₼",
+                        "6.00 ₼",
                         style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -197,24 +156,98 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                       ),
                     ),
                     Container(
-                      width: 130,
+                      width: 140,
                       height: 30,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 10),
-                        child: NumberInputPrefabbed.roundedEdgeButtons(
+                        child: NumberInputWithIncrementDecrement(
                           controller: TextEditingController(),
                           style: const TextStyle(
-                            fontSize: 10
+                              fontSize: 10
                           ),
-                          incDecBgColor: Colors.tealAccent.withOpacity(0.6),
-                          incIconColor: Colors.teal[900],
                           isInt: false,
+                          fractionDigits: 3,
                           min: 0,
+                          max: 9999,
                           incDecFactor: 0.10,
                           initialValue: 1,
                           incIcon: Iconsax.add,
                           decIcon: Iconsax.minus,
-                          buttonArrangement: ButtonArrangement.incRightDecLeft,
+                          incIconSize: 27,
+                          decIconSize: 27,
+                          buttonArrangement: ButtonArrangement.incLeftDecRight,
+                          widgetContainerDecoration: const BoxDecoration(
+                              borderRadius: BorderRadius.zero
+                          ),
+                          incIconDecoration: const BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          decIconDecoration: const BoxDecoration(
+                              color: Colors.transparent
+                          ),
+                          onIncrement: (num newlyIncrementedValue) {
+                            print('Newly incremented value is $newlyIncrementedValue');
+                          },
+                          onDecrement: (num newlyDecrementedValue) {
+                            print('Newly decremented value is $newlyDecrementedValue');
+                          },
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Text(
+                        "6.00 ₼",
+                        style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    const Expanded(
+                      child:ListTile(
+                        title: Text(
+                          "Tiramisu",
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        subtitle: Text(
+                          "Price: 6.00 ₼",
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 140,
+                      height: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: NumberInputWithIncrementDecrement(
+                          controller: TextEditingController(),
+                          style: const TextStyle(
+                            fontSize: 10
+                          ),
+                          isInt: false,
+                          fractionDigits: 3,
+                          min: 0,
+                          max: 9999,
+                          incDecFactor: 0.10,
+                          initialValue: 1,
+                          incIcon: Iconsax.add,
+                          decIcon: Iconsax.minus,
+                          incIconSize: 27,
+                          decIconSize: 27,
+                          buttonArrangement: ButtonArrangement.incLeftDecRight,
+                          widgetContainerDecoration: const BoxDecoration(
+                              borderRadius: BorderRadius.zero
+                          ),
+                          incIconDecoration: const BoxDecoration(
+                            color: Colors.transparent
+                          ),
+                          decIconDecoration: const BoxDecoration(
+                              color: Colors.transparent
+                          ),
                           onIncrement: (num newlyIncrementedValue) {
                             print('Newly incremented value is $newlyIncrementedValue');
                           },
@@ -316,7 +349,10 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
             ),
             ElevatedButton(
               onPressed: () {},
-              style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+              style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 10)
+              ),
               child: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: const <Widget>[
@@ -329,7 +365,26 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
               ),
               //child: const Text('Update Receipt'),
 
-            )
+            ),
+            OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                  primary: Colors.red,
+                  shape: const StadiumBorder(),
+                  padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 10)
+              ),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: const <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(Iconsax.trash),
+                  ),
+                  Text('Delete')
+                ],
+              ),
+              //child: const Text('Update Receipt'),
+            ),
           ],
         ),
       ),
