@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fisk/presentation/pages/dashboard/widgets/short_stats/short_stats.dart';
 import 'package:fisk/presentation/widgets/expense_chart/expense_chart.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../business_logic/blocs/authentication/authentication_bloc.dart';
 import '../../../utils/constants/constants.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -192,7 +194,15 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
               ),
-            )
+            ),
+            Builder(
+              builder: (context) {
+                final userId = context.select(
+                      (AuthenticationBloc bloc) => bloc.state.user.token,
+                );
+                return Text('User Token: $userId');
+              },
+            ),
           ],
         ),
       ),
