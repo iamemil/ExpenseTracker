@@ -18,5 +18,13 @@ class ReceiptService{
         //print(responseJson);
         return ReceiptsResponse.fromJson(responseJson);
     }
+    Future<ReceiptsResponse> getAllReceipts(String userToken) async {
+        Dio dio = new Dio();
+        dio.options.headers["Authorization"] = userToken;
+        var response = await dio.post("${BaseApi.productionURL}/Receipts/GetReceipts");
+        final responseJson = jsonDecode(response.toString());
+        //print(responseJson);
+        return ReceiptsResponse.fromJson(responseJson);
+    }
 }
 

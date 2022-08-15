@@ -117,6 +117,7 @@ class _DashboardPageState extends State<DashboardPage> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: snapshot.data!.data.map((e){
                       return Card(
                         child: InkWell(
