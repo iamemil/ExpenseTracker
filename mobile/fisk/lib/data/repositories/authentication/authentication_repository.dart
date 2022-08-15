@@ -1,8 +1,4 @@
 import 'dart:async';
-
-import 'package:fisk/business_logic/blocs/authentication/authentication_bloc.dart';
-import 'package:fisk/data/models/login/loginResponse/login_response.dart';
-import 'package:fisk/data/models/user/user_model.dart';
 import 'package:fisk/data/repositories/user/user_repository.dart';
 import 'package:fisk/data/services/auth_service.dart';
 
@@ -15,7 +11,7 @@ class AuthenticationRepository {
 
   Stream<AuthenticationStatus> get status async* {
     //await Future<void>.delayed(const Duration(seconds: 1));
-    yield AuthenticationStatus.unknown;
+    yield AuthenticationStatus.authenticated;
     yield* _controller.stream;
   }
 
