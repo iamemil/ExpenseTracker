@@ -1,5 +1,9 @@
+import 'package:fisk/data/models/receipts/receiptsResponse/receipts_response.dart';
 import 'package:fisk/data/models/totalStatistics/totalStatisticsResponse/total_statistics_response.dart';
+import 'package:fisk/data/services/receipt_service.dart';
 import 'package:fisk/data/services/statistics_service.dart';
+import 'package:fisk/presentation/pages/receipt_details/receipt_details_page.dart';
+import 'package:fisk/presentation/pages/receipts/receipts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fisk/presentation/pages/dashboard/widgets/short_stats/short_stats.dart';
 import 'package:fisk/presentation/widgets/expense_chart/expense_chart.dart';
@@ -15,6 +19,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -25,6 +30,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
     Future<TotalStatisticsResponse> totalStatistics =
         StatisticsService().getTotalStatistics(userToken);
+    Future<ReceiptsResponse> lastReceipts =
+    ReceiptService().getReceipts(5,userToken);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -105,105 +112,56 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
             ),
-            Card(
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, Routes.receiptDetails);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Expanded(
-                      child: ListTile(
-                        title: Text(
-                          "MCDONALD'S RESTORAN GƏNCLİK MALL",
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
+            FutureBuilder<ReceiptsResponse>(
+              future: lastReceipts,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: snapshot.data!.data.map((e){
+                      return Card(
+                        child: InkWell(
+                          onTap: () {
+                            //Navigator.pushNamed(context, Routes.receiptDetails);
+                            Navigator.of(context).push(ReceiptDetailsPage.route());
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                child: ListTile(
+                                  title: Text(
+                                    e.storeName,
+                                    style: const TextStyle(
+                                        fontSize: 12, fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Text(
+                                    DateTime.fromMillisecondsSinceEpoch(int.parse(e.purchaseDate.replaceAll("/Date(", "").replaceAll(")/", ""))).subtract(const Duration(hours:9)).toString(),
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  "${e.totalSum} ₼",
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        subtitle: Text(
-                          "11.08.2021 20:11:14",
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "32.78 ₼",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, Routes.receiptDetails);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Expanded(
-                      child: ListTile(
-                        title: Text(
-                          "MCDONALD'S RESTORAN GƏNCLİK MALL",
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          "11.08.2021 20:11:14",
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "32.78 ₼",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, Routes.receiptDetails);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Expanded(
-                      child: ListTile(
-                        title: Text(
-                          "MCDONALD'S RESTORAN GƏNCLİK MALL",
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          "11.08.2021 20:11:14",
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "32.78 ₼",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                      );
+                  },
+                  ).toList());
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.receipts);
+                //Navigator.pushNamed(context, Routes.receipts);
+                Navigator.of(context).push(ReceiptsPage.route());
               },
               child: const Align(
                 alignment: Alignment.center,
@@ -216,7 +174,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
             ),
-            Text('Token: $userToken')
+            Text('Token: $userToken',style: const TextStyle(fontSize: 10),)
           ],
         ),
       ),

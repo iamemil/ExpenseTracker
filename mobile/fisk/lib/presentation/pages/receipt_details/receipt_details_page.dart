@@ -8,6 +8,10 @@ class ReceiptDetailsPage extends StatefulWidget {
 
   @override
   State<ReceiptDetailsPage> createState() => _ReceiptDetailsPageState();
+
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => const ReceiptDetailsPage());
+  }
 }
 
 class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
