@@ -22,7 +22,7 @@ class App extends StatelessWidget {
         create: (_) => AuthenticationBloc(
           authenticationRepository: authenticationRepository,
           userRepository: userRepository,
-        ),
+        )..add(const AuthenticationStatusChanged(AuthenticationStatus.unknown)),
         child: const AppView(),
       ),
     );

@@ -1,7 +1,9 @@
 import 'package:fisk/assets/fonts/iconsax.dart';
+import 'package:fisk/business_logic/blocs/authentication/authentication_bloc.dart';
 import 'package:fisk/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../receipts/receipts_page.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -33,10 +35,8 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.person_outline_rounded),
             color: Colors.black,
             tooltip: 'My Account',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
+            onPressed: () => BlocProvider.of<AuthenticationBloc>(context)
+                .add(AuthenticationLogoutRequested()),
           ),
         ],
       ),

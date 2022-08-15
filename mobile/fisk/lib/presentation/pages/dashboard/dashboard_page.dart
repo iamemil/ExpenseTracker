@@ -200,7 +200,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 final userId = context.select(
                       (AuthenticationBloc bloc) => bloc.state.user.token,
                 );
-                return Text('User Token: $userId');
+                return Text('Token: $userId');
               },
             ),
           ],
