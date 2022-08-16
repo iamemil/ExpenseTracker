@@ -123,7 +123,14 @@ class _DashboardPageState extends State<DashboardPage> {
                         child: InkWell(
                           onTap: () {
                             //Navigator.pushNamed(context, Routes.receiptDetails);
-                            Navigator.of(context).push(ReceiptDetailsPage.route());
+                            //print(e.originalReceiptId);
+                            //Navigator.of(context).push(ReceiptDetailsPage(originalReceiptId: e.originalReceiptId,));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReceiptDetailsPage(originalReceiptId: e.originalReceiptId),
+                              ),
+                            );
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

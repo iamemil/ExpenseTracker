@@ -1,16 +1,20 @@
+import 'package:fisk/data/services/receipt_service.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
-
 import '../../../assets/fonts/iconsax.dart';
+import '../../../business_logic/blocs/authentication/authentication_bloc.dart';
+import '../../../data/models/receipts/receiptResponse/receipt_response.dart';
 class ReceiptDetailsPage extends StatefulWidget {
-  const ReceiptDetailsPage({Key? key}) : super(key: key);
+  const ReceiptDetailsPage({Key? key,required this.originalReceiptId}) : super(key: key);
 
+  final String originalReceiptId;
   @override
   State<ReceiptDetailsPage> createState() => _ReceiptDetailsPageState();
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const ReceiptDetailsPage());
+    return MaterialPageRoute<void>(builder: (_) => const ReceiptDetailsPage(originalReceiptId: '',));
   }
 }
 
@@ -25,6 +29,11 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final userToken = context.select(
+          (AuthenticationBloc bloc) => bloc.state.user.token,
+    );
+    Future<ReceiptResponse> receiptData = ReceiptService().getReceipt(widget.originalReceiptId,userToken);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -44,233 +53,145 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
             Card(
               elevation: 3.0,
               margin: const EdgeInsets.only(left: 10,right: 10,bottom: 10),
-              child: Column(mainAxisSize: MainAxisSize.min, children: const <Widget>[
+              child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 ListTile(
-                  title: Text(
+                  title: const Text(
                     "Merchant name",
                     style: TextStyle(fontSize: 12),
                   ),
-                  subtitle: Text(
-                    "STARBUCKS COFFEE",
-                    style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500, color: Colors.black),
+                  subtitle: FutureBuilder<ReceiptResponse>(
+                    future: receiptData,
+                    builder: (context, snapshot){
+                      if(snapshot.hasData){
+                        return Text(
+                          snapshot.data!.receiptData[0].storeName,
+                          style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w500, color: Colors.black),
+                        );
+                      }else{
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
                   ),
                 ),
                 ListTile(
-                  title: Text(
+                  title: const Text(
                     "Merchant address",
                     style: TextStyle(fontSize: 12),
                   ),
-                  subtitle: Text(
-                    "AZ1072 BAKI ŞƏHƏRİ NƏRİMANOV RAYONU FƏTƏLİXAN XOYSKİ PR. ev.830-835-Cİ MƏHƏLLƏ",
-                    style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500, color: Colors.black),
+                  subtitle: FutureBuilder<ReceiptResponse>(
+                    future: receiptData,
+                    builder: (context, snapshot){
+                      if(snapshot.hasData){
+                        return Text(
+                          snapshot.data!.receiptData[0].storeAddress,
+                          style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w500, color: Colors.black),
+                        );
+                      }else{
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
                   ),
                 ),
                 ListTile(
-                  title: Text(
+                  title: const Text(
                     "Merchant tax number",
                     style: TextStyle(fontSize: 12),
                   ),
-                  subtitle: Text(
-                    "1701513331-15001",
-                    style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500, color: Colors.black),
+                  subtitle: FutureBuilder<ReceiptResponse>(
+                    future: receiptData,
+                    builder: (context, snapshot){
+                      if(snapshot.hasData){
+                        return Text(
+                          snapshot.data!.receiptData[0].storeTaxNumber,
+                          style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w500, color: Colors.black),
+                        );
+                      }else{
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
                   ),
                 ),
-                ]),
-              ),
+              ]),
+            ),
             Card(
               elevation: 3.0,
               margin: const EdgeInsets.only(left: 10,right: 10,bottom: 10),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Expanded(
-                      child:ListTile(
-                        title: Text(
-                          "Tiramisu",
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                        subtitle: Text(
-                          "Price: 6.00 ₼",
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 140,
-                      height: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: NumberInputWithIncrementDecrement(
-                          controller: TextEditingController(),
-                          style: const TextStyle(
-                              fontSize: 10
-                          ),
-                          isInt: false,
-                          fractionDigits: 3,
-                          min: 0,
-                          max: 9999,
-                          incDecFactor: 0.10,
-                          initialValue: 1,
-                          incIcon: Iconsax.add,
-                          decIcon: Iconsax.minus,
-                          incIconSize: 27,
-                          decIconSize: 27,
-                          buttonArrangement: ButtonArrangement.incLeftDecRight,
-                          widgetContainerDecoration: const BoxDecoration(
-                              borderRadius: BorderRadius.zero
-                          ),
-                          incIconDecoration: const BoxDecoration(
-                              color: Colors.transparent
-                          ),
-                          decIconDecoration: const BoxDecoration(
-                              color: Colors.transparent
-                          ),
-                          onIncrement: (num newlyIncrementedValue) {
-                            print('Newly incremented value is $newlyIncrementedValue');
-                          },
-                          onDecrement: (num newlyDecrementedValue) {
-                            print('Newly decremented value is $newlyDecrementedValue');
-                          },
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "6.00 ₼",
-                        style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Expanded(
-                      child:ListTile(
-                        title: Text(
-                          "Tiramisu",
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                        subtitle: Text(
-                          "Price: 6.00 ₼",
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 140,
-                      height: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: NumberInputWithIncrementDecrement(
-                          controller: TextEditingController(),
-                          style: const TextStyle(
-                              fontSize: 10
-                          ),
-                          isInt: false,
-                          fractionDigits: 3,
-                          min: 0,
-                          max: 9999,
-                          incDecFactor: 0.10,
-                          initialValue: 1,
-                          incIcon: Iconsax.add,
-                          decIcon: Iconsax.minus,
-                          incIconSize: 27,
-                          decIconSize: 27,
-                          buttonArrangement: ButtonArrangement.incLeftDecRight,
-                          widgetContainerDecoration: const BoxDecoration(
-                              borderRadius: BorderRadius.zero
-                          ),
-                          incIconDecoration: const BoxDecoration(
-                              color: Colors.transparent
-                          ),
-                          decIconDecoration: const BoxDecoration(
-                              color: Colors.transparent
-                          ),
-                          onIncrement: (num newlyIncrementedValue) {
-                            print('Newly incremented value is $newlyIncrementedValue');
-                          },
-                          onDecrement: (num newlyDecrementedValue) {
-                            print('Newly decremented value is $newlyDecrementedValue');
-                          },
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "6.00 ₼",
-                        style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Expanded(
-                      child:ListTile(
-                        title: Text(
-                          "Tiramisu",
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                        subtitle: Text(
-                          "Price: 6.00 ₼",
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 140,
-                      height: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: NumberInputWithIncrementDecrement(
-                          controller: TextEditingController(),
-                          style: const TextStyle(
-                            fontSize: 10
-                          ),
-                          isInt: false,
-                          fractionDigits: 3,
-                          min: 0,
-                          max: 9999,
-                          incDecFactor: 0.10,
-                          initialValue: 1,
-                          incIcon: Iconsax.add,
-                          decIcon: Iconsax.minus,
-                          incIconSize: 27,
-                          decIconSize: 27,
-                          buttonArrangement: ButtonArrangement.incLeftDecRight,
-                          widgetContainerDecoration: const BoxDecoration(
-                              borderRadius: BorderRadius.zero
-                          ),
-                          incIconDecoration: const BoxDecoration(
-                            color: Colors.transparent
-                          ),
-                          decIconDecoration: const BoxDecoration(
-                              color: Colors.transparent
-                          ),
-                          onIncrement: (num newlyIncrementedValue) {
-                            print('Newly incremented value is $newlyIncrementedValue');
-                          },
-                          onDecrement: (num newlyDecrementedValue) {
-                            print('Newly decremented value is $newlyDecrementedValue');
-                          },
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "6.00 ₼",
-                        style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ],
-                ),
-              ]),
+              child: FutureBuilder<ReceiptResponse>(
+                future: receiptData,
+                builder: (context, snapshot){
+                  if(snapshot.hasData){
+                    return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: snapshot.data!.receiptData[0].receiptItems.map((e){
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                child:ListTile(
+                                  title: Text(
+                                    e.itemName,
+                                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                                  ),
+                                  subtitle: Text(
+                                    "Price: ${e.itemPrice} ₼",
+                                    style: const TextStyle(fontSize: 8),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 140,
+                                height: 30,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: NumberInputWithIncrementDecrement(
+                                    controller: TextEditingController(),
+                                    style: const TextStyle(
+                                        fontSize: 10
+                                    ),
+                                    isInt: false,
+                                    fractionDigits: 3,
+                                    min: 0,
+                                    max: 9999,
+                                    incDecFactor: 0.10,
+                                    initialValue: e.itemQuantity,
+                                    incIcon: Iconsax.add,
+                                    decIcon: Iconsax.minus,
+                                    incIconSize: 27,
+                                    decIconSize: 27,
+                                    buttonArrangement: ButtonArrangement.incLeftDecRight,
+                                    widgetContainerDecoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.zero
+                                    ),
+                                    incIconDecoration: const BoxDecoration(
+                                        color: Colors.transparent
+                                    ),
+                                    decIconDecoration: const BoxDecoration(
+                                        color: Colors.transparent
+                                    ),
+                                    onIncrement: (num newlyIncrementedValue) {
+                                      print('Newly incremented value is $newlyIncrementedValue');
+                                    },
+                                    onDecrement: (num newlyDecrementedValue) {
+                                      print('Newly decremented value is $newlyDecrementedValue');
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  "${e.itemSum} ₼",
+                                  style: const TextStyle(fontSize: 11,fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ],
+                          );
+                        }).toList());
+                  }else{
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
             ),
             Card(
               elevation: 3.0,
@@ -291,12 +212,21 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                           ),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10),
-                          child: Text(
-                            "Total: 18.90 ₼",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.teal[900]),
+                          child: FutureBuilder<ReceiptResponse>(
+                            future: receiptData,
+                            builder: (context, snapshot){
+                              if(snapshot.hasData){
+                                return Text(
+                                  "Total: ${snapshot.data!.receiptData[0].totalSum} ₼",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.teal[900]),
+                                );
+                              }else{
+                                return const Center(child: CircularProgressIndicator());
+                              }
+                            },
                           ),
                         ),
                       ),
@@ -326,9 +256,9 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                                     child: Text(
                                       item,
                                       style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.teal[900]
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.teal[900]
                                       ),
                                     ),
                                   ))

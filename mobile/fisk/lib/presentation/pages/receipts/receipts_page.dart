@@ -50,8 +50,12 @@ class _ReceiptsPageState extends State<ReceiptsPage> {
                     return Card(
                       child: InkWell(
                         onTap: () {
-                          //Navigator.pushNamed(context, Routes.receiptDetails);
-                          Navigator.of(context).push(ReceiptDetailsPage.route());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReceiptDetailsPage(originalReceiptId: e.originalReceiptId),
+                            ),
+                          );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

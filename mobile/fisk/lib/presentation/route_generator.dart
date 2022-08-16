@@ -19,10 +19,6 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => const ReceiptsPage(),
         );
-      case Routes.receiptDetails:
-        return MaterialPageRoute(
-          builder: (_) => const ReceiptDetailsPage(),
-        );
       default:
         return MaterialPageRoute(
           builder: (_) => const LoginPage(),
