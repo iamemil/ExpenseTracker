@@ -1,3 +1,5 @@
+import 'package:fisk/data/models/storeTag/storeTagResponse/store_tag_response.dart';
+import 'package:fisk/data/repositories/store_tag/store_tag_repository.dart';
 import 'package:fisk/data/services/receipt_service.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -6,6 +8,7 @@ import 'package:number_inc_dec/number_inc_dec.dart';
 import '../../../assets/fonts/iconsax.dart';
 import '../../../business_logic/blocs/authentication/authentication_bloc.dart';
 import '../../../data/models/receipts/receiptResponse/receipt_response.dart';
+import '../../../data/repositories/receipt/receipt_repository.dart';
 class ReceiptDetailsPage extends StatefulWidget {
   const ReceiptDetailsPage({Key? key,required this.originalReceiptId}) : super(key: key);
 
@@ -20,12 +23,6 @@ class ReceiptDetailsPage extends StatefulWidget {
 
 class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
 
-  final List<String> receiptCategories = [
-    'Food&Drink',
-    'Shopping',
-    'Entertainment',
-  ];
-  String? selectedCategory = "Food&Drink";
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,14 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
     final userToken = context.select(
           (AuthenticationBloc bloc) => bloc.state.user.token,
     );
-    Future<ReceiptResponse> receiptData = ReceiptService().getReceipt(widget.originalReceiptId,userToken);
+
+    final ReceiptRepository receiptRepo = ReceiptRepository(userToken);
+    final StoreTagRepository storeTagRepo = StoreTagRepository(userToken);
+    Future<ReceiptResponse> receiptData = receiptRepo.getReceipt(widget.originalReceiptId);
+    Future<StoreTagResponse> storeTags = storeTagRepo.getStoreTags(true);
+
+    int? selectedCategoryId;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -152,7 +156,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                                     fractionDigits: 3,
                                     min: 0,
                                     max: 9999,
-                                    incDecFactor: 0.10,
+                                    incDecFactor: 0.001,
                                     initialValue: e.itemQuantity,
                                     incIcon: Iconsax.add,
                                     decIcon: Iconsax.minus,
@@ -240,39 +244,59 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                           ),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton2(
-                              hint: Text(
-                                'Select category',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.teal[900]),
-                              ),
-                              items: receiptCategories
-                                  .map((item) =>
-                                  DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.teal[900]
-                                      ),
-                                    ),
-                                  ))
-                                  .toList(),
-                              value: selectedCategory,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedCategory = value as String;
-                                });
-                              },
-                              buttonHeight: 20,
-                              buttonWidth: double.infinity,
-                              itemHeight: 40,
-                            ),
+                          child: FutureBuilder<ReceiptResponse>(
+                            future: receiptData,
+                            builder: (context,receiptSnapshot) {
+                              if(receiptSnapshot.hasData){
+                                return FutureBuilder<StoreTagResponse>(
+                                    future: storeTags,
+                                    builder: (context,snapshot) {
+                                      if(snapshot.hasData){
+                                        return DropdownButtonHideUnderline(
+                                          child: DropdownButton2(
+                                            hint: Text(
+                                              'Select category',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.teal[900]),
+                                            ),
+                                            items: snapshot.data!.data.map((e) =>
+                                                DropdownMenuItem<int>(
+                                                  value: e.id,
+                                                  child: Text(
+                                                    e.name,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: Colors.teal[900]
+                                                    ),
+                                                  ),
+                                                )).toList(),
+                                            value: snapshot.data!.data.firstWhere((element) => element.id==receiptSnapshot.data!.receiptData[0].storeTagId).id,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedCategoryId = value as int;
+                                              });
+                                            },
+                                            buttonHeight: 20,
+                                            buttonWidth: double.infinity,
+                                            itemHeight: 40,
+                                          ),
+                                        );
+                                      }else {
+                                        return const Center(
+                                          child: Text("Error. Try again"),
+                                        );
+                                      }
+                                    }
+                                );
+                              }else{
+                                return const Center(
+                                  child: CircularProgressIndicator());
+
+                              }
+                            }
                           ),
                         ),
                       ),

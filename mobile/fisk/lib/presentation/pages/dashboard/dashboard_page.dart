@@ -1,5 +1,6 @@
 import 'package:fisk/data/models/receipts/receiptsResponse/receipts_response.dart';
 import 'package:fisk/data/models/totalStatistics/totalStatisticsResponse/total_statistics_response.dart';
+import 'package:fisk/data/repositories/receipt/receipt_repository.dart';
 import 'package:fisk/data/services/receipt_service.dart';
 import 'package:fisk/data/services/statistics_service.dart';
 import 'package:fisk/presentation/pages/receipt_details/receipt_details_page.dart';
@@ -28,11 +29,10 @@ class _DashboardPageState extends State<DashboardPage> {
       (AuthenticationBloc bloc) => bloc.state.user.token,
     );
 
+    final ReceiptRepository receiptRepo = ReceiptRepository(userToken);
+    Future<ReceiptsResponse> lastReceipts = receiptRepo.getReceipts(5);
     Future<TotalStatisticsResponse> totalStatistics =
-        StatisticsService().getTotalStatistics(userToken);
-    Future<ReceiptsResponse> lastReceipts =
-    ReceiptService().getReceipts(5,userToken);
-
+    StatisticsService().getTotalStatistics(userToken);
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -182,7 +182,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
             ),
-            Text('Token: $userToken',style: const TextStyle(fontSize: 10),)
+            /*Text('Token: $userToken',style: const TextStyle(fontSize: 10),)*/
           ],
         ),
       ),

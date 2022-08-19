@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:fisk/data/models/receipts/receiptResponse/receipt_response.dart';
 import 'package:fisk/data/models/receipts/receiptsResponse/receipts_response.dart';
-import 'package:fisk/data/models/totalStatistics/totalStatisticsResponse/total_statistics_response.dart';
 import 'package:fisk/data/services/BaseApi.dart';
 
 class ReceiptService{

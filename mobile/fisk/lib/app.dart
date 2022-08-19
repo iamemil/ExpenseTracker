@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'business_logic/blocs/authentication/authentication_bloc.dart';
 import 'package:fisk/presentation/pages/splash/splash_page.dart';
-import 'package:fisk/utils/constants/constants.dart';
 import 'data/repositories/user/user_repository.dart';
 import 'presentation/pages/home/home_page.dart';
 import 'presentation/pages/login/login_page.dart';

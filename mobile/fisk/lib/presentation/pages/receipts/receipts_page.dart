@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../business_logic/blocs/authentication/authentication_bloc.dart';
 import '../../../data/models/receipts/receiptsResponse/receipts_response.dart';
-import '../../../data/services/receipt_service.dart';
-import '../../../utils/constants/constants.dart';
+import '../../../data/repositories/receipt/receipt_repository.dart';
 import '../receipt_details/receipt_details_page.dart';
 class ReceiptsPage extends StatefulWidget {
   const ReceiptsPage({Key? key}) : super(key: key);
@@ -24,8 +23,8 @@ class _ReceiptsPageState extends State<ReceiptsPage> {
     final userToken = context.select(
           (AuthenticationBloc bloc) => bloc.state.user.token,
     );
-    Future<ReceiptsResponse> lastReceipts =
-    ReceiptService().getAllReceipts(userToken);
+    final ReceiptRepository receiptRepo = ReceiptRepository(userToken);
+    Future<ReceiptsResponse> lastReceipts = receiptRepo.getAllReceipts();
 
     return Scaffold(
       appBar: AppBar(

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:uuid/uuid.dart';
 import '../../models/user/user_model.dart';
 
 class UserRepository {
@@ -31,6 +30,7 @@ class UserRepository {
     await _localStorage.write(key: "USER_TOKEN", value: token);
   }
   Future<void> deleteUser() async {
+    _user = User.empty;
     await _localStorage.delete(key: "USER_TOKEN");
   }
 }
