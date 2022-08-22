@@ -4,7 +4,7 @@ import 'package:fisk/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../receipts/receipts_page.dart';
+import '../new_scan/new_scan.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int selectedPage = 0;
-  final _pageNo = [DashboardPage(), ReceiptsPage(),DashboardPage()];
+  final _pageNo = const [DashboardPage(), NewScanPage(),DashboardPage()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

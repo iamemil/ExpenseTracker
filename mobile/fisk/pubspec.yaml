@@ -44,6 +44,7 @@ dependencies:
   formz: ^0.4.1
   dio: ^4.0.6
   flutter_secure_storage: ^5.1.0
+  flutter_barcode_scanner: ^2.0.0
 
 
 dev_dependencies:

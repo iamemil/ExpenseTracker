@@ -1,6 +1,5 @@
 import 'package:fisk/data/models/storeTag/storeTagResponse/store_tag_response.dart';
 import 'package:fisk/data/repositories/store_tag/store_tag_repository.dart';
-import 'package:fisk/data/services/receipt_service.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,21 +21,18 @@ class ReceiptDetailsPage extends StatefulWidget {
 }
 
 class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
-
+  int? selectedCategoryId;
 
   @override
   Widget build(BuildContext context) {
-
     final userToken = context.select(
           (AuthenticationBloc bloc) => bloc.state.user.token,
     );
-
     final ReceiptRepository receiptRepo = ReceiptRepository(userToken);
     final StoreTagRepository storeTagRepo = StoreTagRepository(userToken);
     Future<ReceiptResponse> receiptData = receiptRepo.getReceipt(widget.originalReceiptId);
     Future<StoreTagResponse> storeTags = storeTagRepo.getStoreTags(true);
 
-    int? selectedCategoryId;
 
     return Scaffold(
       appBar: AppBar(
@@ -248,6 +244,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                             future: receiptData,
                             builder: (context,receiptSnapshot) {
                               if(receiptSnapshot.hasData){
+                                var initialCategoryId = receiptSnapshot.data!.receiptData[0].storeTagId;
                                 return FutureBuilder<StoreTagResponse>(
                                     future: storeTags,
                                     builder: (context,snapshot) {
@@ -261,6 +258,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.teal[900]),
                                             ),
+                                            dropdownOverButton: true,
                                             items: snapshot.data!.data.map((e) =>
                                                 DropdownMenuItem<int>(
                                                   value: e.id,
@@ -273,8 +271,9 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                                                     ),
                                                   ),
                                                 )).toList(),
-                                            value: snapshot.data!.data.firstWhere((element) => element.id==receiptSnapshot.data!.receiptData[0].storeTagId).id,
+                                            value: selectedCategoryId ?? initialCategoryId,
                                             onChanged: (value) {
+                                              //print(value);
                                               setState(() {
                                                 selectedCategoryId = value as int;
                                               });
@@ -348,4 +347,5 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
       ),
     );
   }
+
 }
