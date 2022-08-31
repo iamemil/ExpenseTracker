@@ -22,6 +22,17 @@ class ReceiptDetailsPage extends StatefulWidget {
 
 class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
   int? selectedCategoryId;
+  List<ReceiptItem>? receiptItems;
+
+  receiptListCallback(List<ReceiptItem> updatedList){
+    setState(() {
+      receiptItems = updatedList;
+      print(receiptItems?.length);
+      receiptItems?.forEach((element) {
+        print(element.itemName+" "+element.itemQuantity.toString()+" "+element.itemPrice.toString());
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +43,6 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
     final StoreTagRepository storeTagRepo = StoreTagRepository(userToken);
     Future<ReceiptResponse> receiptData = receiptRepo.getReceipt(widget.originalReceiptId);
     Future<StoreTagResponse> storeTags = storeTagRepo.getStoreTags(true);
-
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -123,69 +132,10 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                     return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: snapshot.data!.receiptData[0].receiptItems.map((e){
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Expanded(
-                                child:ListTile(
-                                  title: Text(
-                                    e.itemName,
-                                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
-                                  ),
-                                  subtitle: Text(
-                                    "Price: ${e.itemPrice} ₼",
-                                    style: const TextStyle(fontSize: 8),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 140,
-                                height: 30,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: NumberInputWithIncrementDecrement(
-                                    controller: TextEditingController(),
-                                    style: const TextStyle(
-                                        fontSize: 10
-                                    ),
-                                    isInt: false,
-                                    fractionDigits: 3,
-                                    min: 0,
-                                    max: 9999,
-                                    incDecFactor: 0.001,
-                                    initialValue: e.itemQuantity,
-                                    incIcon: Iconsax.add,
-                                    decIcon: Iconsax.minus,
-                                    incIconSize: 27,
-                                    decIconSize: 27,
-                                    buttonArrangement: ButtonArrangement.incLeftDecRight,
-                                    widgetContainerDecoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.zero
-                                    ),
-                                    incIconDecoration: const BoxDecoration(
-                                        color: Colors.transparent
-                                    ),
-                                    decIconDecoration: const BoxDecoration(
-                                        color: Colors.transparent
-                                    ),
-                                    onIncrement: (num newlyIncrementedValue) {
-                                      print('Newly incremented value is $newlyIncrementedValue');
-                                    },
-                                    onDecrement: (num newlyDecrementedValue) {
-                                      print('Newly decremented value is $newlyDecrementedValue');
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Text(
-                                  "${e.itemSum} ₼",
-                                  style: const TextStyle(fontSize: 11,fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ],
-                          );
+                          ReceiptItem receiptItem = ReceiptItem(itemCode: e.itemCode, itemName: e.itemName, itemQuantity: e.itemQuantity, itemPrice: e.itemPrice, itemSum: e.itemSum);
+                          //receiptItems?.add(receiptItem);
+                          //addToReceiptItems(receiptItem);
+                          return ReceiptListItem(receiptListCallback: receiptListCallback,receiptItem: receiptItem,);
                         }).toList());
                   }else{
                     return const Center(child: CircularProgressIndicator());
@@ -349,3 +299,115 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
   }
 
 }
+
+class ReceiptListItem extends StatefulWidget {
+  const ReceiptListItem({Key? key,required this.receiptListCallback,required this.receiptItem}) : super(key: key);
+
+
+  final Function receiptListCallback;
+  final ReceiptItem receiptItem;
+
+  @override
+  State<ReceiptListItem> createState() => _ReceiptListItemState();
+}
+
+class _ReceiptListItemState extends State<ReceiptListItem> {
+  double _itemFinalSum = 0;
+  List<ReceiptItem>? _receiptItems;
+
+  void initiateList(ReceiptItem updatedItem){
+    setState(() {
+        _receiptItems = [...?_receiptItems,widget.receiptItem];
+      //_receiptItems?.add(updatedItem);
+    });
+  }
+  void updateList(ReceiptItem updatedItem){
+    setState(() {
+      _receiptItems![_receiptItems!.indexWhere((element) => element.itemCode==updatedItem.itemCode)] = updatedItem;
+      print(_receiptItems?.length);
+      /*_receiptItems?.forEach((element) {
+        print(element.itemName+" "+element.itemQuantity.toString()+" "+element.itemPrice.toString());
+      });
+       */
+      //widget.receiptListCallback(_receiptItems);
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    initiateList(widget.receiptItem);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Expanded(
+          child:ListTile(
+            title: Text(
+              widget.receiptItem.itemName,
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+            ),
+            subtitle: Text(
+              "Price: ${widget.receiptItem.itemPrice} ₼",
+              style: const TextStyle(fontSize: 8),
+            ),
+          ),
+        ),
+        Container(
+          width: 140,
+          height: 30,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: NumberInputWithIncrementDecrement(
+              controller: TextEditingController(),
+              style: const TextStyle(
+                  fontSize: 10
+              ),
+              isInt: false,
+              fractionDigits: 3,
+              min: 0,
+              max: 9999,
+              incDecFactor: 0.001,
+              initialValue: widget.receiptItem.itemQuantity,
+              incIcon: Iconsax.add,
+              decIcon: Iconsax.minus,
+              incIconSize: 27,
+              decIconSize: 27,
+              buttonArrangement: ButtonArrangement.incLeftDecRight,
+              widgetContainerDecoration: const BoxDecoration(
+                  borderRadius: BorderRadius.zero
+              ),
+              incIconDecoration: const BoxDecoration(
+                  color: Colors.transparent
+              ),
+              decIconDecoration: const BoxDecoration(
+                  color: Colors.transparent
+              ),
+              onIncrement: (num newlyIncrementedValue) {
+                setState(() {
+                  _itemFinalSum = newlyIncrementedValue.toDouble() * widget.receiptItem.itemPrice;
+                  widget.receiptItem.itemQuantity = newlyIncrementedValue.toDouble();
+                  widget.receiptItem.itemSum=_itemFinalSum;
+                  updateList(widget.receiptItem);
+                });
+              },
+              onDecrement: (num newlyDecrementedValue) {
+                setState(() {
+                  _itemFinalSum = newlyDecrementedValue.toDouble() * widget.receiptItem.itemPrice;
+                  widget.receiptItem.itemQuantity = newlyDecrementedValue.toDouble();
+                  widget.receiptItem.itemSum=_itemFinalSum;
+                  updateList(widget.receiptItem);
+                });
+              },
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: Text(
+            "${_itemFinalSum==0 ? widget.receiptItem.itemPrice.toStringAsFixed(2) : _itemFinalSum.toStringAsFixed(2)} ₼",
+            style: const TextStyle(fontSize: 11,fontWeight: FontWeight.w500),
+          ),
+        ),
+      ],
+    );
+  }
+}
+

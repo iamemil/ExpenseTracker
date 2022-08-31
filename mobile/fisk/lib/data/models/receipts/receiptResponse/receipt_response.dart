@@ -99,6 +99,7 @@ class ReceiptItem {
     itemSum: json["itemSum"].toDouble(),
   );
 
+
   Map<String, dynamic> toJson() => {
     "itemCode": itemCode,
     "itemName": itemName,
