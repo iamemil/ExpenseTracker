@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:fisk/data/services/receipt_service.dart';
 import '../../models/receipts/receiptResponse/receipt_response.dart';
@@ -19,5 +20,10 @@ class ReceiptRepository {
   }
   Future<ReceiptsResponse> getAllReceipts(){
     return _receiptService.getAllReceipts(_userToken);
+  }
+
+  Future<int> update(String Id, List<ReceiptItem> receiptItems, int tagId, String totalSum){
+
+    return _receiptService.updateReceipt(_userToken,Id,jsonEncode(receiptItems),tagId,totalSum);
   }
 }

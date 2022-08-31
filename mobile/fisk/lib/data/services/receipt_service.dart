@@ -38,5 +38,21 @@ class ReceiptService{
         //print(responseJson);
         return ReceiptsResponse.fromJson(responseJson);
     }
+
+    Future<int> updateReceipt(String userToken, String receiptId, String receiptItems, int tagId, String totalSum) async {
+        Dio dio = Dio();
+        dio.options.headers["Authorization"] = userToken;
+        var params =  {
+            "Id": receiptId,
+            "receiptItems":receiptItems,
+            "tagId":tagId,
+            "receiptTotalSum":totalSum
+        };
+        print(receiptItems);
+        var response = await dio.post("${BaseApi.productionURL}/Receipts/Update",data:jsonEncode(params));
+        final responseJson = jsonDecode(response.toString());
+        print(responseJson);
+        return 200;
+    }
 }
 

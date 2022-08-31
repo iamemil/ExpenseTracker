@@ -23,14 +23,17 @@ class ReceiptDetailsPage extends StatefulWidget {
 class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
   int? selectedCategoryId;
   List<ReceiptItem>? receiptItems;
+  double? totalSum;
 
   void updateList(List<ReceiptItem> updatedList){
     setState(() {
       receiptItems = updatedList;
-      /*receiptItems?.forEach((element) {
+      totalSum = receiptItems?.fold(0, (sum, item) => sum! + item.itemSum);
+
+      receiptItems?.forEach((element) {
         print(element.itemName+" "+element.itemPrice.toString()+" "+element.itemQuantity.toString()+" "+element.itemSum.toString());
       });
-       */
+
     });
   }
 
@@ -130,7 +133,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                 future: receiptData,
                 builder: (context, snapshot){
                   if(snapshot.hasData){
-                    return ReceiptItemsList(receiptItems: snapshot.data!.receiptData[0].receiptItems,receiptCallback:updateList);
+                    return ReceiptItemsList(receiptItems: receiptItems ?? snapshot.data!.receiptData[0].receiptItems,receiptCallback:updateList);
                   }else{
                     return const Center(child: CircularProgressIndicator());
                   }
@@ -161,7 +164,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                             builder: (context, snapshot){
                               if(snapshot.hasData){
                                 return Text(
-                                  "Total: ${snapshot.data!.receiptData[0].totalSum} ₼",
+                                  "Total: ${totalSum != null ? totalSum!.toStringAsFixed(2) : snapshot.data!.receiptData[0].totalSum.toStringAsFixed(2)} ₼",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
@@ -248,24 +251,43 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                 ),
               ]),
             ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                  shape: const StadiumBorder(),
-                  padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 10)
-              ),
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: const <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(Iconsax.refresh_circle),
-                  ),
-                  Text('Update Receipt')
-                ],
-              ),
-              //child: const Text('Update Receipt'),
+            FutureBuilder<ReceiptResponse>(
+              future: receiptData,
+              builder: (context, snapshot){
+                if(snapshot.hasData){
+                  return ElevatedButton(
+                    onPressed: () async {
+                      int status = await receiptRepo.update(snapshot.data!.receiptData[0].originalReceiptId, receiptItems ?? snapshot.data!.receiptData[0].receiptItems, selectedCategoryId ?? snapshot.data!.receiptData[0].storeTagId, totalSum != null ? totalSum!.toStringAsFixed(2) : snapshot.data!.receiptData[0].totalSum.toStringAsFixed(2));
+                      if(status==200){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Receipt Updated Successfully')));
+                      }else{
 
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Error occurred. Try again.')));
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 10)
+                    ),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: const <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Icon(Iconsax.refresh_circle),
+                        ),
+                        Text('Update Receipt')
+                      ],
+                    ),
+                    //child: const Text('Update Receipt'),
+
+                  );
+                }else{
+                  return CircularProgressIndicator();
+                }
+              },
             ),
             OutlinedButton(
               onPressed: () {},
