@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:fisk/data/models/storeTag/storeTagResponse/store_tag_response.dart';
 import 'package:fisk/data/repositories/store_tag/store_tag_repository.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +30,10 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
     setState(() {
       receiptItems = updatedList;
       totalSum = receiptItems?.fold(0, (sum, item) => sum! + item.itemSum);
-
-      receiptItems?.forEach((element) {
+      /*receiptItems?.forEach((element) {
         print(element.itemName+" "+element.itemPrice.toString()+" "+element.itemQuantity.toString()+" "+element.itemSum.toString());
       });
-
+       */
     });
   }
 
@@ -257,12 +257,11 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                 if(snapshot.hasData){
                   return ElevatedButton(
                     onPressed: () async {
-                      int status = await receiptRepo.update(snapshot.data!.receiptData[0].originalReceiptId, receiptItems ?? snapshot.data!.receiptData[0].receiptItems, selectedCategoryId ?? snapshot.data!.receiptData[0].storeTagId, totalSum != null ? totalSum!.toStringAsFixed(2) : snapshot.data!.receiptData[0].totalSum.toStringAsFixed(2));
-                      if(status==200){
+                      Response response = await receiptRepo.update(snapshot.data!.receiptData[0].originalReceiptId, receiptItems ?? snapshot.data!.receiptData[0].receiptItems, selectedCategoryId ?? snapshot.data!.receiptData[0].storeTagId, totalSum != null ? totalSum!.toStringAsFixed(2) : snapshot.data!.receiptData[0].totalSum.toStringAsFixed(2));
+                      if(response.statusCode==200){
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Receipt Updated Successfully')));
                       }else{
-
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Error occurred. Try again.')));
                       }

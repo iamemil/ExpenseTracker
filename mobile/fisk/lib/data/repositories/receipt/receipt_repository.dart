@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:fisk/data/services/receipt_service.dart';
 import '../../models/receipts/receiptResponse/receipt_response.dart';
 import '../../models/receipts/receiptsResponse/receipts_response.dart';
@@ -22,8 +23,7 @@ class ReceiptRepository {
     return _receiptService.getAllReceipts(_userToken);
   }
 
-  Future<int> update(String Id, List<ReceiptItem> receiptItems, int tagId, String totalSum){
-
+  Future<Response> update(String Id, List<ReceiptItem> receiptItems, int tagId, String totalSum){
     return _receiptService.updateReceipt(_userToken,Id,jsonEncode(receiptItems),tagId,totalSum);
   }
 }
