@@ -1,5 +1,7 @@
 import 'package:fisk/assets/fonts/iconsax.dart';
 import 'package:fisk/business_logic/blocs/authentication/authentication_bloc.dart';
+import 'package:fisk/data/repositories/authentication/authentication_repository.dart';
+import 'package:fisk/data/repositories/user/user_repository.dart';
 import 'package:fisk/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
@@ -18,9 +20,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int selectedPage = 0;
-  final _pageNo = const [DashboardPage(), NewScanPage(),DashboardPage()];
   @override
   Widget build(BuildContext context) {
+
+    const pageNo = [DashboardPage(), NewScanPage(),DashboardPage()];
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0,
@@ -40,7 +43,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: _pageNo[selectedPage],
+      body: pageNo[selectedPage],
       bottomNavigationBar: ConvexAppBar(
         items: [
           TabItem(icon: selectedPage==0?Iconsax.home1:Iconsax.home, title: 'Home'),

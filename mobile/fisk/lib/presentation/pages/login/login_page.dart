@@ -28,18 +28,3 @@ class LoginPage extends StatelessWidget {
   }
 
 }
-/*
-class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
-  final Map<String, dynamic> formData = {'email': null, 'password': null};
-
-
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      //print(formData);
-      Navigator.pushNamedAndRemoveUntil(context,Routes.home,(Route<dynamic> route) => false);
-    }
-  }
-}
-*/

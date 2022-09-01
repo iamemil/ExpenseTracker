@@ -26,26 +26,19 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
   List<ReceiptItem>? receiptItems;
   double? totalSum;
 
+  final ReceiptRepository receiptRepo = ReceiptRepository();
+  final StoreTagRepository storeTagRepo = StoreTagRepository();
+
+
   void updateList(List<ReceiptItem> updatedList){
     setState(() {
       receiptItems = updatedList;
       totalSum = receiptItems?.fold(0, (sum, item) => sum! + item.itemSum);
-      /*receiptItems?.forEach((element) {
-        print(element.itemName+" "+element.itemPrice.toString()+" "+element.itemQuantity.toString()+" "+element.itemSum.toString());
-      });
-       */
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final userToken = context.select(
-          (AuthenticationBloc bloc) => bloc.state.user.token,
-    );
-    final ReceiptRepository receiptRepo = ReceiptRepository(userToken);
-    final StoreTagRepository storeTagRepo = StoreTagRepository(userToken);
-    Future<ReceiptResponse> receiptData = receiptRepo.getReceipt(widget.originalReceiptId);
-    Future<StoreTagResponse> storeTags = storeTagRepo.getStoreTags(true);
 
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +66,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                     style: TextStyle(fontSize: 12),
                   ),
                   subtitle: FutureBuilder<ReceiptResponse>(
-                    future: receiptData,
+                    future: receiptRepo.getReceipt(widget.originalReceiptId),
                     builder: (context, snapshot){
                       if(snapshot.hasData){
                         return Text(
@@ -92,7 +85,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                     style: TextStyle(fontSize: 12),
                   ),
                   subtitle: FutureBuilder<ReceiptResponse>(
-                    future: receiptData,
+                    future: receiptRepo.getReceipt(widget.originalReceiptId),
                     builder: (context, snapshot){
                       if(snapshot.hasData){
                         return Text(
@@ -111,7 +104,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                     style: TextStyle(fontSize: 12),
                   ),
                   subtitle: FutureBuilder<ReceiptResponse>(
-                    future: receiptData,
+                    future: receiptRepo.getReceipt(widget.originalReceiptId),
                     builder: (context, snapshot){
                       if(snapshot.hasData){
                         return Text(
@@ -130,7 +123,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
               elevation: 3.0,
               margin: const EdgeInsets.only(left: 10,right: 10,bottom: 10),
               child: FutureBuilder<ReceiptResponse>(
-                future: receiptData,
+                future: receiptRepo.getReceipt(widget.originalReceiptId),
                 builder: (context, snapshot){
                   if(snapshot.hasData){
                     return ReceiptItemsList(receiptItems: receiptItems ?? snapshot.data!.receiptData[0].receiptItems,receiptCallback:updateList);
@@ -160,7 +153,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10),
                           child: FutureBuilder<ReceiptResponse>(
-                            future: receiptData,
+                            future: receiptRepo.getReceipt(widget.originalReceiptId),
                             builder: (context, snapshot){
                               if(snapshot.hasData){
                                 return Text(
@@ -188,12 +181,12 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10),
                           child: FutureBuilder<ReceiptResponse>(
-                            future: receiptData,
+                            future: receiptRepo.getReceipt(widget.originalReceiptId),
                             builder: (context,receiptSnapshot) {
                               if(receiptSnapshot.hasData){
                                 var initialCategoryId = receiptSnapshot.data!.receiptData[0].storeTagId;
                                 return FutureBuilder<StoreTagResponse>(
-                                    future: storeTags,
+                                    future: storeTagRepo.getStoreTags(true),
                                     builder: (context,snapshot) {
                                       if(snapshot.hasData){
                                         return DropdownButtonHideUnderline(
@@ -252,7 +245,7 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
               ]),
             ),
             FutureBuilder<ReceiptResponse>(
-              future: receiptData,
+              future: receiptRepo.getReceipt(widget.originalReceiptId),
               builder: (context, snapshot){
                 if(snapshot.hasData){
                   return ElevatedButton(

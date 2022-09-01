@@ -16,14 +16,11 @@ class ReceiptsPage extends StatefulWidget {
 }
 
 class _ReceiptsPageState extends State<ReceiptsPage> {
+  final ReceiptRepository receiptRepo = ReceiptRepository();
 
   @override
   Widget build(BuildContext context) {
 
-    final userToken = context.select(
-          (AuthenticationBloc bloc) => bloc.state.user.token,
-    );
-    final ReceiptRepository receiptRepo = ReceiptRepository(userToken);
     Future<ReceiptsResponse> lastReceipts = receiptRepo.getAllReceipts();
 
     return Scaffold(
@@ -37,58 +34,65 @@ class _ReceiptsPageState extends State<ReceiptsPage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: FutureBuilder<ReceiptsResponse>(
-          future: lastReceipts,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                  children: snapshot.data!.data.map((e){
-                    return Card(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReceiptDetailsPage(originalReceiptId: e.originalReceiptId),
-                            ),
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              child: ListTile(
-                                title: Text(
-                                  e.storeName,
-                                  style: const TextStyle(
-                                      fontSize: 12, fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                  DateTime.fromMillisecondsSinceEpoch(int.parse(e.purchaseDate.replaceAll("/Date(", "").replaceAll(")/", ""))).subtract(const Duration(hours:9)).toString(),
-                                  style: const TextStyle(fontSize: 10),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState((){
+
+          });
+        },
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: FutureBuilder<ReceiptsResponse>(
+            future: receiptRepo.getAllReceipts(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                    children: snapshot.data!.data.map((e){
+                      return Card(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReceiptDetailsPage(originalReceiptId: e.originalReceiptId),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                child: ListTile(
+                                  title: Text(
+                                    e.storeName,
+                                    style: const TextStyle(
+                                        fontSize: 12, fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Text(
+                                    DateTime.fromMillisecondsSinceEpoch(int.parse(e.purchaseDate.replaceAll("/Date(", "").replaceAll(")/", ""))).subtract(const Duration(hours:9)).toString(),
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Text(
-                                "${e.totalSum} ₼",
-                                style: const TextStyle(fontSize: 12),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  "${e.totalSum} ₼",
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  ).toList());
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
+                      );
+                    },
+                    ).toList());
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
         ),
       ),
     );

@@ -25,6 +25,23 @@ class UserRepository {
     return null;
   }
 
+  Future<String?> getUserToken() async {
+    if(_user==null){
+      var readData = await _localStorage.read(key: "USER_TOKEN");
+      //print("User token:"+readData.toString());
+      if(readData!=null){
+        if(readData.isNotEmpty){
+          return readData;
+        }else{
+          return "-";
+        }
+      }
+    }else{
+      return _user?.token;
+    }
+    return "-";
+  }
+
   Future<void> setUser(String token) async {
     _user = User(token);
     await _localStorage.write(key: "USER_TOKEN", value: token);
