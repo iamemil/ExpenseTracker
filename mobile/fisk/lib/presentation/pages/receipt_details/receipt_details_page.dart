@@ -370,6 +370,13 @@ class _ReceiptItemsListState extends State<ReceiptItemsList> {
                     decIconDecoration: const BoxDecoration(
                         color: Colors.transparent
                     ),
+                    onChanged: (num newValue){
+                      setState(() {
+                        widget.receiptItems![index].itemQuantity = newValue.toDouble();
+                        widget.receiptItems![index].itemSum = newValue.toDouble() * e.itemPrice;
+                      });
+                      widget.receiptCallback(widget.receiptItems);
+                    },
                     onIncrement: (num newlyIncrementedValue) {
                       setState(() {
                         widget.receiptItems![index].itemQuantity = newlyIncrementedValue.toDouble();
